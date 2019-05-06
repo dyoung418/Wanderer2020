@@ -1,0 +1,35 @@
+40x17
+OO                   =                 -
+**    >*        / == =    ::::::::::::::
+               /=  =        O * O * O  -
+*/             O<= = *       \   \   \:=
+/              >>>*=>      /   /   /   *
+                == = *        /   /   :=
+:=====          =  =         /   /     -
+O=   ============ ========== === === ===
+ **<<<                 *=*   *=* *=*   *
+ ========= :::==========================
+          *<<<===OO=====================
+*  ====    ===                        *-
+====OO=         ====O=O=O=O=O=O=O=O=O==-
+OO==OO=      O= =* * * * * * * * * * *=-
+T@ <OO=>==== *< =O=O=O=O=O=O=O=O=O=O=O=-
+XA  ::**T**  *=                       *-
+########################################
+Time:-1
+Author:Nameless
+Title: and still more (but this is the last of his)
+Solution:
+462 423
+LJLLLLLKKLLLLLJLHJLHKLLLJLLLHKKJJLLLHKKJ
+JLLLHKKJJLLLHKKJJLLLHKKJJLLLHKKJJLLLHKKJ
+JLLLHKKJJLLLHKKJJLLLHKKHKKLLLLLJJJHJHHHL
+KKHKKHHHHHHHHHHHHHHHHHHHHHHJHHHHKHKHHHHH
+HHHHJKKKLHKKKLKLKKHHJKKLLKLLLLLLLLLLLLLL
+LLLLJJJJLKLLJJJLLLLLJJHHHLLLLHKKHHKKKKLK
+HLLLLJKLLLLJKLLLLLJHJJLHJJHHJJHLLLLHHHKK
+KLKLHKHKHHKHHJJJJJJLHHLKKKKKKHHHHHJHHJHJ
+HHHKHKKKKHHHHHHHHHHHHHJJJHHHHJHJHHJJJLLK
+LLJLLLLLLJLLLKLLLLLLLLLLHHHHHHKKLKKJJHJJ
+HHHHHHHJJJJJLLJJHHHHKHH
+End Solution:

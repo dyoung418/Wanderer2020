@@ -1,0 +1,40 @@
+40x17
+X!   !!                       O OO    O-
+  *! !   O                  + =*==*=*==*
+!!!  !   *O     ! >>*              *   -
+          :\   >>>/              *     -
+    \           >/           /         -
+  :   :  :    * /    !<<    /S         -
+>>O*   :    :     /O><<<<           *  -
+##*              /*:*                  -
+    *      #*####  O*      !###        -
+*          #    # \*      !##O#        -
+        \O ###\<<<<\     !##O<##       -
+ *<      \:::  #*##     !#*#O          -
+ ====     ####  ##     !#CC#*        ===
+ =  =  C   : ###      !#CCC#/       *<=M
+  = =  *  @:   :     !#CC        /=====-
++ S *      :   :    !*CC    /    *     -
+########################################
+Time:50
+Author:Steven Shipway
+Title:All but the one
+Solution:
+512 641
+JHHHHHHLLLKKLLLLJJLLLLKLLKLLKLKKKKKKKKJJ
+JLLKKJKKKHHHKKJKJKJKLLLLJLLLLKHJJJJJLLLL
+LLLKLLLKKKKJLLLKKHHHJJJJLJHJJJHJJHJHJHJJ
+HHHHHHKKKJHJHJHJHHLLLLLKLLLLLKKLLLKLLLLL
+--HHHJJKKJJKHHHHJJJLHKKLLKLLJHHHHJHJLKHH
+KHKHLLLLKKKKKHHHHHHHHHKKKKKKKHHHHHHHHHJJ
+JJJKKKKKHHHHHHJLJJJLLLLJHHJHJLLKJHHHHHHH
+HKKHHKKLLLLLKKLLLLJHJJHJHLLLLLLJLLLLKLKL
+LLLLJJLLLLLLLLLKK----KJJJJHHHHHHHHHJJHJH
+JHJHJHHJHHHHHHHHHHKKKHHKHHHHJKKHLLLLKLLK
+K-----------------KK----KJLLJHHJJJLLLLJK
+---------JJJKKKHHHHKKJL-----------JJKK--
+------------KJHHHJJJJLJJJJHHHHHKKKKKLLKK
+KLKJLLLLLLLLLJKKLLLLLKLLLJJHHJLJJKHHJJHJKL
+KKLLLLLLKLLLLLLLLLLLKKKLKKJHKKJJHKHHKJHH
+KHHHHHHHHHJKHHHHHHHHHJHHHJHHHHKKKHHJHHK
+End Solution:

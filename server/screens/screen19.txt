@@ -1,0 +1,36 @@
+40x17
+O*O*O                            O     *
+*O*O*      ***  ***          =S=:=   O -
+O O /      OOO  OOO          = S *    O-
+ O /       ***            O  =====     -
+O /             S+         O =         :
+ /           ====== ======*= =     = +:-
+                   O       =*=    = +  -
+**=         +      O<    ! === ===     -
+*==         :      O     > :   *=      -
+=======:S   =            ! ======      -
+        =   =         ***  =           -
+        =   =         ***  = !  !   /\ -
+ S +    =   =              = ! T!  /AX\-
+ =      :   S       @      = !!!!  !!!!-
+::::::::=========+==*=:==S = !  !  !  !-
+        + * * * * ====    *= : *!**!* :-
+########################################
+Time:-1
+Author:Nameless
+Title:More from the Netherlands
+Solution:
+628 460
+JKKKKKLLJJJJJJLLLLKKKKHHHKHHKKHHKKHHHHHH
+JKHKKKLLLKLLLKHHJJLJLLJJJHJJJJJLHHHHHHKK
+KKHHKKLLHJJLLKKHHKKKLLLJLLLHHHKKHKHHHLJH
+JJJJJJJJJJJHLLLKLLLLLLLHHHHHHHJHHKKHKHKH
+HJJJJLLKLLJHHHHHHHHLLLLJJLLLLLLLLLLKKHHH
+HHHHHHHHJHHHHHHKKLLLLLLLKKKKHHHHKHKHHJHJ
+KLKLLLLKKKKKHHHHHLKLLLLLLLLLLLLLLLLLLLLL
+LLLLLLJJJJJJKKKHHJJJJJKJLHJJHHLLKKLLLLLH
+KKKKLLLLKKKLLLJJKKLLKHHHHJHJ-HLKKHLLJJJH
+--KK-KHHJJLLLJJ--LJJKLJJJLLJJJJJJJHHHLLL
+KKKKKKKKKKKHJHJJHJHJHJJJJJJHKKKKKHHHHHJJ
+JJJLLLHHHKKKKKLLLJJL
+End Solution:

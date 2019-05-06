@@ -1,0 +1,35 @@
+40x17
+\ *OOOOOOO*                 * OOOOOOOO*O
+O\ *OOOOO*          *       = OOOOOOOOO<
+ *\ *OOO*   ================= OOOOOOOO<<
+   \ *O*      O O O O O O   = OOOOOOO<<<
+    \ *     :             < = OOOOOO<<<<
+  /  \      :      *        = OOOOO<<<<<
+*/          :>           /  = OOOO<<<<<<
+/           :             < = OOO<<<<<<<
+            :  * * @ * *    / OO<<<<<<<<
+            :>           /    O<<<<<<<<<
++=****                   S<            -
+X=T                *     =: \          -
+================ ==       :  \         -
+>O:O>*<O=::::::= O= ===       \        -
+>*O*O>*:**OOOO*  := =O=========\ O O O O
+*:::*::*=::::::= ==    A       *:*:*:*:*
+########################################
+Time:-1
+Author:Nameless
+Title:Return of the Dutch designer
+Solution:
+472 415
+-LLLLKKKHHHHHHHHHHJJJJLLKLLKKKKKHHHHJJJJ
+JJHKKKKKJJJJJLLLLJJJJJLHHHKHHHHHJHHHJLHH
+HHLLLHHHLKHHLKJHJHLKLLLLLLHHKJLLLLJLLLLL
+LKLLKKKKHHHJLLHHHHHHHHHHHHHLLLLLLLLLLLLL
+LLLLHKHHHHHHJHHHHHHHHHHHHHKKKKKKHHHHHHHH
+HHHHHHHHKKKKKHHHJJKLKKKJJLLJJLLLLLLLLKKK
+KKLLLLLLLLLLLLLLKLLLLJKLLLLLLLLLHHHHHHHH
+HHHHHHHHHHHHHHHHHHHHJJJJJJJLLLLLLLLLLLLL
+LLLJJJJJKKKKHHHHHHHHHHHHHHHHHHHHHHJJHHKH
+HJKLLLLLJKKKKLKKLKLKLKHHJJHHHKHKHKLJLJLJ
+JLJJHHHJHJHHJJJ
+End Solution:

@@ -1,0 +1,36 @@
+40x17
+                               */*C*\X  
+ >            >       O      >>/     \  
+    +  ======      =====               \
+    <  >    <      >   <                
+    <  > !  <      > * <  S>            
+    <  >  * <   OO >   <   >            
+ @  <  > *  <   :: >   <   >    :*:     
+    <  >  C <      >   <   >    ^^^^    
+    <  > *  <      >   <   >   ^^^^^^   
+    <  >  +            <   >  ^^^^^^^^  
+    <  > :  <::::::>   <   >  ^^^^^^^^^ 
+* \ <  >  * <      >   <   >  ^^^^^^^^^ 
+    <  > *  <      >   <   >            
+    <  >  C <      >   <   >            
+    ====    ========   ====<<<<<<<<<<   
+                                     S  
+########################################
+Time:90
+Author:Bill Martin
+Title:
+Solution:
+196 469
+HJJJJJJJJJLLLLLLLLLLKKJKLLKKLHKKLLLLLLLL
+JKKKKKKHHKKKLLLLLLLLKLLLLLHJKJKJJLLLKKLL
+JJJLLLKK----------JHJJLJHLJHJJJJJHJJJKHJ
+KHJKHJJHHHHHHHHHHHHHKKKKKKKKHKHHLKKKKKLL
+LLLLLJJHHJHHHHHHHHHHJJJHLKKHLKKKKKHHHHHH
+HJJJJJJJJJJJJLHKKLHKKLHKKLHKKKKKLLLLLLLL
+JJHJJHJHKKJJJLJJHJJKLKLLLLLHKLLLKLJJHL--
+--HHHHHHLLLKKKHLKKLLLLLLLJJJJHLLKKKKKLLH
+JLLLLLLLLJHLJHHKHHHHHHHJJJJHHHHHHJHHHHHH
+HJJJHHHKJLLKKHJKHKJLKKJKLLLKKHHHJJHKKKJL
+KKJJHHHKKHKKHKHHLJJJJJJJLLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLLKKLLKKKKKKHKH
+End Solution:

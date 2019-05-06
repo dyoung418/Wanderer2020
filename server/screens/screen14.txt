@@ -1,0 +1,41 @@
+40x17
+==O=O O======OO======O =  /*<<  ******X*
+*:::: ::*=   *     + *<= /*<<<<=>      *
+===== ====O==== == =   =/*<<<< ====== ==
+          *:::= S  =         *  /<*=   -
+ ===:::======:====O======O\  O*/<<<=:==O
+  M::<<<**=:::=C==       * \  <<<<<=   *
+===========:===O*=      +O  \      ====-
+=:::::::::=::::O<=  ==  ::         *<= -
+=:=======:=:===O=O O==  :          *<= =
+=:=>*O*<=:=:::=O=* *===O==           =C=
+=:=>* *<=:===:=O=====                = -
+=:      =O ==:=OB::==       O  C====== =
+ =  O  =** *=:::T::=>              @   =
+O   O     *==:===***=          C======*=
+ =>========:::::::::S *      ====OO O=*=
+*:::::::::::===========*==::    A****===
+########################################
+Time:-1
+Author:Nameless
+Title:Is there no stopping these Dutchmen?  They'll be flying next
+Solution:
+759 647
+LLLJJKKHHHHHHHKJJHHHJHJHKHKHHHJLJKHHHHKH
+HKHHHHHHLLLLLLLHHHHHHHLLLLLKLLJLHKHHJHHH
+HHKKKHKKKKKH--HLLLLLJLLLLLKJHHHHHHH--HKK
+HHHJJHKKKLLHHHHHHJJHJJHLLHKLKKLLLLJJJJJJ
+JHJHHHHKKKHJJJHHHHHHJHHHHHHHHHHHLLKKKKJL
+KLLLJHLJLLKLLJKLHHKKKKKHHHHHHHHHJJJJLLLK
+KJJLLKKJJHHHHJJJJLLLLLLLLLKLLKKLLHHKKKHH
+KKLLLHHHKKLLKKHHHHLHHHHHJKHHHH-L-LLLKKLL
+LHHHJJHHHHHJJLLLLLKLLKJJLLLHHHHHKKJJLKKK
+HHLHHHHLLLLLJJLLLLLKKLLLLHHLKL----JLLLL
+J----KLLJLLKHLJJLLLKJLKKJJHJJJJHHJJJJHJJ
+JHHHHHHHHHKKKKKHHKKKKLLKKHHHKKLLLLLLLLLL
+JKHHHHHHHHHHJJLLLJJHHJJJJLLJJJLLHHKKKHHK
+KLLLLLKHKJJHHHHJJLLJJJJJLLLLLLLLLKLLLLLK
+LLLLLLLLLLLKKKKKLKKHHHKKLKKKLJLLKJHHKHHH
+HHHHJHHHKJJJLLLJKJJJLLLLKKKJJJHHHHKKKKKK
+LLLLLLLL
+End Solution:

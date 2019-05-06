@@ -1,0 +1,36 @@
+40x17
+###O#######################*############
+#*>:*            ::::= O=*OO      :<<<O=
+#==:    !      OOO:=   *=*::    ==*<*<*=
+#       *<<>>>>::::=== = =      X=======
+# =\  / !      O  :<*=  >OO/=====/  * O<
+#O==*/*  :<<<<<<======   :*=O* O*    =O=
+#O===============O=**=======::O==    ::=
+#:  :       :<<*=O=     : == :*     == =
+#   :</   :<<====O      :         ==== =
+# =         =O*=**       =       ::<== =
+# =  ======  : ===== =====O    : : :== =
+#*=  =*=**======O O=     ============= =
+#==*:=O=   O :: ::**=    =*::::*    ::O<
+#***= : =*=O====\ \      =======    *=O=
+# === / ==:>>>:***=>\OO      O<====:@=O=
+#    *>:  : ==****=A=T*****<<<==*   :<<=
+########################################
+Time:750
+Author:James Beckett
+Title:Yet another Beckett screen
+Solution:
+591 466
+KKLHHHHHHHHHHHLLLLLLLLJLJJHHHLLLLKKKLLKK
+KKKKHHHHHKHLJJHHHHHKLKJJJHHHHHKJLLLJJLKL
+LKKLLLKKHHLLLLLKJJHHJHJJLJLHHHHKKHHHHHHH
+HHHHKKHJJJHHHLLHLKLLJJJLLLJJJJHHKKKHHJJJ
+HKHJHLLLKKKHHHHHHHHKHLJJKLLLLLLLLLLJLLKL
+LLJJJLLKHHHHKHHHHKHHJJHHHJKHHHHJHHHKKHHL
+KKJJHJJHHHHKKLLKLKKHKKHHJJJKKKKLLJLJLLLL
+LKLJLJLLHLKLHJHHKKLKJKLLLHHHJHHJHHHHHKHH
+HKHKKKKLLLJJKKKKHLJHLKHHHLLLLLLJJJJHLLLK
+KKJHLLJLKJLLLLLLLKJLLHHHHHHHHHKKLJKLJKLJ
+LLLLKKLLJLLLHJJJLLKJLLHKLKLHKHKJLLLKHKJL
+LLLLLLJKLLJKLJLHKHHHHHHJJL
+End Solution:

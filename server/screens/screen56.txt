@@ -1,0 +1,33 @@
+40x17
+           \OOO*O*OOO/                  
+            \OOOOOOO/                   
+             \OOOOO/                   /
+\             \OOO/                   /<
+>\             \O/                   /<<
+>>\           =   =                 /<<<
+>>>\==========X   ===============  /<<<<
+*>>>\                             /<<<<*
+>>>>>>         @                  <<<<<<
+*>>>/                             \<<<<*
+>>>/============       ============\<<<<
+>>/            =  /^\  =            \<<<
+>/             = /^^^\ =             \<<
+/               /^^^^^\               \<
+               /^^^^^^^\               \
+              /^^^*^*^^^\               
+########################################
+Time:-1
+Author:Hans Bodlaender
+Title:
+Solution:
+80 323
+JLLLLJKHLLHHLLHHLLHHLLLHHHLLLHHHLLLHHHLH
+HHHHHHHHHHHHHKHHHHHKJJKLLLLLJLLLLLLLLLLL
+LLLJJJJJJLHHKLKKKKKHHHHHKJLLLLLLLLLLLLLL
+LLLLLHLKJKJKJKJHKJHKJHKJHKJHKJHKJHKJHKJH
+KJHKJHKJHKJHKJHKJHKJHKJHKJHKJHKJHKJHKJHH
+HKKLLJKHJKLLLLLLLJJKKJKJKJKJKJKJJKJKJKJK
+KJKHJKHJLLLLLLLLLLLLLLLLLLLLLLLLKJJKHHHH
+HHHHHHHHHHHHHHHHHHHKHKKLHLKKKKKHLLHJJJJJ
+JHH
+End Solution:

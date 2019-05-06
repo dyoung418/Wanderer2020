@@ -1,0 +1,24 @@
+40x17
+                                       -
+          X                            -
+                                       -
+                                       -
+          @                            -
+  ====== = ###                         -
+ ==* B   : <<#                         -
+  ===#########                         -
+                                       -
+                                       -
+     ~                                 -
+                                       -
+        ~                              -
+                                       -
+                                       -
+                                       -
+                                       -
+Time:0
+Author:Danny Young
+Solution:
+863 992
+JJKKK
+End Solution:

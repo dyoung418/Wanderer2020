@@ -1,0 +1,49 @@
+40x17
+O*OO+!*\O*        :      *</>CCOO:O ::^O
+* *</   >:\>   :  ^S O   </OOOOO^::</::<
+\        ^O  +     : :   /OOOOO< ::/::::
+!<::: :+:::      :     </>OOOO<  :/:: ::
+>:\O: S ::\>   :    OOO!:::^+^ :</ ^!::\
+   \* >: O \>       OOO/       :/   \^^^
+ :  \    :  !========^^     <  /     :^^
+ :   \       O   OO  O \      /*    \<^^
+A:M! X/      :       :     :  \^  :  \*^
+     /   :>O====\  /===\  S^   \    * \T
+ />:/     >/>>        <<\!   *  \S  ^  \
+O**/   :*<    :::>>\!:    !  ^  O\    * 
+O*/    ==/O+    ***     +O \O\  :O\   ^ 
+ = O  /O/ ^    *<S>*     ^ O*!\  @ \/T!!
+ /***/ ::=     *<:>*      *<OO>\::::\^O 
+ ^^^!>*C:: \   *<S>*  : /   ::      *\*<
+########################################
+Time:500
+Author:Unknown 
+Title:
+Solution:
+738 1000
+HLJLLJLHKHHJLLHKHHLJHHHHHHHKJHKHHHKKHKKJ
+JHHH-HKKKKHHHHHHHHHKHHKKHKKKLKKJJLJKHHJJ
+JLLKLLKLHLLKHJHJHHHHKKLLLLLHKKLLLLHHJJJL
+LLKLL-LLJLLLLKJHHHJHLK--KHHHHHJHHHHKHHHK
+HHJHHHHKKJJLLLLJJJHLLJLLLLJLLLLLLLJJJJHH
+HHJJJHHHJHHKHLHJHLLLLKLKKLLLLLHJJJKLLHKK
+LLLJKHJLLJHKJJKLLLJKHHHHHKKKKKKLLLLHLLH-
+-----LLLKKHHKKKLKLKKLJHJH-------HKHJHHHH
+JJHHHHKKKJLLKKLLLJJHJJHHKKHHHHHHJHJHJHHK
+LLKKHHHHLLJJLKJJLJLJJJJJKHHHJJJHJHHKLKLL
+KKLKLKKLLLJJJKHLJJLJLLLLLJLLLLLLLLLLLLHL
+KKKLLJLJLHKHKKHKKHHHJLJJJLJJHHHHKKHKHHHH
+HKKKLLLLKLLLLLLKKLHKKKLKJJLLKHHJJJLLHHKL
+KLLLJHKJJHJHHKHHHHHLLLLLLLKLLKKKJLHJLHKL
+HHHHKJLLKLLLLLJJJLLKHKJKLKHHHHHHHLLLLLLJ
+JJHJKLHJJJKJHHJJHHKHHLLJJLJJLLLLHJJKKKLK
+KK--------------------------------------
+----------------------------------------
+-------------------------------------KHL
+KJLHKLJHL-------------------------------
+--HJKLKLLHHHJJJLLLLHJLLKHKHHHHJLLHHJHJJJ
+JJJJJLKLHHKKLLJKHHKKLKHJLJJLLJKHKKKKHKKL
+LLLLLJJJJJJJJKLLKKKLLLLLLLLLLLLLKLLLLLKL
+KLLKLKLKLKLLLLLJJJHJJJHHJHJJJJLLLJJJLJKH
+KKKHHKKLKHKKLLKKLHKHKJHLLJJJJLJLJLJLLLKL
+End Solution:

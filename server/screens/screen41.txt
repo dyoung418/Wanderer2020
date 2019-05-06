@@ -1,0 +1,43 @@
+40x17
+S>>>>>>>>>>>>>>>>>**SSSSSSS*<<<<<<<<<<<S
+>>>>>>>>>>>>>*>>*** ***SSS* *<<<<<<<<<<<
+>>>>>>>>>>>******    **SSS* ***<<<<<<<<<
+>>>>>>>>>**            ****   *<<<<<<<<<
+>>>>>****                      ***<<<<<<
+>>***                            **<<<<<
+>*                                 *<<<<
+>*                                  *<<<
+>>*                                  O<<
+>>>*           ****                 **<<
+>>>O   ********   *** **           S*<<<
+>>>****              * A*         **<<<<
+          ++++ ++++      *** M ****<<<<<
+          !  !   /       >>>* *<<<<<<<<<
+          !@T!  /        >>>>****<<<<<<<
+          ++++ ++++      >>>>>*O<<<<<<<X
+########################################
+Time:-1
+Author:Bruce Butterfield and Son
+Title:
+Solution:
+1510 731
+LKHKHHHHHHHHHHHHHHHHHKKHHH-----HKJKLKJLL
+LKKJLLLLKKJLLKKJLLKKJJLLLLLLKK---KJJJJJJ
+JJJJJJJJJHLLLKKKKKKKKKKKKLLLLLKKLKJJJHHH
+HHHKKHHHKJHJHHHJJJJJJJJLLLLL-----LJJJJJH
+HHLKKKH---HHJJJHHLKKKHHHHKKKKLLLLLKKKKLL
+LLLLLLLLLLLK--------K--KJJHHHHHHKKJHHHHH
+HKJLLLLLLLLLLLLLLKJHHHHHJHHHHHHHHHHHHHKJ
+LLLLLLLLLLLLLLLLLLKJHHJHHHHHHHHHHHHHHHHH
+HKJHHHHJLLLLLLLLLLLLLLLLLLLLLLLKJLKJKJKJ
+KLLLKJJLJHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHK
+JHKJLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLKHJH
+JJLKJLKJJLLHKHKHHHHHHHHHHHHHHHHHHHHHHHHH
+HHHHHHHHJKLLLLJJHHHKJHJLLLJLHLLLJJJJLLLL
+LLLLLLLLLLLKKKKKKLLLLLLKKLLLLLLLKJLLJJKJ
+KJHHJKKJHHJJLHHKLLLJHKHHHJJLLHHHHKKHHHHH
+HJKHHHJHHHHHHHHHKHHHHHHHHHJKLJKLLLLLLLLL
+KLLLLLLLLLLLLLLLLLLLJLLLJJHHHHKHHJJLHHKK
+HHHJLLKJLJLLLJLHHHKLLLLJKJHKJHKKHHJJLJKK
+LLLJJLLLLLL
+End Solution:

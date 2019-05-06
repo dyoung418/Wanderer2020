@@ -1,0 +1,40 @@
+40x17
+ *OO              ######O#######       #
+##O#   OAO        ::#      OO   :<#### #
+>>*    ###<       #:##  ##   ######*## #
+  *               #:#  ### ####      # #
+                  #:  ###* ***#*#*#^   #
+                  ######################
+    +B+                                 
+#####=######               @            
+**M      TC#               *            
+#####=######               /   ###      
+X====B===B==+                  #T#<<<<< 
+ ==B===B===B+           O      #*#      
+*===========+          :/*              
+**  ^###=**=^          ::           COOO
+::  OO*#=**B^                 : :  #::::
+**  ***#====^      O          :#<  #   S
+########+   ^     OOO         : :  #    
+Time:0
+Author:Shaun Flisakowski
+Title:Max moves in
+Under:S,40,16,0,1
+Under:S,40,16,0,1
+Under:S,40,16,0,1
+Under:S,40,16,0,1
+Under:S,40,16,0,1
+Solution:
+630 429
+LLLLLLLJJJJKKJJKKJJJJLLJLLLHKHHHHHHKKKKH
+HHJJHHHLJHLLKKLJKKLLLJHHHLLKLLLJJJLLLJLL
+LLKKHHHJJJHJHJJJJJJKKKKKKHHHHHHHHLJJHHHH
+HLLLLLLLLLHKHHHHHHHLLLLJJJLLLJLLLLLLLLLL
+KKKLLJJJLLKLKLKLLHLLJJJHLLLLHHHKKKLHLLLL
+LLKLLLLLLLJJJJHHKHHHHJHJKLLJKLLKJJLLLKKK
+KHHHHHHJHHHHHHHHHHHJJHHJHHKKKHHJJJJJJJJJ
+JJLLLLLLHJLLLLKKKKKKLLJJJJJJHKLLLLLJJLJJ
+HHHKKKKHKKKKKHJHHJJJLJJHKHJJJHHHHHHHHHHH
+HJHHHHHLLLLKKKKHHJJHKLKKKHHHHHKKLLLLLHHH
+HHJJJHJHJJJLLLKHHHHJHHKLKHKKK
+End Solution:

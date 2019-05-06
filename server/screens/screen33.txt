@@ -1,0 +1,36 @@
+40x17
+    # #OOOOO    O   \*O\* \     T=   ===
+ S #^*::::::    :    \OO\          =@  M
+    #^#\              \>O\       \  *<<<
+   A#^#*               \>*<       ======
+   #**O#          /         /     =XO<:*
+# #**^*T#:    \            =      ::*:*<
+#*#######                   \     ======
+^^^**::::                   =          -
+#######:#                   /         *<
+>>*\    \                   +     *   *<
+         \                  \          -
+>>*/      \*               :           -
+###                              \     -
+>O^        \*          /*\             -
+^^^         ^   /+/    \*/       /     -
+***\S            ^   \     \        \*<<
+########################################
+Time:-1
+Author:Mark Maplethorpe
+Title:
+Solution:
+518 467
+KHHJHHHHHHHHHKHLJLJLJHJHHH-LLKLLLLLLJJJJ
+JLLLLLLJJHHHKHJJJJLLLJJKLHHHKKKHKHHHHHKK
+KLJJHKKKKKKHHJHHHHHHHKKKHHHHHHHHHHHHLJJH
+HLKKHHHLLLLJLJJJJJHHHHHHHLLLLJJJJJJJHHHH
+HJHHLKLLLLLLLLLLLKKKHLLLLLLJJJKKLLLLLLLL
+LKKKKKKKKLKKHJHJKHKHKHKHLJLJLJLLLKLLLKLL
+LLJLLKKHHJHHKHHJJJKKKKK-----KHJJJLJJJJLL
+LLLLLHJJHJHHHHKJJKKJLLLLKKLKKLLLKKHLKKKH
+HKHHHJJJHJHLLLLHHJJJJLLLLLLLLLLLLLLLLLLL
+LLLLLLKKKKLLLJJJJJJJJJHHHKJLLLLLKKKKKKKL
+LLLLLHHHLLLLKLJHHHHHHHJJJJHJHJJJJHH-HHK-
+-KHHJJKKLLLKKKLLLKKKKLLLLLK
+End Solution:

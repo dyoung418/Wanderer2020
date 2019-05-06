@@ -1,0 +1,33 @@
+40x17
+=======================-----------------
+*O       O:#         O/            @O  -
+# O #### #:#       **/            >  ##-
+#                                      -
+#          ^                          <-
+#         O>#                          -
+#        OO    *                    #  -
+#      #########                       -
+###                   O                -
+# #           :                        -
+#*            :        <   :           -
+#                 >   ::               -
+X                     :                -
+>*                                     -
+                                       -
+                                       -
+########################################
+Time:1000
+Author:Steven Shipway
+Title:Unplug the Cistern #1
+Solution:
+501 320
+JJJLJHHKKHJJJJJLJJLHKHKHHJJLHHHHHLLLLKKK
+KKKKKKHHHHHHHHHHKHHJHHLLJJHHHHKKHHHJKLLL
+JJJHJHHLLJJJLLHHHHJJLLLLLLLLKKKLLJJJLHKK
+KKKKLKLLJJHJLKLJHJJJJLLHHHHHJHJJHHJJJKLL
+HHJJLLJJJJJJJLLLLLLHHKHHHKLKJLLKHKLKLKKK
+KHLKHHHLLJJHHLJJHJHHHKKHKHKHHHKKHLLKKKKJ
+JJJHHHHHHHKKHHJJJHHHHHHJHHKKKKKHHHHHHHJJ
+JLLLKLLHHHHHKKHLHHHLJJJJJLLLJJJHJJJHJHHK
+
+End Solution:

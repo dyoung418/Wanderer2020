@@ -1,0 +1,34 @@
+40x17
+*           *<\OOOOOO*/      #O*   <<<<<
+####:#### ##   \OOOOO/       #*:    <<<<
+#            :  \OOO/        # #*    <<<
+##OO    @  ##/  <*O/         #  #*    <<
+*A::  =======    \:  ###     *:  *#    <
+#####             \  #*>    /          *
+          #O  # ###  ###  \    /        
+   /     <>*     X #       \  /=O  !!!  
+*         #O  O!####        =**>:   *!  
+>       \ ::::::            ===O:  !!!  
+>>       \               \      \       
+>>>    OOOO \                    \  ### 
+>>>>           *                  \ **# 
+>>>>>           \  # \  /  ====   ==### 
+::*:*           *# # # #             ===
+*  *  *=**=*>   *#*#*#T#>*  *  <*!!!   *
+########################################
+Time:-1
+Author:Shaun Flisakowski (modified a Hugo)
+Title:
+Solution:
+407 374
+KHHHHKKHHHHLLLLLLLLLLLLJJLHLLJJJHHHHHJJJ
+JLJLLLLKLJJJJJLJKHHHHJHKHHJHLKLLLLLKKLLL
+LJJJKKKLLJJJKKKLLLLLJJJKLLLJKLLLLJKLLLLJ
+LLLHHHKHHHHHKKHKKHHHHKHHHHHHKKKKKKLLLLLL
+JLLLLKKKLKJLJLJJJLLLLLLKKHHHHJJJHJJLLHHJ
+JJLJLLHHKHKKKHHLJHLKHHHHLLJHJHHHHHKKHKKK
+KHJJKHHLLKKHHHHJJJJJLJJLLJHJJJJHLLLLLJJH
+HHHHJJKJLJJJJJJHJLLKLJLKLLJKKKKLLLLLKLLL
+KHHLKKHHLLJJLLLLLLLKKKKKHHLLHHKHLKKKLLLH
+HJHJHJHJHJJJLL
+End Solution:

@@ -1,0 +1,41 @@
+40x17
+           !  !  ^  #===#        ::    -
+ === === ==#  !* ^  :OOO! ====#  O: #=#-
+ S   !*!      #  *   OO<!<<* T!  :O !O!-
+ * ==/ \===#\    ^   \OO/ ====#  != !^!-
+*/*    O<<<!/    ^    ^^         !  #=#-
+       *:  O     *  :::::*    #==#     -
++=# # !^!  *     ^            #    O:*:*
+* ! #  ^   :     ^     :::*<<<<::::\   -
+S:! #      :\    +   \                 /
+: ! #=#==@===\       /\      **       /^
+==#   !      *\     #==#     ^^      /^^
+    * !  *!    \   /<^^>\   /! \/OO\/^^^
+ #====# / !   *<\ /<<OO>>\ / !  \::/^^*^
+ ^^^*< /  !<=====X========>O:        ^^^
+T!^:::/\  !    >/^\*: OO*>O\^!  /  \  ==
+*!A *<**>*! O */^O^\O*:O* ::*  /\*:/\  *
+########################################
+Time:5000
+Author:Steven Shipway
+Title:Revitalization of the Dutch
+Solution:
+709 624
+JJJJJJKKKKKKKLLKKLLLKKLLKKLHHKJJJHJHHHHH
+HHHHHHHHHKKLHJJLLLLLLKKKJJLLLJJJHHHLLLKK
+KHHHJHHHHHLLJJJJJJLHHHHJJJLLKLJLLLKKKKLK
+KKLLJJJJLLLJKHHHKKLLLKHKHHHHKKHHHHKKKHHJ
+JJJJJHHHJJJJKKKKLLLKKKKKKLLLLLLLJLLLKKLL
+LLLLLKKKHJJJLJJLLKLLLLLKLLLLLKKLHKLKLJLJ
+JJJLLLLJHHHHHHHLJLJHHHHHJKLHHHJJLLLLLKKK
+HLJLHHHHJJLJJJLLLJJLKKKHLJHHHHJJHHHHHLLH
+HHKLLKJHHHHJHLKHHHLLLLLLLKKKKHKHKHHKKLLK
+LKKKKJLLLLLKLKJJLLLLKKKLKKKKKHHHHKKKHHHH
+HJ---JLJJHKKKKLLKJLLLLLLLLLLLKLLLLLLJLLH
+LLLLLJJJJLLKHLKJKJKJKHJJLLLLJJJJLLLLLLLL
+KJHJJLLHHKKHHHHHHHHHLHHHKKKKKKHHL-------
+----------------------------------------
+---------------------------------------H
+-HLKHHHHHH--HKKJJJJJJJJJ
+
+End Solution:

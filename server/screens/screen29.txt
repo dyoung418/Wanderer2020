@@ -1,0 +1,40 @@
+40x17
+C      OOO        +\*/:O:::::O::=      X
+      @= :    =  :O/O\::=::O=T=:===::===
+C +>    ^  \     :/*O*\::=**=*=:=******=
+           :  =  /O***O\:=**=:=:=**::**=
+C  >             \*OOO*/:====:=:======*=
+              =S  \OOO/:::O<=:=:=::::::=
+C                  \O/*:==O*=:=:=:======
+   >    ^        O /T\*:::O =:=:=:=O====
+       \ /      == \O//:=====:=:=:*    *
+/:\     =          /^A:<::::=:=:===== ==
+  ^ S             /O  :====:=:=:= *    -
+\   =::O*:*O*:O   <<  ::::=:=:=:= ===:=:
+        OO    :   == ====:=:=:=:=M  *:=:
+     * OOO=======*=* ***=:=:=:=:=======:
+*  *  OOO**:**>**^:\  <<=:=:=:=*::::::::
+^ =^= ****=*:***:=:    <=*=:::=^========
+########################################
+Time:7
+Author:Kenton Oatley
+Title:Kenton's swan song
+Solution:
+911 627
+KHHHHHHLLJLHHHJJJJJJJLLLKHKKKKLJJJJHHJJJ
+LHJJJJHLLLK-KKKK-KKKKKKKKHHJJJLLLLJJJJJJ
+JLKLLJLLKLJLLJLLLLJKHLJJLJKHHHJLKLLJLLKK
+HLLLLHHHJKKKHHHHHKKHHKHHKHKHKKKHKKKLJLHJ
+JLJLLLHHHLKJHL--KL-JLKHHJJJLLKKHH-K-LJLK
+KKKLLLLLHJJKHHJJJJ-JHJHJHHJJHHHHHHHHJJJJ
+LLJLLLLKLLJLKLJLLKLLKKHHHHKHHHJHHJHHHKKK
+LLLLLLLLLLLLJLLLLLLLLJJJJKKKKHHHKKJKKLKK
+HKLKLLHHJJLLLHHHKKLLLLJKHHHHJJJJLLLLJJJJ
+JJLLKKKKKKKKKKKKKKHJJHHHHHHHHHHHHHKHHHKK
+KKHHKKKKJJLLLLLLLLJJLJJJLJLLJLLLLLLKKKKH
+KKKKKKHKLKKJJLJJJHJJJJLJHKKKKKKHHLLLLHHJ
+JJJJLLLKKKLKLKKKHKHKLLLJLJJLKHKKLLLLLJJJ
+JJJJJJJJJJJLLLLLLLLKKKKHHJKKKLLHHJJHHH-L
+L-LKKHHHLLLJJHHHHJJLLLLHHHHKKLLLLKKHHHHK
+KKLLLLLKKKHJHHHHKLLLKHKLLLL
+End Solution:

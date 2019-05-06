@@ -1,0 +1,37 @@
+40x17
+O*O #   #       *          *            
+***</   *   :    O  ###     OOO!      / 
+ #*/    !  S    !      O::        # OO  
+  /  +  O  ##     /   :<:<         * !< 
+     :::*                   #####<>OO#  
+   #                                 !< 
+>>* ::!             <    :  :     /\ O< 
+         >      *    *           O #OO# 
+         **    /   /      ::: :  * # O#:
+O:     #OOO#!!#   /O                 O# 
+ :    #>   AX/   /     /     :*    #  # 
+    <#>O   \/   /O   */######*#  ! #* # 
+    <#>  @     /    ##**T           \   
+   <  #*\      O      >>>>/###  #       
+ #     #*                #!!     \  OO  
+**#  \    /*    ! * ! *\     /     >****
+########################################
+Time:-1
+Author:Ronald Lamprecht
+Title:
+Solution:
+400 512
+JJHJHHHKHHHKHHHJJLHKKLLKKHKKJJLLJJLJLLJL
+LLKLLJLLLLKLLLJKKKKLLLKKKKKKHJJHKHHHJKKK
+LHHKKKLLKHLLLLLLLLJJLLLKKJJJJJJLJJLLLLLL
+LJLHHHHKHHHHHKKHLKKKKHJKHHHLJLLJJLLLLLLL
+LLKLKKJJJHJHJJJJLJJJJLLLLLJJHHHLLHKKKKHL
+KKKKKLLJJKKKKKKHHLLJJHKJJJHHKHHHHHHHHJJJ
+JLLJHHKKHHHKKHHHHHHHHHHHHHHKHHHHHKHHHHHH
+J-----JKLJKKHKKKLKJLHHLLJKHHJJJLLJJKKLLL
+LJLLLLLLLKKKKHHHHJJJKJLLJJJJHHLLLLKLLLLL
+LLLLLLLLLLLJJJJHHHJHHHHHHKKLKKKHHKKKK---
+---HLLLHJJHHHJLLLLLLLLLLLLLLLKJJJJJJLLLL
+LLLJJJHHHHHHHJJJKHHHHHKHHHHHHHKHHHJKKLKK
+KKKKKHHHKHJLJHHHJJLLLJJLLLLLJJLL
+End Solution:

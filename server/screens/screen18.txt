@@ -1,0 +1,34 @@
+40x17
+>>>O       :      O      O      O      O
++>>O      /*      :      :      :      :
+ +>O     /*    >O\# O    #      # #### #
+  +*    /* O    :              \  \OO*O/
+O +     *  :                     \#OOOO#
+: +                     ##O##O#    \O:/#
+* + C                   # : *<#        #
+  +           O    ##   # ##C #        -
+  +           :/=\ * =  #>*####    \  /-
+     >*           \=/         O    \  /*
+   #      #@#                       \/##
+          # #  S S S S S S S S     # OOT
+          # # ################ O     O:#
+          # # #O# :< #:#   O     ##  O -
+ # * #    # # #:   #   #  # # #>* # #:#-
+*#*#*#    #M#*#A# ### X#  #*  # # # ***C
+########################################
+Time:25
+Author:Bruce Butterfield and Son
+Title:And another offering from Oz
+Solution:
+611 385
+KKKKKKHJHJHHHHHJJJJJJJJJKHHJKHKHHJJKKKKK
+KKKKLJJJLLKLLLLLLLLLLJJJJJJJKKKKKKKLHKLL
+LLLJLLHHKKLLLLJJJLLLLKJHKKKLLLJKLKKHKKKL
+LLLLLLLLLLHKHHHHHHHHJJJJLJJJJLLKLLLLLLJJ
+KKHHKKHKKLHJJJHHJJJJJJHHHLJJKHHHHHJJKKLL
+LKKHHHHHHHHHHHHHHHHKKKKKKKKKKLJJLHKKLLLL
+LLLLLLHHHHHKHHHHHHHHHJHJHJHJHJJJJJJHHHKL
+HHHHKKKKKKLHHKKHLLJJJJHHLLLLLLLLJJJJLLLL
+LLLJJLLLLLLLLLLLLLLLLLLJLJLJJJLLLLKKHHHL
+LHJKKLHKLLKLLLKJKLLJLLKJJ
+End Solution:

@@ -1,0 +1,34 @@
+40x17
+OOO#*#                                 @
+OOO:*#                                 -
+T::::#   O   O   O   O   O         O:  -
+###\O#      /:            =========O=  -
+S   :   >:          \      :       :   -
+           /         \    # ++++++++++ -
+S     >>>>/            O #  +========+ -
+                \      #<   +#      O+ -
+S  :             \          +#A######+ -
+      S S S S S S S S S:<<< +#      #+ -
+S   S###################    +###### #+ -
+      S S S S S S S S S#    +#OOOOO #+ -
+S                      #    +#X:::: #+ -
+  !*!*!*!******!*!*!*! #    +========+ -
+S                           ++++++++++ -
+ S S S S S S S S S S S                 -
+########################################
+Time:-1
+Author:Kenton Oatley
+Title:Revived from the dead
+Solution:
+1257 392
+JJHHHLJJHHHLLLHHKKHHHHHHHHHLHHJJLLLHHHHJ
+JHL--------------JLLLKKKHHHJJKKLLL--J---
+---------J--JJKKKKHHHHHLHKHHHHHJHHHHHHHK
+KHHHJJJJHHHHJJJJJJJJLLKJLLKJLLKLLLLLJLLK
+KLLJJLLKJLLLLKLLLLJLLLLLLLLHHHHHHHHHHKKK
+KKKLKKKKLJLJLLLLKLLLLHHJLLJJJJKKKKHKHHHH
+HHHHHJJJJJJJJLKKHKKHHHHJKLHHHHKKHHHKKKHH
+HHLHJHHKHHJKHJHHHHHLKKKKJJKHLJHHHHKLLLLL
+LLLJJJJJJJHKKKKLKKKKKHHHHHHHHHHJJJJKKKKL
+LLLLLLLLJJHHHHHHHJJLLLLLJJJHHHHH
+End Solution:

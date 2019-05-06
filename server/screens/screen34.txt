@@ -1,0 +1,32 @@
+40x17
+*OO/  *= OC*O         !***!       OO****
+OO/   ^^ ^^^^          \O/        ^^   -
+O/   /==\      /   /\O< ^        /   O##
+O#  />OO  O/    >OO#=O=         /   <<*X
+>O /  ^^         *<#=O=        /     =*=
+\O/     # /\      ##=O= /     /      =O=
+=O=     >    /\      ^   #   /       =O=
+=O= >     \>    /\          /        =O=
+ ^           \    \        O   ^    ^^^-
+=\ ==\               @    /   >O    // <
+          /O          \       \O/      =
+      \  / >O  O   \           ^       :
+            >O      \                 \:
+ O  /\       >O      \              <<=*
+>*:/     >:   ^              \# ## /####
+**/* ##*###*##########*##            *:*
+########################################
+Time:200
+Author:David Goodenough
+Title:Cause and Effect
+Solution:
+240 299
+JJJLJJJKLLLJLLLLLLLLLLLLLLLHHHHHHHHKKKLL
+KLLLLLLJJKKHHHHHHHJHHHHHHHHHKHHHKHHHKHHH
+HHHHHLLKKJJHHHJJJJLLLJJKHKHHJHJKHHHJHLKL
+LKKHHHJHHLJHJHLKKKKLKKKLLKLLLLJLLLKLKKLK
+KLKKLLLLLLLKHHHHHHHHHHHJJLLLJJLLLLHKHHHH
+KKHHHHHHKJHHHJJHJHHKKKKJJJJLLKLKKLLLLLLL
+LLLLLLLLLLLLJLLKKHLLHJJLLLLLLKLLLLLKLLLL
+HHHJJJJJJJJLLKKKKKL
+End Solution:

@@ -1,0 +1,33 @@
+40x17
+C      O  OOO ##       \OOO*OOOO/    O *
+       *       *#       \OOOOOO/ >     A
+#!        /    #         \OOOO/        -
+  O    /         O      *<\OO/  =*==\  -
+\O<   /          :        :O/!!!    O\*/
+>O   /                     /        := -
+#O\ /                              = * -
+#O          /   @         \         ====
+#O         /    O    *<    \           -
+**              :            /         -
+====/                       /          -
+       \                   /           -
+X!   \ *\                 /            -
+!    /!!!*/!!!!!/*<      /   *         -
+>*   \!!!/         !!\    /            -
+*      *             *\ */T            *
+########################################
+Time:350
+Author:Steven Shipway
+Title:Unplug the Cistern #2
+Solution:
+239 323
+KKKLHHHKKKLHJJLLLLLLLLLLJHHHHHHJJJJJJJJH
+HHKHHHHHHJJKKKHHHJJLHKHHJJJJHHHHLLLLLLLL
+LLLLLLLLLLLLLHHHHKKKKKKHHHHHHHHHKKKKKKKK
+HHHHJJHHHLKKKHHLLLJJJJJJJJHJLKLLLLJLLLLL
+LLLLLLLLLKJJJJLLLJJJKKKKKKLLLLKLLLJJJLLL
+LLLLLJJJJHHHHHHHHHHKKJJHHHKJJJHJJHJHHKHH
+HKKJJJHHHHHHHKKHLLKKKKJJJJHHHJHHHHHHHHHH
+HHHHJJHHHHHHHJJLHHHHLLLLLLJJHHHJJJHHKLKK
+HHJ
+End Solution:

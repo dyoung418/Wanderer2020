@@ -1,0 +1,39 @@
+40x17
+:::::============:*=:::                *
+::=::<<<<<<<<<<<<::=:::======== ========
+*:=::===== ======::=:::<<<<<<<<<<<<<<  *
+::=::<<<<<<<   *=O:=:::======== ========
+OO=::=== = ======::=:::<<<<<<<<<<<<<   *
+:*=::<<<<<<<<<<*=::=:::===== ===O=======
+*:=::=== ========::=:::<<<<<<<<<<<<<=***
+::=::<<<<<<<   *=:*=:::===== ========= =
+:O=::=== ========::=:::<<<<<<<<<<<<< =AX
+:*=::<<<<<<<<  *=::=:::========== ======
+:*=::=====O======::=:::<<<<<<<<<<<<<<<<*
+::=::<<<<<<<   *=*:=:::============== ==
+O:=::=====O======::=:::<<<<<<<<<<<<<<<<*
+*:=::<<<<<<<<< *=::=:::=========== =====
+::=::===== ======::::::<<<<<<<<<<<<<<<<*
+:@=:::     *  *=*:*::::====*===========T
+########################################
+Time:1000
+Author:Mark Maplethorpe
+Title:The Combination Lock
+Solution:
+442 565
+HKLKHLKKHKLKHKKLKHKLHKKLKHKLKHLLLJJJJJJJ
+JJJJJJJJLLLLLLLLLLLHHHHHHHHHHKHKKLHKKLHK
+KLHKKLHKKLHKKLHKKLJJKJKJKJKJKJJJKJKJJJKJ
+KJJJKJKJJKJJKJKJJJJKJJKJJLLLLLLLHKKLLLLL
+HHHHHKKLLLLLHHHHHKKLLLLLHHHHHHHKKLLLLLLL
+HHHHHHHKKKJJKLLLLLLLHHHHHKKLLLLLHHHHHKKL
+LLLLLLKLJJHLJJHLJJJHKKLJJJHLJJHKLJJHLJHL
+JJJHHLKKLJJHLLKLKKKKKKKKKKKKKKLLJHJJLHJJ
+LHJJLHJJLHJJLHJJLHJJHLLHKKJLKJKJKJKJKJKJ
+KKKJKJKKKJKJKJKKJHHKKKKKKKKKJJJJJJLLJJKK
+JKJKKKJKJKKJHHKKKKJLLJJKKJKJKKJKKJKJKKLL
+LLLLLLLLLLLLLLLHHHHHHHHJJLLLLLLLLHHHHHHH
+HJJLLLLLLLLHHHHHHHHHHHJJJJLLLLLJJLLLLLLH
+HJJLLHHHHHJHHJHHHHHHHJKLLLLLLLLLLLLJKKHL
+LHJJL
+End Solution:

@@ -1,0 +1,41 @@
+40x17
+==/*<</O       #OM# >OO     O  /      =*
++      :\      :<## *OO     :         O<
+/     *:             ::           /==*OO
+      ===          ===\     /  + /*  :OO
+       *       +  =S S=    /  /  \===:##
+       \ /       *S   =      /     *=:##
+       =*=  *   *@*=== O   *       =::<#
+        = ::==   *     :   O         \<#
+  /:<<:       =  ====     =+=    \     #
+    :<<:       ===*  :::::   \       O:<
+ */  :<<:                     \      *:*
+               ::              *       !
+**=      :::::::::       /  !        \ -
+S:*       :   ::+:  /##>T   X##       \*
+: *   =   :   :::: /##*#######A *      \
+ :*   S       ::*:/#          *<<<<<<<<<
+########################################
+Time:-1
+Author:Steven Shipway
+Title:Get a load of this one then
+Solution:
+623 682
+JHHHKHHHJHHJHHHKHHHJJLJHJHHHJLJLJJHHKKKK
+KLJLLLLLLLKKHLHHKKHKKHHKHKHKKHLLLKJLLLLH
+JHJJLLLJJKKLLLKKLLLLKJHHHHHHH--HHLKKLLJJ
+HHHLLLLLJJJJJJJJJJLLLKLLLLKKLJLLLLLLLLLL
+JJLLLKKKHKHKHHKKHHJJLHHKKKKKLLLKLLLLLLLL
+LJKKLJLLKJHHHHHHHHHHHHHHJHHKJHHHKHJHHHHH
+JJJJJLLLL-KJHHHHKHHHJJJJJJLLLLLLLLLLLLKL
+LLLLLJLLLLLLLKLLJLJKHKKLHKJHHKKKKLKKKHHH
+LLLKKHHHHHJJJJLLLHHJJJJHJJJJJHHH--KHHHHHHH
+HHHHHHHHJJJJLLLKKKHHJJKKLKLLLLLKLLLLLLKK
+KLLLKKLKKHHJHJHHHJHHJJHJHLJJJHHHHHHHHHHH
+HHLJJKKKKKKHHHHHHJLLLHHJKLLLJJJJJLJHLLKK
+KKKKKKLKLLKKLLLLJKHHJLJJLLLLLJJJJLJHKKKK
+KLKLKKKKKHHHJLLLJJJJJHJJJJLJHHLKKKLHJJLL
+JHHHHLLKKKLLLLLKKKJJJJJLLLLHHHHJJHHHJKJH
+HHHHHHHKJLLLLLLLLKLLKKKHHHHHHHHHHHHHHHHH
+JJJL-------------------KKLLLLLLKLLLLJJLL
+End Solution:

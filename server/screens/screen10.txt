@@ -1,0 +1,37 @@
+40x17
+                      OOOOO        OC >O
+     !        ===     :OO::       /\  >O
+    !O!!!!=== =*=      ::        /    *O
+ /===     = = = =              =*=    *O
+ !    =   = =+= =        =     \=/    >O
+ \====    = === ==       S             O
+     * ====      =    +               O:
+     = S    ======     :              :/
+     == =====           :::          / -
+      ===       /\         : =====   : -
+ /==\        ==+X!          :=  S=  \  -
+   =======  =S *!         :: *S  =     -
+   = S S =   ==    ===O=:    =====     -
+== !     =         =  :=           \   -
+C+       =     OOO== =:=          * \  -
+C+      @*     ***  +=:+             \ -
+########################################
+Time:25
+Author:Steven Shipway
+Title:Meet the Baby Monsters!
+Solution:
+365 499
+HHHHHK------JHHHKLLKKHHKKKLLLKKLKLHH---L
+LLJLLLLLKLLLLKKKKJJJJHHHHJHHHHHKHHJJJLJL
+LLLLJJJJJHLLLKKLLLK-KJ-KKKKLLLKKKKKHKKKH
+HHHJJJJKKKKLLLJLJJLLLLLLLLHHHHJJKKKKLJJH
+JJJLLKKKKLLHL--JLLKKHJLJJH-HLLLLLKLLJKHH
+JJJLLLLLLKKKKKLJJJLHJJLKHKKLKHJJJJJJLHLK
+LHJHLJJHHHHKHHHHHHHJJJHLLKJ-LHHKK---K---
+----------------HLJHJJJJJHHJHLKKKKKHHKKK
+KJJJJLLLLLLJJJJLLLLLLHHHHHHKHHKKHHK-----
+----------------------------------------
+----------------------------------------
+------JJJJJHHKKHHJJHHHHHHKLLKLKLKLLLLLLL
+KKKHHKHHHHHHJHHHJJL
+End Solution:
