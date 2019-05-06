@@ -36,6 +36,10 @@ var app = new Vue({
         getId(row, col)
         {
 
+        },
+        newLevel(level)
+        {
+            let payload = {level: level};
         }
     },
     computed:
@@ -44,6 +48,6 @@ var app = new Vue({
     },
     created()
     {
-        let res = axios.post('/wanderer/');
+        let res = axios.post('/wanderer/', payload);
     }
 });
