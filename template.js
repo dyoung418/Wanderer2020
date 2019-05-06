@@ -16,3 +16,25 @@ let res =
     ],
     score: 10,
 }
+
+// NEW LEVEL
+
+// Request
+let req = 
+{
+    level: Number,
+}
+
+// Response
+let res = 
+{
+    gameId: String,
+    level: [
+        {row: 0, col: 0, add: ""}
+        ]
+}
+
+/*
+
+
+*/
