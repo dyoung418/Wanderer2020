@@ -1,16 +1,31 @@
 body
 {
     display: block;
+    background: radial-gradient(rgb(61, 1, 38), rgb(31, 0, 18));
+    background-size: cover;
+}
+
+#menu
+{
+    display: flex;
     width: 100%;
-    height: 100%;
+    justify-content: space-around;
+}
+
+h1{
+    color: white;
+    text-transform: uppercase;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 3em;
 }
 
 #board
 {
-    display: block;
-    width: 75%;
-    max-width: 1000px;
+    width: calc(75vw);
+    height: calc(75vw * (17/40));
     margin: 0 auto;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    display: grid;
 }
 
 .row
@@ -21,8 +36,111 @@ body
 .block
 {
     display: block;
-    background: rgb(red, green, blue);
-    border: 1px solid black;
-    width: 64px;
-    height: 80px;
+    background-image: radial-gradient(rgb(78, 78, 78), rgb(0,0,0));
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.babymonster {
+    background-image: url("../assets/babymonster.gif") !important;
+}
+
+.balloon {
+    background-image: url("../assets/balloon.gif") !important;
+}
+
+.blank {
+    background-image: url("../assets/blank.gif") !important;
+}
+
+.bomb {
+    background-image: url("../assets/bomb.gif") !important;
+}
+
+.boom {
+    background-image: url("../assets/boom.gif") !important;
+}
+
+.brickwall {
+    background-image: url("../assets/brickwall.gif") !important;
+}
+
+.cage {
+    background-image: url("../assets/cage.gif") !important;
+}
+
+.clock {
+    background-image: url("../assets/clock.gif") !important;
+}
+
+.dirt {
+    background-image: url("../assets/dirt.gif") !important;
+}
+
+.edge {
+    background-image: url("../assets/edge.gif") !important;
+}
+
+.exit {
+    background-image: url("../assets/blank.gif") !important;
+}
+
+.funkydirt {
+    background-image: url("../assets/funkydirt.gif") !important;
+}
+
+.leftarrow {
+    background-image: url("../assets/leftarrow.gif") !important;
+}
+
+.leftupramp {
+    background-image: url("../assets/leftupramp.gif") !important;
+}
+
+.money {
+    background-image: url("../assets/money.gif") !important;
+}
+
+.monster {
+    background-image: url("../assets/monster.gif") !important;
+}
+
+.player {
+    background-image: url("../assets/player.gif") !important;
+}
+
+.poison {
+    background-image: url("../assets/poison.gif") !important;
+}
+
+.rightarrow {
+    background-image: url("../assets/rightarrow.gif") !important;
+}
+
+.rightupramp {
+    background-image: url("../assets/rightupramp.gif") !important;
+}
+
+.rock {
+    background-image: url("../assets/rock.gif") !important;
+}
+
+.rug {
+    background-image: url("../assets/rug.gif") !important;
+}
+
+.stonewall {
+    background-image: url("../assets/stonewall.gif") !important;
+}
+
+.teleportdestination {
+    background-image: url("../assets/teleportdestination.gif") !important;
+}
+
+.teleporter {
+    background-image: url("../assets/teleporter.gif") !important;
+}
+
+.wrappingedge {
+    background-image: url("../assets/wrapping\ edge.gif") !important;
 }
