@@ -1,0 +1,36 @@
+40x17
+**     #O   *  #*O<O<*<*O#    :::*:::  #
+*##### #O*<### #>O*O*>*>*# ##^######## #
+ #*O # #::#>*                #     C   #
+ #O**# # ### #*###########:#:# #####*# #
+ #>* *   #     # OOO *#>*       :* #^# #
+ ### # ###*# ###>:::<<<#:#:#:#*#^# ###*#
+*<<# #      *<#X>:::<<<#          *  #^#
+ ### ##### ######::##### #*## # ## #*###
+ #     #   #***#   #  *    #>* *#>*   @#
+ # #***# ###O# # ### ### #O######### ###
+ # #^**# #  *     *   *#:OOO:#*#     #*#
+ # ##### # # * # ### # #:#OO:# # ##### #
+ #   #:O:O:#>*    *  ^*#::::*#         #
+*# #*#:O:O:### # ### ################^ #
+**   #*:::::*# **<##  *:::::**:::::*   #
+########################################
+########################################
+Time:300
+Author:Paul Metcalf
+Title:Temptation
+Solution:
+716 465
+HHKJHHKKJJLLJJHHHHJJHHKKJJLLLLLLLLKKJJJJ
+HHHHHHHHHHHHHHHHHHKKHHHHKKLLLLLLJJKKHHKK
+LLLJLJJJJLLLLKKHHKKKKKKKKLLJJJJLLKJLJJHH
+KKLLLLLKKHHHHKKLLLLLLLKLKKHHHHHHHHLLLLLL
+LLJJJJJKKKHHJKHHHHHHJJHHHHHHJKLLKKHHHHKJ
+HHHHLLLLLLLHHHHHKHHJLLLLLLLHHHHHKKLJKLLJ
+KJLHHHHHHHHKJJHHHHJJHHJJHHHHKKHLLLKKLKKL
+LLLLJJJJHHHHJJHHHHKKKKKKHHHHHHJJJJJJJJJJ
+JJJJLLLLKKHHKKKKLLLLJJHKHKKKKKHKHKLLJJLL
+JJLLLLLLKJHHJJHHJJJJJKLKJLLJJLLHHHHHHKKL
+LLLKKLLLJJKKHKKLLLJJJJJJLLKKKKKKLLKKKHLL
+HJLHKJHLLLLKKJJHHHJHLKHHH
+End Solution:

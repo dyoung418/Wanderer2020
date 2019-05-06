@@ -1,0 +1,33 @@
+40x17
+\>O\OOOOOOOOOO/         /   *     =====#
+*\*::*::::::*/          \>OOOO<O/   ===#
+  \  \      /            \O XOO/     ==#
+   \  \    /     O        \OOO/>     O==
+    \  \  /             < /OO/ *     :*=
+     \  \/               /OO/     ######
+     /          >:    /   :*         ###
+  *>:   /\ O    ! !       \            #
+   /   /==\                \           -
+  /   /==* \      amiga does it better !
+ /   /==*   \     >O O O O O O@O O O O<!
+/   /==* !   \     >O O O O O O O O O <*
+ :</==*    >                A *        #
+>*/==* !                               #
+ /==*     *   *<\*<   #=#=#=>  \#=#=\ <#
+*==* !    !      ::\        *T         #
+########################################
+Time:500
+Author:Alan Bland
+Title:Alan Bland did this and the Amiga port
+Solution:
+292 356
+JJLLKLLJLLLLLLLLLLLLLLLLKHJJLKLJJLHHHLJJ
+KKHKHHHKHHHHHJLHHKJJLLLLHJJKHJJJLJJJHLKH
+KKHHHHHHHKHKKJJJJHHHHHHHHHJHHHHHHHJHLKLK
+LKLKLKLKJLJJJJLLLLJLLLLHKKKHKHHKKHHKKKHH
+HHHHJHHKHHHHKKKKKJJJJJJLLLLJJJHHJHJJKKJJ
+HJJKKLKLKLKLKLKLKKKHKHHKHKKLLLLLLLLHHHHH
+HHHHHLJLKJJLJLJJLLLLKLLLLLLLLLJLJLLLLKKJ
+LLLLLLLLLKKLLLLLHHHHHHHHJJHHHHHHKHHHHHHK
+HHJLJKKLLJJJLLLLKLLLLKKKKKJJLLKKHKJJ
+End Solution:

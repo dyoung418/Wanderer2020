@@ -1,0 +1,43 @@
+40x17
+   ^^         ^O:O^/<<<#        #S   # X
+   ^:          ^*^O<<<<###### # # ####  
+    #>\    O/\*<<<</\O  #   # # # #     
+   S#::\   >O*#####*O< #  # # # # ##### 
+  S##*::O   ^^ *O* ^^ #   #  S#       # 
+  S#*:O::       #    #  ### ######### # 
+  S#>^^::           #S    ###     S # S 
+O S######### #   *@######      #### ####
+O:  ++++C+T#*#   O#**###O### # #  #     
+:OO  ######*#*# O#:        #S# #  # ###O
+*::             #:O  ##### #####    ****
+#################*:  #***#     ########O
+####O##########*#O:^^#OOO#:###         :
+   *** ## ::O::^OO^^^^^^^   *###O*OOO## 
+<<< A <<< >O^^O*OO*::     :##::OO:<::::#
+  !!*!!   *::^O*::::##***###C:::::::::S:
+########################################
+Time:200
+Author:Danny Young
+Title:Sneak around the corner
+Solution:
+1350 711
+HKKKJJHHKKHJHHHHKHKKKHHHHHHJHJJJJJJLLJJH
+HHHKLKLLJJLLLLLLLLKJLLKJLLKKKKHHHJJKKKHH
+KHKKKHHHHHHHJJJJJJJLLLHJJLLLLLLLLLLLKKKK
+HHHHKHHKKKKHHHHHHHJJJJJJJLLLLHHJJLLLLLLL
+LLLLKKKKHHLHHLHHHKKKHHKKHHHHHHHJJJJJJJ--
+LLLLLLLHHHHJJLLLLLLLLLLLKKKKKKLHJHHHJHLL
+HHLLHHHHHHKLLHKHHHJHLKLLHHKLHJKKKLLLJJJL
+LLLLKJLLLLLLKJHHHHHHHHKKKKLJLLJKHKJLJLLK
+KJHHHHHJJJHHHHHHKKKKHHHJJJJJJJJJKLLLLLLL
+LLKHHHLLLHHHHJKJKLLLJJKLLLLJLLLHKKLLLLLL
+HHJLJLLJLLLLKLHLLLJJLLKLLKLLHHJHHHHHHHHL
+LLLKKKLLJHJHHHHHHHHKJLLKKKLLKKLHJHJJJLLK
+KJJJLLLLLLKKKJLLLLJLLL----------JJJHHHHH
+LKLLLLKKLLLLLLHLKKHH-LHHLLLHLHLKJHHHHLLH
+HKKKKHHHHHHJHHHHKH---HHKLKLKLJJKH-------
+----LJ----------KH-------LH-------------
+------LKLLJJLLKKKKH-----LL--HH----LLLJJJ
+JLLL-----HHLKKJJLLLLJJJLLKKKKKK
+
+End Solution:

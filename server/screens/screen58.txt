@@ -1,0 +1,36 @@
+40x17
+**:***:*:**  OO    X       / # #########
+:***!* O  *     /    +       :   O     *
+*!T*:*    #         @     /: #       /  
+:**!**  #~#       +======/ : #      O   
+***:*! // #  # #    *   /    # ~    \   
+!**!** #  ~  \*#\   ~    :/    :~/    O 
+      : ~/     <#       >/  >         \ 
+   *~/  /O#*~#*O     :       <  <      :
+ S  #> /* ######   /           <*    #  
+ #  O~ =/            /   /======/    # #
+             \    <>/   / O O      / #~#
+###    ##:#S    O A     #* O#     /   #*
+OO#> \  S         / \   #* OO#   /+     
+  #              /       #~ :      \  * 
+  #   >            \     *  /      ~\  *
+    \  *       T~#          O   /* T    
+########################################
+Time:-1
+Author:Ronald Lamprecht
+Title:
+Solution:
+607 441
+HHHJJLLLLJHHHJHKKKHKLLLLKKLLLLLJLLJJLJJJ
+KKKKKLLJJJJLKKKLKHHHHHHHHHJHKLKHLLJLLLLL
+LLLLLLLLLLJJJJHLJJHLKKHHHJJJJJJJLJLLJKKK
+JHHHKKKHKHHHLJJHJHJJHHHLHHKHHKKLLLLLLLLK
+KKHKHHHHKHKHHJHHHHJJKHHKHKHHKHHJJJJKHHHJ
+KKKLKKKKHHJHKHHHJJJHKHHHKJHHHJJJJHHHJJHH
+JHHJHHHHLLLKKHLKLKK-HHHHLLJKKKHLJJHHLLLL
+LJJLLLKLLLLLLLJJJLLLLHHHKHKKHHHHHHHHHHKH
+HHHHHHHKKKKLLLHKHKHHJHKHKLLKLLJKHHKHHJKK
+LLLJKLLJLLLLLLLLJLJLLLLKKLLLLLLLLLLJHJJJ
+JJKLLLLJLJLJJJHJJJLJKLK-KJJJLKKKKKKKKKKK
+L
+End Solution:

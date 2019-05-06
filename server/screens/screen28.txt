@@ -1,0 +1,35 @@
+40x17
+>\                +     *   M*         O
+  \        *             *** *         O
+   \O             #S        *          O
+   O**<                                O
+     \                @          :     O
+  *   \ =                :  :          O
+        *!                             O
+        =    :::                       O
+              ::              OOOOO    O
+            ::::       >*  \  \OOO/    O
+                  \         \  \O/     O
+                  >\      X            O
+                    \                  O
+!!   :      ::       \                 O
+*    <       :                         O
+*!   :                               ***
+########################################
+Time:-1
+Author:Frans Meulenbrooks
+Title:
+Solution:
+327 403
+JHHHHHHHHHHHJJHJHHHJHHHHHJJJJJHHJKLLKLLL
+JJLLLKKLLLLKKLLKLLKKKLLKLLKLLKLLJKKK----
+LLLLHHHHJJJJJJLJJJJJJHHHHHHHHHHHKKHKHHKK
+KKKKKKKKLLLLLLLLKLLLLLLLLLJJJHHHHHHHHHHH
+JHHHHHHHJJJJHHHHHHHK-HKKKKLLHHHKHKJJLLJJ
+JLLLLLKKHKKHHJLLLJJJLHJJJLLLLLLJJJJJJLKK
+KKHHKKKKLKKKKKKKLLLLLLLLLLLLLLLLJHHHHHJJ
+JLJJHJHJJLLKKKKLLLKLLLLLJJJHJJJJJLJJHHHH
+HHHHKHHKHHHLKKKHHHHHHHKJJJLKKKKLLLLLJJJJ
+JJLLJLJLLLLLLLLLLLLJJLLLLHKKKHHKHHHHHHHH
+HHK
+End Solution:

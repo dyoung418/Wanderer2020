@@ -1,0 +1,33 @@
+40x17
+########OOOOOOOOOOOOO###################
+##### O ****OOOOOOOOOO**********=======#
+#               O                #*****#
+# #### O \OOOOOOOOOO/   *********#:#####
+# #OOOO/   OOOOOOOO/  # \<\<\<\<\****M##
+# #OOO/   #\OOOOOO/  /#  #########/   <*
+# #OO/# ###  OOOO/  /##    #OO O     #O#
+# :O/*****#   OO*  /#O#  #  ** *    A#O#
+# :/*******#OOO/     *   ####### #:# #O#
+# /*******OOOOO# ############  # #:# #O#
+# ########OOOOO# ##O#O#O#O#O# ## #C# #O#
+#  #**####OOOOO# ##O#O#O#O#O#    #:#  **
+#\  # #   *****: ##O#O#O#O#O# ####:##*/#
+>>>T  #  :     : O:*:*:*:*:* @#> \*****#
+## ## #\:::::::: ###############>OO/***#
+## X#  ::#:::::::::                 #**#
+########################################
+Time:300
+Author:Mark Sergent
+Title:
+Solution:
+978 340
+KKLLLKKKK-JJJJHHHJJ-H--HHLHHHHHHHHHHHHJJ
+LLLHHKHHHHHHHHJHHHKKKKHLJJJJLLLKKLLJJLLL
+LKKHHHHKLLLLLLKKKKKLLJLLLLLKKKKKKHHLHHLL
+KLLLJJHLLLLLLLLKHKHHHHHHHHHHHHJHHHHHHHHH
+HHJJJHJJHHJHJHLLLLLLLKHKHJHHKLKKLKKKHLKL
+LLLHHHHJHHHHHHHJJJJJLHJJJJLJLJHHJJJJJJJL
+LLJHLJLKKHKKLLHKKKKKKLHHKHHHHLKKLLLLHHHH
+JJLJJJHHHHHHHHHKHHHKKKKHHHHHHHHHHHHHHHHH
+HHHHHJJJJJJJJJLJJJJL
+End Solution:

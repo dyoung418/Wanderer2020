@@ -1,0 +1,39 @@
+40x17
+X##O#:::/O*#*#*## *#O#*#*#*#*#*#*#*##**#
+*#::::#  :      :<#>>O                 #
+   #######:#: : :#:: :  #########>:::::#
+ #*#**#**::::::::#     #OO :O  *#>:::::#
+* ##O#*######:###      #*O  /####*######
+<<<<<::::::O#           *<    **# OOO O#
+>:::       *#          ::########!*****#
+##         /    :              #O## /###
+#/                              *<# ##*#
+/                               *      #
+  O\                            \  # #*#
+ O/      /\  ##***    :    \          ##
+*/      /##:::##>*:      :       \   : #
+/**/\   ##*:#:*#**#               \  O<#
+*>/!! ##*#/:<<#***# />::           \ :O#
+A/*****#     #***@#*#*#          ! *\:*T
+########################################
+Time:750
+Author:James Beckett
+Title:
+Solution:
+732 599
+HHHHLKLLKHLKKJLLJJJKKLLLJKHJJKKKLLLLLLLL
+JJLLLLLJLHKHHHHHHHHHHHKKKHHHHHHHHKHHHJJH
+JHLJJKJKJHHHKJLLLLKLKLHKHHKKHHHHJJJHHJJH
+HHLLLLHKKKKKKHHHHJHJJKKLLKLKKKHHKJLLLKKK
+LHJJLLKJLLLLJLHHJJLLLLKKKKKHHHHHHLLLLLKK
+KJHHHHLLKJJJLLLLLLKKJKLKLHJHHHKJJJHJJJJL
+LLLLLLLLLKLKJKKLLLJLLLLHHHHKKHLLLLLHHHHH
+HHJJHHKKKKKJLLKJLLKJLLKJLLLLLLKJLLLKLJJJ
+HKHJHKHJKHKHKJHHKJHHHHHHHHJHLHHHHJJJJJLL
+LLLLLLLLLJLLLHJJJLLLLLLJKHKKLLKJJKHHJJHH
+HHHHHHKHHHHHHHHHHHHHHHHHHHHHJHHHHJHJHLKL
+KLKLLLLLLLLLLLLLLLLLLLLLLLLLJLLLLLLJLLLJ
+HJJLLKLKLKLKLLKLLLLLLLLLLLLLLKLLLLLLLLLL
+LLLLLLKKKHLLLLHHKHHHKKKHKHHHHHHHHHHHHJJH
+HJJHHJHHHHKKKHHHKKHHHKHHJHHHJJKHHJJKKKK
+End Solution:

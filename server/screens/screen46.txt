@@ -1,0 +1,37 @@
+40x17
+*!>>O           \*OOOOO />O   \#T#X#O#O*
+  O ::!:::::::O  \OOOOO/:#*    #   ::::<
+#>: ::::::!#>#:   \OOO/::# # # *## ###O#
+####::#>*  \:      \O/  =# # #===# ## :#
+*             \    :<#  #  ::      #O :<
+###O/###########    /#     ##! ==###: A#
+#O#>>>>>>>>>: *#      >>:   #  #:::::#*#
+>*        *= O##   \    ## ## !#:######*
+#    ##### ! :<#         # !#  #    / :<
+== =O   !>:  :=#    /   *< =# ><  O  @ #
+O<#O:        =*          # !# =#= ======
+*::   #!!!!!  =#   \       =#  O#     :<
+############# =#O          !#! ::==== !*
+ >:             :   / #     ##        !-
+## #         ####     #  #   =========!-
+*  #!!!!!!!!!*::::#*# # #*>:           -
+########################################
+Time:-1
+Author:Hugo Wouters
+Title:
+Solution:
+277 491
+HHKHHHKKLLLLHHHHJJLLLJLLLKJKLKJHHJHHKHHJ
+JJLLLLJJHHHHHKHHKHKKKKKLKKHHKKKLLJLHKHHJ
+JJHHJJJJJJJJJLJLJLLLLLLLLLLLKKKJJJHHHHHH
+HHHHHHKHJHLKKHHKHHHJJHHJKHHJHHHHLLLLKKHH
+LKKKHHLLJJJHHHHHHHHHHHHHHJJHHLLKKLLLLLLL
+LLLLKKHKKKLHKLKLHHJJJLHHHKKJJJHHHHHJHHHH
+HLLLLLKLKHKHKKKKHHHLLLLKLKLLLJKLKLLLLLJJ
+HHLLLLLLJLJHLKLKKKKHHHLLJJJLJJHHHKKHKHHH
+HHHHHHJHHHKLHJJJHJJJLJHHLKKKKLKKHHLLHKHH
+HKJLJLLLJJHJJJLJHKHHLLKKKLLLLLKKKLLLLLLJ
+LJLJJJLLJJLLLLJLLKJLLKKKHHKHKKKLKJHJJJLL
+KLKKKLLJJJLLLLLLKKKLLLLHHHHHHKJKHHLLKKHL
+KKLKJHHHHHK
+End Solution:

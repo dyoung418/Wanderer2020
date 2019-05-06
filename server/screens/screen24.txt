@@ -1,0 +1,43 @@
+40x17
+:::     !!!        ! "the shrine of !^O-
+::=    /   \       !  Quetzacoatl." !\:<
+=:<    *   *       \================/  -
+*^                         * ** *      -
+=       =:=         *>\    ^\<>/     */X
+     =\ ^ ^ /=      \<*    ^ \/      /!!
+     O= S S =O             ^M/         *
+   +<<<     >>>+          \*/     O /!!!
+    =    !    =            \    /*!::<<!
+        :^:                 #<    \!:!!!
+        ^ ^                !*>: \   ^*!*
+   *   >>:<<   *  \        ^^*:*    >\!-
+ O                 \         ^^^  T<<O A
+====/         \====#\        ^*^  ^^!^!-
+*>\/     @  *  \/<*!>\       ^^^    !^!*
+ ^   /=\ *</=\   ^ !>>*           /*!*!^
+########################################
+Time:-1
+Author:Steven Shipway
+Title:The Shrine of Quetzacoatl
+Solution:
+486 723
+KKLLLKKKHHLKKHHKLJ----KHKLHL-----HHLJLJL
+JJJLLLLLLLK-----LLLLLJJJJJLHHKKKHHKHHHHH
+HHHKHKKHHHJJKKLKKHLKJJLJJLJLLJLLLLLLLLLL
+JJJJLLJLLLLLLLLKLLJKHHHKKKLKHKHHKKKLLLLJ
+HHJKKLLKKKLLKLLKHLJHHJHHHHHJJJJLHHJJHJJK
+KLHJHHLLKLHJJHLJHHHHHHKHHKHHHHHHHHHJJHHH
+HHKJLLLLLKKKLLLLLLLLLLLLLJJJJJJLLLLLLKKK
+KLKKHHHJJJJHJLLLKKKLJLKKJJJJKKHHHLHHHHHL
+LLLHLLJJJKKKHHHKKHKKKLLJLJJLHHHHKKKKLLLL
+LLHHHHHHJJJJJJKHHHHJJJHHJHHHHHKKKKKKKHHH
+KHHKKKHKHHKHHHHLHLHHHHLHLHLLLLLLLLJLLLLL
+JKLLLJJHLKKLLLLLLLHHHHHHHHHHHHHHHHHHHHHH
+HHHHHKKKHHJJJKKHKJLJJHLLLLLLLLLLLLLLJJLL
+LLJJLLLLLKLLLLJKHHJHJHJHHHHJHHHHHHHHHHHH
+JJLKLKJHKHHHHHKKKJJJLLLJJJLLLJJKKHHHHJHJ
+HHKHKHLJLLLKLKLLLLLLLLLHJKJLLJLLLKLHJHHH
+HKHKKKLLHHHHHJHHHHHHHKJLLLLLLLLLLLLLKKHK
+KKJLLJJLLLJLLJLLLLLLLLLKKKKKLKLKKLLLLHKL
+LLJ
+End Solution:

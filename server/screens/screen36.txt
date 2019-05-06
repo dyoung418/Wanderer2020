@@ -1,0 +1,36 @@
+40x17
+****!**/                    O   O< *  M#
+O***!*/              O<O*O*O       *   #
+*O**!                *     *<      O<<*#
+O*O*        *!*!* * /              >  *#
+ O /       >> > >  /                  *#
+O /               O        @   ::::====#
+ /  <*<                            *  S#
+/       \             <         /  *   #
+*  >     \         \     /     /   *   #
+* >                  ===           ====#
+ >                        *         ***#
+>    <=========   >   \   +   /==== :==#
+=    <=*O*>>>>     +     /          :::#
+     <=****===    \     /     /:   *<<<#
+ ======*=**=:::    \         /:::  *   #
+::X*::::  <=::::            /::::: *S  #
+########################################
+Time:-1
+Author:Kevin Pickard
+Title:
+Solution:
+698 462
+HJHHHHHHHHJJHJJLJHJJHHHJHHJLLLLLLLLLLLLK
+LKLLKLLLLJJHJHLLLLLLKKJHHHLLLKLKLLHHKKLL
+HHHHKKKKKKLHJJKKLKKKKLLLJJJJHKJHHHJHHHHJ
+HJHHHHHJJJJHJJHJHJHHHKHKKJKJKJKKLLJKHHHJ
+KKHHHHHHHHKKHKHHKJJHHHHHJLLLLLKKKKKKHHKH
+JHLKHHLKKHLLLJHJJLLLKKKLHJJJLLLLLLLJLLKK
+LLJJJLLLLLLLLLLLLLLLKLLLJJJJJHJHHHHHJJHJ
+JHJHHHKKLKKKLLLLLLLLKLJHHHHJHHHKHHKHHHHJ
+KJKLLLLJLLLLLLLLLKLLKKHJJHJHHHHHHHJJJKKK
+KKKKKKHLHHHLHHKKKHHHJLLJHHHJKKLLLLLLLLKL
+LLHJLLHHHJJJJJJJJJJHHHJHHHHHHHHHHHHHHHJH
+HLKLLJJHLKHHHKJJJHHHHH
+End Solution:

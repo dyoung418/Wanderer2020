@@ -1,0 +1,38 @@
+40x17
+ O    O  \OOO*OO>   O    O   OOO   !O O=
+        * \OOOO/ ***     \*=:::: !X!OO:=
+      \ =  \OO/              ====== :::=
+      =* +>::/      <               /\:=
+   @   \  !        \     <   ======: = =
+        \          !*!        S  *+\ =T*
+                O  !!!>  /   ======O  ==
+=*===           >       /      S   : O -
+*= !*=                               : -
+A=      =\        >                /   -
+   <===   \               <=======*== =*
+ /       <= ==            = OO OO =   *=
+=>           *\           = /O O\ =>>>/!
+=>       <=====   <<<   = = =***= : !*!*
+*  \*=======* >  =*=*!=*=         =    -
+########################################
+########################################
+Time:-1
+Author:David
+Title:
+Solution:
+375 543
+JJHHJKLKKKKKLLLLLHLLHJJLJLJJJHJHJHHHKJHJ
+HJLJJKJHHJHLLKLLJKKLLLLLLLLLHHKKLLLJLJJJ
+KJHHHLLLKKLLLJJKLLJKLLLJKKKKKKLLLKKKHKKK
+HKKLLJJJJJL----LLLLLLHHHHHJJJJLLLLLLJKKL
+LJLLLJKHHJJLHHHJJHHLHKKHHLLJJLLJLLLLKJHH
+KKKKKHKHHJHHHHKHHHHHHHJJJJLLJJJLLLLKLLHK
+LKLLJJLLJLLKKKKKHKKKKKHKHHHHHHHJJLLLLLLH
+HHHHHJJHJHHJJJKKLKLLLLHHKKHKKLKLLLLLLLK-
+---JJJLJJJJLHKKKKHKKLLLHLJJJKJJLLLKLLLLK
+LLLLLKKLLLLLJLLJLLLLLLLLLLLKLLLLLHLLKKKH
+KKLLLJJJLHKKKKHHJHJHHHHHHHHJJJJJHHHHHHHH
+HHHHHHHKHKKLK---------------------------
+--KHJKHHLLLKKKLJHJJJJLLLLLLKKJKLLJJKKKHK
+HHLLLJLLLLLLLLKLLLLKLLJ
+End Solution:

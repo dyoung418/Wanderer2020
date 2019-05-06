@@ -1,0 +1,26 @@
+40x17
+                              <        -
+> O         \  \                       <
+>                                      -
+> O           \  \                   O O
+>                                    O O
+> O             \  \                   -
+>                                   \  -
+> O               \  \S                -
+>                     #####         \ ^-
+> O                 # #  +#           *-
+>                                   /  -
+> O               /  /                 -
+>                                   /  -
+> O             /  /                   -
+>                                      -
+> O          X/  /    M                @
+########################################
+Time:-1
+Author:Unknown
+Title:Who's is it?
+Solution:
+140 49
+HKKKKKKLK--HHJJHJHHHHHHHHHHHKHKHJHHHHHHH
+HHJJHJHJJ
+End Solution:

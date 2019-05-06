@@ -1,0 +1,28 @@
+40x17
+X                                      M
+          =  =  ==                     -
+          = O= =  O:      :            -
+          ==== = ==                    -
+             = =*A=                    -
+          ===   ==                     -
+                      O       *     OOOO
+  #   #          #   ##  #    *     \OO/
+  ## ##  #  # ## #*<   # #    *      \O=
+  # # * O # ##   #   #*# #          /=O=
+  #   # # # #    #  # ## #    O       O=
+  #   #  #  #    ##  T # #   /*       **
+                            /        ===
+                           /           -
+                    ><    /            -
+ COO!                    /             @
+########################################
+Time:-1
+Author:Steven Shipway
+Title:
+Solution:
+227 129
+KHHHKKKK---JL---LLHHHHHHHHHLKHKKKKKKKKHH
+HHHHHHHHHJJJJJHJJLLKLLJKHHHJJJJLLKHKKLLK
+KHHHHJJJJJJHHJHHHHHJJHHJJJJHHHHJJKKKKKKK
+KKKKKKHKK
+End Solution:

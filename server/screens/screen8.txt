@@ -1,0 +1,29 @@
+40x17
+!\ !  /\      *            >>OOOO*OOOOOM
+! \! !XA!                  >>>OOOOOOOOOO
+!  !  \/                   >>>>OOOOOOOO<
+        O                  >>>>>OOOOOO<<
+!= /== /= /=\ !=\ !=  *    >>>>>OOOOO<<*
+!  !   !  ! ! ! ! !   *    >>>>//OOO<<<<
+!= \=\ !  !=! !=/ !=  *          OO<<<<<
+!    ! !  ! ! !   !              :<<<<<<
+!= ==/ \= ! ! !   !=  *          *O<<<<<
+                                  :O<<<<
+ *   # #  #     # #  #   !         :\<<<
+     # # # #    # # # #  !    \      \<<
+     ### ###    ### ###  !     \      \<
+     # # # #    # # # #         \      -
+     # # # #    # # # #  !             -
+T                 @                    *
+########################################
+Time:-1
+Author:Steven Shipway
+Title:
+Solution:
+223 191
+LLLLLLLLLLLLLLLLLLLLLHHKKHHKHHKKKKJLHHKK
+LHHHHHHHHHHHKKKKKKKHHHHHHHHLLLLLLLJJJJJJ
+JJLJLLLLLLHLHLJKLLLLLLHHHHKKLLLLLLKKKLLL
+HKKKKHHHHHLLLJJJJJJJHHHJJJLLHHHHKHHHHHHH
+HHHHHHHHHHHHHHHHHHHHHHHJHJJJJJH
+End Solution:
