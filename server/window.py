@@ -10,7 +10,6 @@ import sys
 import pygame
 import pygame.locals
 from location import Location
-from past.utils import old_div
 sys.py3kwarning = True  #Turn on Python 3 warnings
 #import future_builtins
 #import multiprocessing, Decimal, collections, numbers, fractions
@@ -263,7 +262,7 @@ class Window_Pygame(Window):
             self.redraw() #DAY is this needed?
     def redraw(self):
         pygame.display.flip()
-        pygame.time.wait(old_div(1000, FPS))
+        pygame.time.wait(1000//FPS)
     def wait(self, milliseconds):
         pygame.time.wait(milliseconds)
     def _load_image(self, name, colorkey=None):

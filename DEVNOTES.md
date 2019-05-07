@@ -1,7 +1,20 @@
-# Wanderer2010
+# Wanderer2020 Development Notes 
 
-## Development Notes 
-
+## Level status
+* After babymonster fix (spooked by arrows)
+* 1-28: OK
+* 29: Player Dies by an arrow!
+* 30: Player dies!
+* 31: OK
+* 32-33: Player dies!
+* 34-41: OK
+* 42-45: Player dies!
+* 46-48: OK
+* 49-52: Player dies!
+* 53: OK
+* 54-56: Player dies!
+* 57: OK (my level)
+* 58: ERROR AND CRASH 
 * After babymonster fix (spooked by arrows)
 * 1-28: OK
 * 29: Player Dies by an arrow!
@@ -16,7 +29,44 @@
 * 32: OK
 * 33: Player dies!
 
+## Table of Contents
+1. [Installation](#installation)
+    1. [Python server](#python) 
+    1. [Optional Pygame standalone](#pygame) 
+    1. [Web Front End](#web) 
+1. [License](#License)
+
+## Design
+Wanderer2020 is primarily a web-based version of wanderer, but it has been designed to be able to use several different front-end displays.  The python server code encapsulates all its calls to display anything into a **Window** object.  This Window object in one case is implemented as a Flask server which communicates with html/css/javascript front-end.  In another case, it is implemented in pygame in [window.py](server/window.py).
+
+## Installation <a name="installation"></a>
+
+### Python Server <a name="python"></a>
+* Use python3's built-in venv library to create a virtual environment.  Run `python3 -m venv venv` in the `server/` directory to create a sub-directory called venv.
+* Activate the new virtual environment by running `. venv/bin/activate`
+* Install the needed python libraries in the virtual environment
+
+```
+pip install flask
+```
+
+#### (Optional) Pygame standalone <a name="pygame"></a>
+* If you would like to run a standalone version of the game offline, you need to install the following in the virtual environment:
+
+```
+pip install pygame
+```
+
+* Then you run the game by typing `python wanderer.py` in the `server/` directory
+
+
+### Web Front-End <a name="web"></a>
+
+## License
+
+Wanderer2020 is licensed under the GPL.  See [LICENSE](LICENSE.md) for more information.
 -----
+
 # Notes from Source before importing into git:
 
 TODO:

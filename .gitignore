@@ -1,3 +1,4 @@
 server/*.pyc
 server/__pycache__
 server/logfile.txt
+server/venv/
