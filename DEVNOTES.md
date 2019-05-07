@@ -1,14 +1,14 @@
 # Wanderer2020 Development Notes 
 
 ## Table of Contents
-
-1. [License](#License)
-1. [Design](#Design)
+1. [Design](#design)
+1. [Interfaces](#interfaces)
 1. [Installation](#installation)
     1. [Python server](#python) 
     1. [Optional Pygame standalone](#pygame) 
     1. [Web Front End](#web) 
 2. [Level Status](#levelstatus)
+1. [License](#license)
 
 ---
 ## License 
@@ -19,7 +19,19 @@ Wanderer2020 is licensed under the GPL.  See [LICENSE](LICENSE.md) for more info
 ## Design
 Wanderer2020 is primarily a web-based version of wanderer, but it has been designed to be able to use several different front-end displays.  The python server code encapsulates all its calls to display anything into a **Window** object.  This Window object in one case is implemented as a Flask server which communicates with html/css/javascript front-end.  In another case, it is implemented in pygame in [window.py](server/window.py).
 
----
+## Interfaces <a name="interfaces"></a>
+
+| Front End | Server | Game Logic |
+| --------- | ------ | ---------- |
+| \> Request a new game (req: level number) | Receive new game request | | 
+|  | \> Send request to Game Logic | Load the requested Level |
+|  | Save the state json on MongoDB under a newly assigned GameID | \< Send back a state json and a list of display updates |
+| Store gameID, update DOM from display update list | \< Send GameID and display updates | | 
+| \> Send move request with GameID | Receive move request, lookup state in MongoDB using GameID | | 
+|  | \> Send state json and move request to Game Logic |  Unpack state, execute move |
+|  | Save updated state to MongoDB using GameID | \< Pack up and send updated state along with display update list |
+| Update display using display update list | \< send display update list | | 
+
 ## Installation <a id="installation"></a>
 
 ### Python Server <a id="python"></a>
@@ -42,17 +54,17 @@ pip install pygame
 
 ---
 ### Web Front-End <a id="web"></a>
-After you successfully have your python server running locally on your system, the front end should be pretty easy to finally implement.
+* There is no special setup for the Web front-end
+* Using python, you can test the front-end by going to `public/` and typing as follows:
 
-The easiest way to test it out is to drop into the **public** folder using command prompt and running:
 ```
-python3 -m http.server
+python3 -m http.server 8000 --bind 127.0.0.1
 ```
-and going to [localhost:3000](http://localhost:3000/) in your browser of choice. 
 
-Alternatively you can install extensions on Visual Studio Code that will allow you to open the **index.html** directly in your default browser without the hastle.
+Alternatively you can install extensions on Visual Studio Code that will allow you to open the **index.html** directly in your default browser without the hassle.
 
-I run the game up on []
+## License
+Wanderer2020 is licensed under the GPL.  See [LICENSE](LICENSE.md) for more information.
 
 ---
 ## Level status <a id="levelstatus"></a>

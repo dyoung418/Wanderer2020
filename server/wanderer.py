@@ -12,7 +12,7 @@ import os.path
 import logging
 import re
 from location import Location
-import window
+import pygame_frontend as frontend
 
 sys.py3kwarning = True  #Turn on Python 3 warnings
 
@@ -55,8 +55,8 @@ PLAYER_MOVES = frozenset(['LEFT', 'H', 'h', 'RIGHT', 'L', 'l',
                           'SPACE', ' ', '-'])
 
 class GameObj(object):
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        self._window = window # Windowing system object
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        self._frontend = new_frontend # Front End object
         self._type = gameobj_type   # a single-character string denoting type
         self._mediator = mediator # Handles all obj-to-obj interactions
         self._grid = grid # aggregation of grid objects which store list of
@@ -89,7 +89,7 @@ class GameObj(object):
         self.alive = True
         self.causewake = True   #i.e. do I cause a wake, as in the wake of a boat
         self._cell = self._grid.get_cell(self._location)
-        self._drawdata = self._window.initialize_gameobj_data(self)
+        self._drawdata = self._frontend.initialize_gameobj_data(self)
         self.draw() # now draw myself
 
     def __repr__(self):
@@ -122,12 +122,12 @@ class GameObj(object):
 
     def delete(self):
         '''Do any cleanup before I get deleted'''
-        self._window.remove_gameobj(self)
+        self._frontend.remove_gameobj(self)
         self._drawdata = None
 
     def draw(self, redraw_screen=False):
         '''Draw self at current location using my reference to Window obj'''
-        self._window.draw_obj(self, redraw=redraw_screen)
+        self._frontend.draw_obj(self, redraw=redraw_screen)
 
     def react_to_visitor(self, movetype, special_instructions=None):
         '''Another object just moved into my space -- React to it (usually by dying)'''
@@ -149,7 +149,7 @@ class GameObj(object):
         logging.debug("        DIE - {0}".format(self))
         self.alive = False
         self._cell.remove_gameobj(self)
-        self._window.remove_gameobj(self)
+        self._frontend.remove_gameobj(self)
         self._drawdata = None #remove last reference to this var
 
 
@@ -157,8 +157,8 @@ class Static_GameObj(GameObj):
     '''Game objects that don't move or change (other than dying).
     In the future, I may implement FLYWEIGHT pattern on these, but for now
     it is not worth the effort.'''
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Static_GameObj, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Static_GameObj, self).__init__(new_frontend, gameobj_type, mediator,
                                              grid, location)
 class Space(Static_GameObj):
     '''Blank space'''
@@ -227,8 +227,8 @@ class Ramp(Static_GameObj):
             return False
 
 class Bomb(Static_GameObj):
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Bomb, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Bomb, self).__init__(new_frontend, gameobj_type, mediator,
                                    grid, location)
     def react_to_visitor(self, movetype, special_instructions=None):
         c = self._cell
@@ -238,14 +238,14 @@ class Bomb(Static_GameObj):
                 for obj in cell.get_gameobjs():
                     if obj.obj_type not in self._mediator.unbombables:
                         obj.die()
-        self._window.turn_boom_on(self._location)
+        self._frontend.turn_boom_on(self._location)
         self.die()
     def fall(self, location):
         return False
 
 class Dynamic_GameObj(GameObj):
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Dynamic_GameObj, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Dynamic_GameObj, self).__init__(new_frontend, gameobj_type, mediator,
                                               grid, location)
     def fall(self, location):       # Dynamic_GameObj
         '''Fall into location if possible'''
@@ -284,7 +284,7 @@ class Dynamic_GameObj(GameObj):
         self._cell = self._grid.get_cell(new_location)
         old_cell.remove_gameobj(self)
         self._cell.insert_gameobj(self)
-        self._window.update_obj_location(self)
+        self._frontend.update_obj_location(self)
         # Redraw myself (possibly animate the move). redraw_screen=True means
         #   this spot drawn, then FPS is waited
         self.draw(redraw_screen=True)
@@ -312,8 +312,8 @@ class Dynamic_GameObj(GameObj):
                 old_cell.cause_wake(new_location - old_location)
 
 class Hero(Dynamic_GameObj):
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Hero, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Hero, self).__init__(new_frontend, gameobj_type, mediator,
                                    grid, location)
     def move(self, vector):
         logging.debug(str(self._grid))
@@ -333,8 +333,8 @@ class Hero(Dynamic_GameObj):
 
 class Rock(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Rock, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Rock, self).__init__(new_frontend, gameobj_type, mediator,
                                    grid, location)
         self._fallvector = DIR_SOUTH
         self._pushvectors = [DIR_WEST, DIR_EAST]
@@ -365,8 +365,8 @@ class Rock(Dynamic_GameObj):
 
 class Arrow(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Arrow, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Arrow, self).__init__(new_frontend, gameobj_type, mediator,
                                     grid, location)
         if gameobj_type == '<':
             self._fallvector = DIR_WEST
@@ -376,16 +376,16 @@ class Arrow(Dynamic_GameObj):
 
 class Balloon(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Balloon, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Balloon, self).__init__(new_frontend, gameobj_type, mediator,
                                       grid, location)
         self._fallvector = DIR_NORTH
         self._pushvectors = [DIR_WEST, DIR_EAST]
 
 class Monster(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Monster, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Monster, self).__init__(new_frontend, gameobj_type, mediator,
                                       grid, location)
         self.causewake = False
 
@@ -439,8 +439,8 @@ class Monster(Dynamic_GameObj):
 
 class BabyMonster(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(BabyMonster, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(BabyMonster, self).__init__(new_frontend, gameobj_type, mediator,
                                           grid, location)
         self.mywall = None
         self.spooked_location = None
@@ -564,8 +564,8 @@ class BabyMonster(Dynamic_GameObj):
 
 class Rug(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Rug, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Rug, self).__init__(new_frontend, gameobj_type, mediator,
                                   grid, location)
         self._pushvectors = [DIR_NORTH, DIR_SOUTH, DIR_WEST, DIR_EAST]
 
@@ -921,7 +921,7 @@ class Mediator(object):     #DAY - make this a SINGLETON?
                 mover.die()         # Then the baby moster dies
                 # Now put in a money bag (but don't increase money count since
                 # the cage was already counted)
-                new_money = Money(self._grid.win, '*', self, self._grid, new_location)
+                new_money = Money(self._grid.frontend, '*', self, self._grid, new_location)
                 destination_cell.insert_gameobj(new_money)
                 new_money.draw()
                 return True
@@ -1046,8 +1046,8 @@ class Grid(object):
             + '\n'.join(outlist)
         return outstr
 
-    def set_win(self, win):
-        self.win = win
+    def set_frontend(self, new_frontend):
+        self.frontend = new_frontend
 
     def set_mediator(self, mediator):
         self.mediator = mediator
@@ -1097,17 +1097,17 @@ class Grid(object):
         for row in self._grid:
             for cell in row:
                 cell.refresh()
-        self.win.redraw()
+        self.frontend.redraw()
 
     def update_status(self, optional_message=None):
         if optional_message:
-            self.win.set_status_line(optional_message)
+            self.frontend.set_status_line(optional_message)
         elif self.hero.alive:
-            self.win.set_status_line("Level {0}: {1} , Score: {2}, Gold: {3}, Time: {4}".format(
+            self.frontend.set_status_line("Level {0}: {1} , Score: {2}, Gold: {3}, Time: {4}".format(
                 self.level_num, self.level_name, self.score,
                 self.remaining_money_and_cages, self.time))
         else:
-            self.win.set_status_line("YOU DIED!!     Level {0}: {1} , "\
+            self.frontend.set_status_line("YOU DIED!!     Level {0}: {1} , "\
                                      "Score: {2}, Gold: {3}, Time: {4}".format(
                                          self.level_num, self.level_name, self.score,
                                          self.remaining_money_and_cages, self.time))
@@ -1348,7 +1348,7 @@ class Cell(object):
                     "not exist.  Gameobj={0}, Error={1}".format(gameobj, str(err_detail)))
             return
         if not self._gameobjs:
-            blank = Static_GameObj(self._grid.win, ' ',
+            blank = Static_GameObj(self._grid.frontend, ' ',
                                    self._grid.mediator, self._grid,
                                    self._location)
             self.insert_gameobj(blank)
@@ -1369,12 +1369,12 @@ class Cell(object):
 
 class GridBuilder(object):
     '''Factory class for reading level file and building Grid object collection'''
-    def __init__(self, window, mediator, grid=None):
+    def __init__(self, new_frontend, mediator, grid=None):
         if not grid:
             self.grid = Grid()
         else:
             self.grid = grid
-        self.win = window
+        self.frontend = new_frontend
         self.mediator = mediator
         self.types = {
             ' ': Space, # blank
@@ -1414,7 +1414,7 @@ class GridBuilder(object):
         cols = level_dict['num_cols']
         grid = self.grid
         self.grid.set_size(rows, cols)
-        self.win.post_init_setup(self.grid)
+        self.frontend.post_init_setup(self.grid)
         type_count = {}
         money_and_cages = 0
         monster_count = 0
@@ -1484,11 +1484,11 @@ class GridBuilder(object):
 
     def _create_obj(self, obj_type, location):
         if obj_type in self.types:
-            game_obj = self.types[obj_type](self.win, obj_type, self.mediator,
+            game_obj = self.types[obj_type](self.frontend, obj_type, self.mediator,
                                             self.grid, location)
         else:
             # Funky dirt replaces anything we don't recognize
-            game_obj = self.types['F'](self.win, 'F', self.mediator,
+            game_obj = self.types['F'](self.frontend, 'F', self.mediator,
                                        self.grid, location)
         self.grid.insert_gameobj(game_obj, location)
         return game_obj
@@ -1636,7 +1636,7 @@ class GameDirector(object):
                  startscreen=None,
                  solution_file=None,
                  size='m'):
-        self.win = window.getWindow(size=size)
+        self.frontend = frontend.getFrontEnd(size=size)
         self.mediator = Mediator()
         self.current_level = startlevel
         self.recorded_moves = []
@@ -1647,10 +1647,10 @@ class GameDirector(object):
             self.read_new_level('screen{0}.txt'.format(self.current_level),
                                 self.current_level,
                                 solution_file=solution_file)
-        self.win.register_event('ANY', self.event_handler)
+        self.frontend.register_event('ANY', self.event_handler)
         while True:
             try:
-                self.win.start_event_loop()
+                self.frontend.start_event_loop()
             except LevelExitException:
                 logging.info("Level {0} successfully exited! "\
                              "Score is {1}".format(self.current_level, self.grid.score))
@@ -1666,7 +1666,7 @@ class GameDirector(object):
                 if self.recorded_moves:
                     logging.info("Moves recorded in level{1}: \n {0}".format(
                         ''.join(self.recorded_moves), self.current_level))
-                self.win.quit()
+                self.frontend.quit()
                 return
 
     def next_level(self):
@@ -1682,9 +1682,9 @@ class GameDirector(object):
     def read_new_level(self, filename, level_num, grid=None, solution_file=None):
         if grid:
             grid.delete()
-        self.grid = GridBuilder(self.win, self.mediator, grid=grid)\
+        self.grid = GridBuilder(self.frontend, self.mediator, grid=grid)\
             .read_level(filename, level_num, solution_file=solution_file)
-        self.grid.set_win(self.win)
+        self.grid.set_frontend(self.frontend)
         self.mediator.set_grid(self.grid)
         self.grid.set_mediator(self.mediator)
         self.hero = self.grid.hero
@@ -1764,7 +1764,7 @@ class GameDirector(object):
 
         if self.playing_solution:
             self.play_next_solution()
-            self.win.wait(SOLUTION_PLAYBACK_DELAY)
+            self.frontend.wait(SOLUTION_PLAYBACK_DELAY)
         self.grid.update_status()
 
     def move_monsters(self):
@@ -1778,7 +1778,7 @@ class GameDirector(object):
         if self.solution_index >= num_moves:
             self.playing_solution = False
         else:
-            self.win.generate_event(self.grid.solution[self.solution_index])
+            self.frontend.generate_event(self.grid.solution[self.solution_index])
             self.solution_index += 1
 
 class LevelExitException(Exception):
