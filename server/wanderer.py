@@ -55,8 +55,8 @@ PLAYER_MOVES = frozenset(['LEFT', 'H', 'h', 'RIGHT', 'L', 'l',
                           'SPACE', ' ', '-'])
 
 class GameObj(object):
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        self._window = window # Windowing system object
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        self._frontend = new_frontend # Front End object
         self._type = gameobj_type   # a single-character string denoting type
         self._mediator = mediator # Handles all obj-to-obj interactions
         self._grid = grid # aggregation of grid objects which store list of
@@ -89,7 +89,7 @@ class GameObj(object):
         self.alive = True
         self.causewake = True   #i.e. do I cause a wake, as in the wake of a boat
         self._cell = self._grid.get_cell(self._location)
-        self._drawdata = self._window.initialize_gameobj_data(self)
+        self._drawdata = self._frontend.initialize_gameobj_data(self)
         self.draw() # now draw myself
 
     def __repr__(self):
@@ -122,12 +122,12 @@ class GameObj(object):
 
     def delete(self):
         '''Do any cleanup before I get deleted'''
-        self._window.remove_gameobj(self)
+        self._frontend.remove_gameobj(self)
         self._drawdata = None
 
     def draw(self, redraw_screen=False):
         '''Draw self at current location using my reference to Window obj'''
-        self._window.draw_obj(self, redraw=redraw_screen)
+        self._frontend.draw_obj(self, redraw=redraw_screen)
 
     def react_to_visitor(self, movetype, special_instructions=None):
         '''Another object just moved into my space -- React to it (usually by dying)'''
@@ -149,7 +149,7 @@ class GameObj(object):
         logging.debug("        DIE - {0}".format(self))
         self.alive = False
         self._cell.remove_gameobj(self)
-        self._window.remove_gameobj(self)
+        self._frontend.remove_gameobj(self)
         self._drawdata = None #remove last reference to this var
 
 
@@ -157,8 +157,8 @@ class Static_GameObj(GameObj):
     '''Game objects that don't move or change (other than dying).
     In the future, I may implement FLYWEIGHT pattern on these, but for now
     it is not worth the effort.'''
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Static_GameObj, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Static_GameObj, self).__init__(new_frontend, gameobj_type, mediator,
                                              grid, location)
 class Space(Static_GameObj):
     '''Blank space'''
@@ -227,8 +227,8 @@ class Ramp(Static_GameObj):
             return False
 
 class Bomb(Static_GameObj):
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Bomb, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Bomb, self).__init__(new_frontend, gameobj_type, mediator,
                                    grid, location)
     def react_to_visitor(self, movetype, special_instructions=None):
         c = self._cell
@@ -238,14 +238,14 @@ class Bomb(Static_GameObj):
                 for obj in cell.get_gameobjs():
                     if obj.obj_type not in self._mediator.unbombables:
                         obj.die()
-        self._window.turn_boom_on(self._location)
+        self._frontend.turn_boom_on(self._location)
         self.die()
     def fall(self, location):
         return False
 
 class Dynamic_GameObj(GameObj):
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Dynamic_GameObj, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Dynamic_GameObj, self).__init__(new_frontend, gameobj_type, mediator,
                                               grid, location)
     def fall(self, location):       # Dynamic_GameObj
         '''Fall into location if possible'''
@@ -284,7 +284,7 @@ class Dynamic_GameObj(GameObj):
         self._cell = self._grid.get_cell(new_location)
         old_cell.remove_gameobj(self)
         self._cell.insert_gameobj(self)
-        self._window.update_obj_location(self)
+        self._frontend.update_obj_location(self)
         # Redraw myself (possibly animate the move). redraw_screen=True means
         #   this spot drawn, then FPS is waited
         self.draw(redraw_screen=True)
@@ -312,8 +312,8 @@ class Dynamic_GameObj(GameObj):
                 old_cell.cause_wake(new_location - old_location)
 
 class Hero(Dynamic_GameObj):
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Hero, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Hero, self).__init__(new_frontend, gameobj_type, mediator,
                                    grid, location)
     def move(self, vector):
         logging.debug(str(self._grid))
@@ -333,8 +333,8 @@ class Hero(Dynamic_GameObj):
 
 class Rock(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Rock, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Rock, self).__init__(new_frontend, gameobj_type, mediator,
                                    grid, location)
         self._fallvector = DIR_SOUTH
         self._pushvectors = [DIR_WEST, DIR_EAST]
@@ -365,8 +365,8 @@ class Rock(Dynamic_GameObj):
 
 class Arrow(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Arrow, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Arrow, self).__init__(new_frontend, gameobj_type, mediator,
                                     grid, location)
         if gameobj_type == '<':
             self._fallvector = DIR_WEST
@@ -376,16 +376,16 @@ class Arrow(Dynamic_GameObj):
 
 class Balloon(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Balloon, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Balloon, self).__init__(new_frontend, gameobj_type, mediator,
                                       grid, location)
         self._fallvector = DIR_NORTH
         self._pushvectors = [DIR_WEST, DIR_EAST]
 
 class Monster(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Monster, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Monster, self).__init__(new_frontend, gameobj_type, mediator,
                                       grid, location)
         self.causewake = False
 
@@ -439,8 +439,8 @@ class Monster(Dynamic_GameObj):
 
 class BabyMonster(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(BabyMonster, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(BabyMonster, self).__init__(new_frontend, gameobj_type, mediator,
                                           grid, location)
         self.mywall = None
         self.spooked_location = None
@@ -564,8 +564,8 @@ class BabyMonster(Dynamic_GameObj):
 
 class Rug(Dynamic_GameObj):
 
-    def __init__(self, window, gameobj_type, mediator, grid, location):
-        super(Rug, self).__init__(window, gameobj_type, mediator,
+    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+        super(Rug, self).__init__(new_frontend, gameobj_type, mediator,
                                   grid, location)
         self._pushvectors = [DIR_NORTH, DIR_SOUTH, DIR_WEST, DIR_EAST]
 
@@ -1369,12 +1369,12 @@ class Cell(object):
 
 class GridBuilder(object):
     '''Factory class for reading level file and building Grid object collection'''
-    def __init__(self, window, mediator, grid=None):
+    def __init__(self, new_frontend, mediator, grid=None):
         if not grid:
             self.grid = Grid()
         else:
             self.grid = grid
-        self.frontend = window
+        self.frontend = new_frontend
         self.mediator = mediator
         self.types = {
             ' ': Space, # blank
