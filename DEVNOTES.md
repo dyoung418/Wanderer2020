@@ -61,6 +61,12 @@ pip install pygame
 
 
 ### Web Front-End <a name="web"></a>
+* There is no special setup for the Web front-end
+* Using python, you can test the front-end by going to `public/` and typing as follows:
+
+```
+python -m http.server 8000 --bind 127.0.0.1
+```
 
 ## License
 
