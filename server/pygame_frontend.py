@@ -68,7 +68,7 @@ objectGraphics = {' ': OGTuple(name="Empty", imagefile="blank.gif"),
                  }
 boom_imagefile = 'boom.gif'
 
-def getWindow(size='m'):
+def getFrontEnd(size='m'):
     '''Factory function for getting a window.  This function determines which
     window implementation (e.g. pygame, tkinter, curses) to use'''
     #DAY - eventually, read from options which windows system to use

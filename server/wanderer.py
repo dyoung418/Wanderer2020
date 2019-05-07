@@ -12,7 +12,7 @@ import os.path
 import logging
 import re
 from location import Location
-import window
+import pygame_frontend as frontend
 
 sys.py3kwarning = True  #Turn on Python 3 warnings
 
@@ -921,7 +921,7 @@ class Mediator(object):     #DAY - make this a SINGLETON?
                 mover.die()         # Then the baby moster dies
                 # Now put in a money bag (but don't increase money count since
                 # the cage was already counted)
-                new_money = Money(self._grid.win, '*', self, self._grid, new_location)
+                new_money = Money(self._grid.frontend, '*', self, self._grid, new_location)
                 destination_cell.insert_gameobj(new_money)
                 new_money.draw()
                 return True
@@ -1046,8 +1046,8 @@ class Grid(object):
             + '\n'.join(outlist)
         return outstr
 
-    def set_win(self, win):
-        self.win = win
+    def set_frontend(self, new_frontend):
+        self.frontend = new_frontend
 
     def set_mediator(self, mediator):
         self.mediator = mediator
@@ -1097,17 +1097,17 @@ class Grid(object):
         for row in self._grid:
             for cell in row:
                 cell.refresh()
-        self.win.redraw()
+        self.frontend.redraw()
 
     def update_status(self, optional_message=None):
         if optional_message:
-            self.win.set_status_line(optional_message)
+            self.frontend.set_status_line(optional_message)
         elif self.hero.alive:
-            self.win.set_status_line("Level {0}: {1} , Score: {2}, Gold: {3}, Time: {4}".format(
+            self.frontend.set_status_line("Level {0}: {1} , Score: {2}, Gold: {3}, Time: {4}".format(
                 self.level_num, self.level_name, self.score,
                 self.remaining_money_and_cages, self.time))
         else:
-            self.win.set_status_line("YOU DIED!!     Level {0}: {1} , "\
+            self.frontend.set_status_line("YOU DIED!!     Level {0}: {1} , "\
                                      "Score: {2}, Gold: {3}, Time: {4}".format(
                                          self.level_num, self.level_name, self.score,
                                          self.remaining_money_and_cages, self.time))
@@ -1348,7 +1348,7 @@ class Cell(object):
                     "not exist.  Gameobj={0}, Error={1}".format(gameobj, str(err_detail)))
             return
         if not self._gameobjs:
-            blank = Static_GameObj(self._grid.win, ' ',
+            blank = Static_GameObj(self._grid.frontend, ' ',
                                    self._grid.mediator, self._grid,
                                    self._location)
             self.insert_gameobj(blank)
@@ -1374,7 +1374,7 @@ class GridBuilder(object):
             self.grid = Grid()
         else:
             self.grid = grid
-        self.win = window
+        self.frontend = window
         self.mediator = mediator
         self.types = {
             ' ': Space, # blank
@@ -1414,7 +1414,7 @@ class GridBuilder(object):
         cols = level_dict['num_cols']
         grid = self.grid
         self.grid.set_size(rows, cols)
-        self.win.post_init_setup(self.grid)
+        self.frontend.post_init_setup(self.grid)
         type_count = {}
         money_and_cages = 0
         monster_count = 0
@@ -1484,11 +1484,11 @@ class GridBuilder(object):
 
     def _create_obj(self, obj_type, location):
         if obj_type in self.types:
-            game_obj = self.types[obj_type](self.win, obj_type, self.mediator,
+            game_obj = self.types[obj_type](self.frontend, obj_type, self.mediator,
                                             self.grid, location)
         else:
             # Funky dirt replaces anything we don't recognize
-            game_obj = self.types['F'](self.win, 'F', self.mediator,
+            game_obj = self.types['F'](self.frontend, 'F', self.mediator,
                                        self.grid, location)
         self.grid.insert_gameobj(game_obj, location)
         return game_obj
@@ -1636,7 +1636,7 @@ class GameDirector(object):
                  startscreen=None,
                  solution_file=None,
                  size='m'):
-        self.win = window.getWindow(size=size)
+        self.frontend = frontend.getFrontEnd(size=size)
         self.mediator = Mediator()
         self.current_level = startlevel
         self.recorded_moves = []
@@ -1647,10 +1647,10 @@ class GameDirector(object):
             self.read_new_level('screen{0}.txt'.format(self.current_level),
                                 self.current_level,
                                 solution_file=solution_file)
-        self.win.register_event('ANY', self.event_handler)
+        self.frontend.register_event('ANY', self.event_handler)
         while True:
             try:
-                self.win.start_event_loop()
+                self.frontend.start_event_loop()
             except LevelExitException:
                 logging.info("Level {0} successfully exited! "\
                              "Score is {1}".format(self.current_level, self.grid.score))
@@ -1666,7 +1666,7 @@ class GameDirector(object):
                 if self.recorded_moves:
                     logging.info("Moves recorded in level{1}: \n {0}".format(
                         ''.join(self.recorded_moves), self.current_level))
-                self.win.quit()
+                self.frontend.quit()
                 return
 
     def next_level(self):
@@ -1682,9 +1682,9 @@ class GameDirector(object):
     def read_new_level(self, filename, level_num, grid=None, solution_file=None):
         if grid:
             grid.delete()
-        self.grid = GridBuilder(self.win, self.mediator, grid=grid)\
+        self.grid = GridBuilder(self.frontend, self.mediator, grid=grid)\
             .read_level(filename, level_num, solution_file=solution_file)
-        self.grid.set_win(self.win)
+        self.grid.set_frontend(self.frontend)
         self.mediator.set_grid(self.grid)
         self.grid.set_mediator(self.mediator)
         self.hero = self.grid.hero
@@ -1764,7 +1764,7 @@ class GameDirector(object):
 
         if self.playing_solution:
             self.play_next_solution()
-            self.win.wait(SOLUTION_PLAYBACK_DELAY)
+            self.frontend.wait(SOLUTION_PLAYBACK_DELAY)
         self.grid.update_status()
 
     def move_monsters(self):
@@ -1778,7 +1778,7 @@ class GameDirector(object):
         if self.solution_index >= num_moves:
             self.playing_solution = False
         else:
-            self.win.generate_event(self.grid.solution[self.solution_index])
+            self.frontend.generate_event(self.grid.solution[self.solution_index])
             self.solution_index += 1
 
 class LevelExitException(Exception):
