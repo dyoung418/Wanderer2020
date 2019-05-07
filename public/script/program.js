@@ -1,14 +1,29 @@
-var app = new Vue({
-    el: '#app',
+var game = new Vue({
+    el: '#game',
     data:
     {
-        
+        page: 1,
+        menuData: {
+            menuNum: 1,
+        },
+        levelData: {
+            level: 0,
+            levelPage: 1,
+            gameId: "",
+        }
     },
     methods:
     {
+        async newLevel(level)
+        {
+            this.level = parseInt(level, 10);
+            let payload = {level: this.level};
+            let res = await axios.put('/wanderer/level', payload);
+            this.updateBoard(res.data);
+        },
         async sendMove() {
             let payload = {key: "r"};
-            let res = axios.put('/wanderer/', payload);
+            let res = await axios.put('/wanderer/move', payload);
             this.updateBoard(res.data);
         },
         updateBoard(data)
@@ -33,13 +48,25 @@ var app = new Vue({
                 }
             }
         },
-        getId(row, col)
+        getId(item)
         {
-
+            let string = "";
+            if (item.row < 10)
+            {
+                string += "0";
+            }
+            string += item.row;
+            if (item.col < 10)
+            {
+                string += "0";
+            }
+            string += item.col;
+            return string;
         },
-        newLevel(level)
+        createItem(row, col)
         {
-            let payload = {level: level};
+            let item = {row: row, col: col};
+            return item;
         }
     },
     computed:
@@ -48,6 +75,7 @@ var app = new Vue({
     },
     created()
     {
-        let res = axios.post('/wanderer/', payload);
+        console.log("script");
+        //let res = axios.post('/wanderer/', payload);
     }
 });
