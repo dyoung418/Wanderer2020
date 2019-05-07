@@ -1,8 +1,18 @@
-body
+@import url('https://fonts.googleapis.com/css?family=Francois+One');
+
+html
 {
     display: block;
-    background: radial-gradient(rgb(61, 1, 38), rgb(31, 0, 18));
-    background-size: cover;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/back3.png");
+    background-size: contain;
+    background-repeat: repeat;
+}
+body
+{
+    color: white;
+    font-family: 'Francois One', sans-serif;
 }
 
 #menu
@@ -12,11 +22,119 @@ body
     justify-content: space-around;
 }
 
+.menu-button
+{
+    font-family: 'Francois One', sans-serif;
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 40px;
+    border-radius: 15px;
+    padding: 1em;
+    width: 300px;
+    border: 0px solid black;
+    font-size: 2em;
+    text-align: center;
+    color: rgba(131, 131, 131, 0.904);
+    background: radial-gradient(rgb(36, 3, 97),rgb(25, 7, 58));
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: font-size .1s ease-in-out 0s, padding .1s ease-in-out 0s, background .1s ease-in-out 0s;
+}
+
+
+.menu-button:hover
+{
+    font-size: 3em;
+    padding-top: .45em;
+    padding-bottom: .44em;
+    color: white;
+    background: radial-gradient(rgb(74, 10, 192),rgb(29, 2, 80));
+}
+
+.grid
+{
+    display: grid;
+    width: 60%;
+    margin: 0 auto;
+    grid-template-columns: auto auto auto auto;
+}
+
+.level-button
+{
+    font-family: 'Francois One', sans-serif;
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: .5em;
+    width: 100%;
+    border: 0px solid black;
+    font-size: 1.5em;
+    text-align: center;
+    color: rgba(131, 131, 131, 0.904);
+    background: radial-gradient(rgb(36, 3, 97),rgb(25, 7, 58));
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: font-size .1s ease-in-out 0s, padding .1s ease-in-out 0s, background .1s ease-in-out 0s;
+}
+
+.level-button:hover
+{
+    font-size: 5em;
+    color: white;
+    background: radial-gradient(rgb(74, 10, 192),rgb(29, 2, 80));
+}
+
+.title
+{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto; 
+    margin-top: 10%;
+    margin-bottom: 40px;
+    width: 100%;
+    align-items: stretch;
+    height: 11em;
+}
+
+.title2
+{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto; 
+    margin-top: 5%;
+    margin-bottom: 30px;
+    width: 100%;
+    align-items: stretch;
+    height: 5em;
+}
 h1{
     color: white;
-    text-transform: uppercase;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 8em;
+    transition: font-size .3s ease-in-out 0s, color .3s ease-in-out 0s;
+}
+
+h2
+{
+    color: white;
+    margin: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     font-size: 3em;
+
+    transition: font-size .3s ease-in-out 0s, color .3s ease-in-out 0s;
+}
+h1:hover{
+    color: rgb(73, 71, 189);
+    font-size: 10em;
+}
+h2:hover{
+    color: rgb(73, 71, 189);
+    font-size: 4em;
 }
 
 #board
@@ -143,4 +261,24 @@ h1{
 
 .wrappingedge {
     background-image: url("../assets/wrapping\ edge.gif") !important;
+}
+
+#footer
+{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    position: fixed;
+    left: 0px;
+    bottom: 10px;
+}
+a
+{
+    text-align: center;
+    text-decoration: none;
+    color: rgba(134, 134, 134, 0.747);
+    font-size: 1em;
+}
+a:hover{
+    color: white;
 }
