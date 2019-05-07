@@ -1,6 +1,61 @@
 # Wanderer2020 Development Notes 
 
-## Level status
+## Table of Contents
+
+1. [License](#License)
+1. [Design](#Design)
+1. [Installation](#installation)
+    1. [Python server](#python) 
+    1. [Optional Pygame standalone](#pygame) 
+    1. [Web Front End](#web) 
+2. [Level Status](#levelstatus)
+
+---
+## License 
+
+Wanderer2020 is licensed under the GPL.  See [LICENSE](LICENSE.md) for more information.
+
+---
+## Design
+Wanderer2020 is primarily a web-based version of wanderer, but it has been designed to be able to use several different front-end displays.  The python server code encapsulates all its calls to display anything into a **Window** object.  This Window object in one case is implemented as a Flask server which communicates with html/css/javascript front-end.  In another case, it is implemented in pygame in [window.py](server/window.py).
+
+---
+## Installation <a id="installation"></a>
+
+### Python Server <a id="python"></a>
+* Use python3's built-in venv library to create a virtual environment.  Run `python3 -m venv venv` in the `server/` directory to create a sub-directory called venv.
+* Activate the new virtual environment by running `. venv/bin/activate`
+* Install the needed python libraries in the virtual environment
+
+```
+pip install flask
+```
+---
+### (Optional) Pygame standalone <a id="pygame"></a>
+* If you would like to run a standalone version of the game offline, you need to install the following in the virtual environment:
+
+```
+pip install pygame
+```
+
+* Then you run the game by typing `python wanderer.py` in the `server/` directory
+
+---
+### Web Front-End <a id="web"></a>
+After you successfully have your python server running locally on your system, the front end should be pretty easy to finally implement.
+
+The easiest way to test it out is to drop into the **public** folder using command prompt and running:
+```
+python3 -m http.server
+```
+and going to [localhost:3000](http://localhost:3000/) in your browser of choice. 
+
+Alternatively you can install extensions on Visual Studio Code that will allow you to open the **index.html** directly in your default browser without the hastle.
+
+I run the game up on []
+
+---
+## Level status <a id="levelstatus"></a>
 * After babymonster fix (spooked by arrows)
 * 1-28: OK
 * 29: Player Dies by an arrow!
@@ -28,46 +83,9 @@
 * 31: OK - new solution
 * 32: OK
 * 33: Player dies!
-
-## Table of Contents
-1. [Installation](#installation)
-    1. [Python server](#python) 
-    1. [Optional Pygame standalone](#pygame) 
-    1. [Web Front End](#web) 
-1. [License](#License)
-
-## Design
-Wanderer2020 is primarily a web-based version of wanderer, but it has been designed to be able to use several different front-end displays.  The python server code encapsulates all its calls to display anything into a **Window** object.  This Window object in one case is implemented as a Flask server which communicates with html/css/javascript front-end.  In another case, it is implemented in pygame in [window.py](server/window.py).
-
-## Installation <a name="installation"></a>
-
-### Python Server <a name="python"></a>
-* Use python3's built-in venv library to create a virtual environment.  Run `python3 -m venv venv` in the `server/` directory to create a sub-directory called venv.
-* Activate the new virtual environment by running `. venv/bin/activate`
-* Install the needed python libraries in the virtual environment
-
-```
-pip install flask
-```
-
-#### (Optional) Pygame standalone <a name="pygame"></a>
-* If you would like to run a standalone version of the game offline, you need to install the following in the virtual environment:
-
-```
-pip install pygame
-```
-
-* Then you run the game by typing `python wanderer.py` in the `server/` directory
-
-
-### Web Front-End <a name="web"></a>
-
-## License
-
-Wanderer2020 is licensed under the GPL.  See [LICENSE](LICENSE.md) for more information.
------
-
-# Notes from Source before importing into git:
+  
+  ---
+### Notes from Source before importing into git:
 
 TODO:
 
@@ -218,5 +236,5 @@ Here was my older thinking on this topic:
 			6(a) Rock1's .Push() method gets the unsuccessful and return it to it's own caller, which is Interactions .TryMove() object.
 			7(a) The original call to Interactions' .TryMove() method (from step 2/3) was not initially able to tell whether hero's push of Rock1 would succeed, but now with this return value, knows that it does not succeed and returns that value.
 			8(a) Interaction's .TryMove() method returns the UNSUCCESSFUL back to Hero's .Push() method.  Hero's .Push() method has been reimplemented so that it does something a little extra by playing a sound and incrementing the move counter.
-	
+---
 
