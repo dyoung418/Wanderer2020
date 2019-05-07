@@ -3,13 +3,33 @@
     <head>
         <title>Wanderer</title>
         <link rel="stylesheet" href="./css/style.css" />
+        <audio id="song04">
+            <source src="./assets/song04.ogg" type="audio/ogg">
+        </audio>
+        <script src="script/sound.js"></script>
     </head>
-    <body>
-        <div id="menu">
-            <h1>Wanderer</h1>
-        </div>
+    <body onclick="playMusic();">
         <div id="game">
-            <div id="board">
+            
+            <div v-if="page == 1" id="menu">
+                <div id="menu1" v-if="menuData.menuNum == 1">
+                    <div class="title">
+                        <h1>W</h1><h1>A</h1><h1>N</h1><h1>D</h1><h1>E</h1><h1>R</h1><h1>E</h1><h1>R</h1>
+                    </div>
+                    
+                    <button class="menu-button" @click="page = 2;">P l a y</button>
+                    <button class="menu-button" @click="page = 3;">A b o u t</button>
+                </div>
+            </div>
+
+            <div v-if="page == 2" id="game">
+
+
+                <div v-if="levelData.level" id="board">
+                    <input type="hidden" v-on:keyup.left="moveLeft">
+                    <input type="hidden" v-on:keyup.right="moveRight">
+                    <input type="hidden" v-on:keyup.up="moveUp">
+                    <input type="hidden" v-on:keyup.down="moveDown">
                     <div class="block" id="00-00"></div>
                     <div class="block" id="00-01"></div>
                     <div class="block" id="00-02"></div>
@@ -722,9 +742,35 @@
                     <div class="block" id="16-37"></div>
                     <div class="block" id="16-38"></div>
                     <div class="block" id="16-39"></div>
+                </div>
+                <div v-if="!levelData.level" id="levelselect">
+                        <div class="title2">
+                            <h2>P</h2><h2>L</h2><h2>A</h2><h2>Y</h2>
+                        </div>
+                        <div class="grid">
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">1</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">2</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">3</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">4</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">5</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">6</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">7</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">8</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">9</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">10</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">11</button>
+                            <button v-if="levelData.levelPage == 1" class="level-button" @click="levelData.level = 1;">12</button>
 
+                        </div>
+                </div>
             </div>
+            
         </div>
+        <div id="footer">
+            <a href="https://github.com/andyruwruw/Wanderer2020.git">GitHub</a>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js" integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>      
         <script src="script/program.js"></script>
     </body>
 </html>
