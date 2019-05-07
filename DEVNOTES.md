@@ -42,16 +42,17 @@
 Wanderer2020 is primarily a web-based version of wanderer, but it has been designed to be able to use several different front-end displays.  The python server code encapsulates all its calls to display anything into a **Window** object.  This Window object in one case is implemented as a Flask server which communicates with html/css/javascript front-end.  In another case, it is implemented in pygame in [window.py](server/window.py).
 
 ## Interfaces <a name="interfaces"></a>
-Front End | Server | Game Logic
--------------------------------
-* > Request a new game (req: level number) | * Receive new game request | * 
-*  | * > Send request to Game Logic | * Load the requested Level
-*  | * Save the state json on MongoDB under a newly assigned GameID | * < Send back a state json and a list of display updates
-* Store gameID, update DOM from display update list | * < Send GameID and display updates | * 
-* > Send move request with GameID | * Receive move request, lookup state in MongoDB using GameID | * 
-*  | * > Send state json and move request to Game Logic | * Unpack state, execute move
-*  | * Save updated state to MongoDB using GameID | * < Pack up and send updated state along with display update list
-* Update display using display update list | * < send display update list | * 
+
+| Front End | Server | Game Logic |
+| --------- | ------ | ---------- |
+| \> Request a new game (req: level number) | Receive new game request | | 
+|  | \> Send request to Game Logic | Load the requested Level |
+|  | Save the state json on MongoDB under a newly assigned GameID | \< Send back a state json and a list of display updates |
+| Store gameID, update DOM from display update list | \< Send GameID and display updates | | 
+| \> Send move request with GameID | Receive move request, lookup state in MongoDB using GameID | | 
+|  | \> Send state json and move request to Game Logic |  Unpack state, execute move |
+|  | Save updated state to MongoDB using GameID | \< Pack up and send updated state along with display update list |
+| Update display using display update list | \< send display update list | | 
 
 ## Installation <a name="installation"></a>
 
