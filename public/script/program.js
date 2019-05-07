@@ -14,12 +14,34 @@ var game = new Vue({
     },
     methods:
     {
+        menuButton(page)
+        {
+            this.page = page;
+            this.levelData.levelPage = 1;
+            if (page == 1)
+            {
+                this.playSound(1,0);
+            }
+            else
+            {
+                this.playSound(0,0);
+            }
+        },
+        hover()
+        {
+            this.playSound(2,0);
+        },
         async newLevel(level)
         {
-            this.level = parseInt(level, 10);
+            this.levelData.level = level;
+            pauseMusic();
+            songSelection = 1;
+            this.playSound(5,0);
+            playMusic();
+            
             let payload = {level: this.level};
-            let res = await axios.put('/wanderer/level', payload);
-            this.updateBoard(res.data);
+            //let res = await axios.put('/wanderer/level', payload);
+            //this.updateBoard(res.data);
         },
         async sendMove() {
             let payload = {key: "r"};
@@ -67,6 +89,52 @@ var game = new Vue({
         {
             let item = {row: row, col: col};
             return item;
+        },
+
+        levelPageToStart()
+        {
+            this.levelData.levelPage = 1;
+            this.playSound(0,0);
+            console.log("to start");
+        },
+        levelPagePrevious()
+        {
+            this.levelData.levelPage -= 1;
+            this.playSound(0,0);
+            console.log("to previous");
+        },
+        levelPageNext()
+        {
+            this.levelData.levelPage += 1;
+            this.playSound(0,0);
+            console.log("to next");
+        },
+        levelPageToEnd()
+        {
+            this.levelData.levelPage = 6;
+            this.playSound(0,0);
+            console.log("to end");
+        },
+        deny()
+        {
+            this.playSound(3,0);
+            console.log("Denied");
+        },
+        playSound(sound, volume)
+        {
+            var media = document.getElementById(SOUNDS[sound].tag);
+            if (volume == 0)
+            {
+                media.volume = SOUNDS[sound].volume;
+                console.log(SOUNDS[sound].volume);
+            }
+            else
+            {
+                media.volume = volume;
+            }
+            const playPromise = media.play();
+            if (playPromise !== null) 
+                playPromise.catch(() => {media.play();})
         }
     },
     computed:
