@@ -1,0 +1,17 @@
+['H', 'h', 'LEFT'] Move the hero left
+['L', 'l', 'RIGHT'] Move the hero right
+['K', 'k', 'UP'] Move the hero up
+['J', 'j', 'DOWN'] Move the hero down
+['-', ' ', 'SPACE'] Have hero stay still one turn
+['Q', 'q'] Quit game
+['N', 'n'] Load next level
+['R', 'r'] Restart current level
+['S', 's'] Play the solution (or pause playback of solution)
+['P', 'p'] Play next single step of the solution
+['O' <integer> 'RETURN', 'o' <integer> 'RETURN'] Open specified level (example: O32RETURN opens level 32)
+
+'LEFT', 'RIGHT', 'UP', 'DOWN', 'SPACE', 'RETURN' refer to those key codes, not the string.
+
+I think for the web interface, we should just standardize on the first one in each list (i.e. capitalized versions).
+
+Also, we can replace 'RETURN' in the 'O' command with something simple to indicate the end of the level number, like '.' instead.
