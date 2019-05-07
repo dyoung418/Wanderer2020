@@ -56,21 +56,24 @@ PLAYER_MOVES = frozenset(['LEFT', 'H', 'h', 'RIGHT', 'L', 'l',
 
 class GameObj(object):
     def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+
+        # NON-STATE variable
         self._frontend = new_frontend # Front End object
-        self._type = gameobj_type   # a single-character string denoting type
         self._mediator = mediator # Handles all obj-to-obj interactions
         self._grid = grid # aggregation of grid objects which store list of
-                          # GameObj's at that location
-        self._location = location
+        #     these are non-state because they are covered by _type or _location
         self._fallvector = None # must be initialized by subclasses
         self._pushvectors = None # must be initialized by subclasses
+        self.causewake = True   #i.e. do I cause a wake, as in the wake of a boat
+        self._cell = self._grid.get_cell(self._location)
         # Call the Window object to initialize a data structure which will hold
         # info needed to draw me.  I (GameObj) don't know the format of this
         # data, but I'll hold it in self._drawdata and pass it to my Window
         # object which will know how to use it to draw me on whatever specific
         # window system is being used.
+        self._drawdata = self._frontend.initialize_gameobj_data(self)
+        #     these are non-state because they only changes within a move, not between
         self.standstill = True  #e.g. A rock starting at standstill doesn't fall into hero
-
         # being_pushed: a flag to not falsely trigger falls from origin place when
         #   being pushed. This is needed because when hero pushes, say, a hanging
         #   rock to the right, 
@@ -86,14 +89,21 @@ class GameObj(object):
         #   way down triggering other things below even though it shouldn't have
         #   done that at all because it is pushed to the right.
         self.being_pushed = False
+
+        # STATE variables
+        self._type = gameobj_type   # a single-character string denoting type
+                          # GameObj's at that location
+        self._location = location
         self.alive = True
-        self.causewake = True   #i.e. do I cause a wake, as in the wake of a boat
-        self._cell = self._grid.get_cell(self._location)
-        self._drawdata = self._frontend.initialize_gameobj_data(self)
+
+        # Initialization actions
         self.draw() # now draw myself
 
     def __repr__(self):
-        return "GameObj('{0}', {1!s} )".format(self._type, self._location)
+        return "GameObj('{0}', {1!s}, {2!s})".format(self._type, self._location, self.alive)
+
+    def to_json(self):
+        return '\{type:{0}, location:{1!s}, alive:{2!s}\}'.format(self._type, self._location, self.alive)
 
     @property
     def location(self):
