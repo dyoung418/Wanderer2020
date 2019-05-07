@@ -11,9 +11,6 @@ import collections
 import os.path
 import logging
 import re
-
-from past.utils import old_div
-
 from location import Location
 import window
 
@@ -404,10 +401,14 @@ class Monster(Dynamic_GameObj):
         if not self.alive: return
         delta = self._grid.hero.location - self.location
         # delta may be (12, -5), convert to vector like (1, -1)
-        if delta.x == 0: move_x = 0
-        else: move_x = old_div(delta.x, abs(delta.x))
-        if delta.y == 0: move_y = 0
-        else: move_y = old_div(delta.y, abs(delta.y))
+        if delta.x == 0:
+            move_x = 0
+        else:
+            move_x = delta.x//abs(delta.x)
+        if delta.y == 0:
+            move_y = 0
+        else:
+            move_y = delta.y//abs(delta.y)
         move_vector = Location((move_x, move_y))
         m = self._mediator
         if delta.y == 0: # on the same row as the hero
@@ -1789,9 +1790,7 @@ class ExitGame(Exception):
 
 def main(startlevel=1, startscreen=None, debugflag=False):
     import argparse
-    import argcomplete
     # Parse command-line arguments
-    #fileCompleter = argcomplete.FilesCompleter(allowednames=['save','txt'], directories=False)
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-f", "--filename", action='store',
@@ -1807,7 +1806,6 @@ def main(startlevel=1, startscreen=None, debugflag=False):
     parser.add_argument("-z", "--size", action='store', choices=['s', 'm', 'l'],
                         help="Specify size of window",
                         default='m')
-    argcomplete.autocomplete(parser)
     args = parser.parse_args()
     solution_filename = None
     size = 'm'
