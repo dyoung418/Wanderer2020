@@ -115,6 +115,147 @@ var game = new Vue({
             this.playSound(0,0);
             console.log("to end");
         },
+        hoverLevel(id)
+        {
+            this.hover();
+            var element = document.getElementById(id);
+            var levelName = "";
+            switch (id)
+            {
+                case "lev1":
+                levelName = "Unplug the Cistern #1";
+                break;
+                case "lev2":
+                levelName = "Unplug the Cistern #2";
+                break;
+                case "lev3":
+                levelName = "My favorite one of the lot - Steve";
+                break;
+                case "lev4":
+                levelName = "Hanging by a thread";
+                break;
+                case "lev6":
+                levelName = "Yet another Beckett screen";
+                break;
+                case "lev10":
+                levelName = "Meet the Baby Monsters!";
+                break;
+                case "lev11":
+                levelName = "play@nl.cwi is responsible for this mess";
+                break;
+                case "lev12":
+                levelName = "Get a load of this one then";
+                break;
+                case "lev13":
+                levelName = "Return of the Dutch designer";
+                break;
+                case "lev14":
+                levelName = "Is there no stopping these Dutchmen?  They'll be flying next";
+                break;
+                case "lev15":
+                levelName = "The Aussies start to move in";
+                break;
+                case "lev16":
+                levelName = "All but the one";
+                break;
+                case "lev18":
+                levelName = "And another offering from Oz";
+                break;
+                case "lev19":
+                levelName = "More from the Netherlands";
+                break;
+                case "lev20":
+                levelName = "and still more (but this is the last of his)";
+                break;
+                case "lev21":
+                levelName = "Max moves in Under:S,40,16,0,1 Under:S,40,16,0,1 Under:S,40,16,0,1 Under:S,40,16,0,1 Under:S,40,16,0,1";
+                break;
+                case "lev22":
+                levelName = "and then moves out again";
+                break;
+                case "lev23":
+                levelName = "Introducing THE BALLOONS!";
+                break;
+                case "lev24":
+                levelName = "The Shrine of Quetzacoatl";
+                break;
+                case "lev26":
+                levelName = "Revitalization of the Dutch";
+                break;
+
+                case "lev27":
+                levelName = "Revived from the dead";
+                break;
+                case "lev29":
+                levelName = "Kenton's swan song";
+                break;
+                case "lev30":
+                levelName = "Who's is it?";
+                break;
+                case "lev31":
+                levelName = "Alan Bland did this and the Amiga port";
+                break;
+                case "lev34":
+                levelName = "Cause and Effect";
+                break;
+                case "lev26":
+                levelName = "The Combination Lock";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+                case "lev26":
+                levelName = "";
+                break;
+
+                
+                default:
+                levelName = "Unnamed";
+                break;
+            }
+            element.innerHTML = levelName;
+        },
+        unHoverLevel(id)
+        {
+            var element = document.getElementById(id);
+            element.innerText = id.substring(3, id.length);
+        },
         deny()
         {
             this.playSound(3,0);
