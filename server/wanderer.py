@@ -101,10 +101,10 @@ class GameObj(object):
         self.draw() # now draw myself
 
     def __repr__(self):
-        return "GameObj('{0}', {1!s}, {2!s})".format(self._type, self._location, self.alive)
+        return "GameObj('{0}', {1!s})".format(self._type, self._location)
 
     def json_input(self):
-        return {'type':self._type, 'location':self._location, 'alive':self.alive}
+        return {'type':self._type, 'location':self._location}
 
     @property
     def location(self):
@@ -326,6 +326,13 @@ class Hero(Dynamic_GameObj):
     def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
         super(Hero, self).__init__(new_frontend, gameobj_type, mediator,
                                    grid, location)
+
+    def __repr__(self):
+        return "GameObj('{0}', {1!s}, {2!s})".format(self._type, self._location, self.alive)
+
+    def json_input(self):
+        return {'type':self._type, 'location':self._location, 'alive':self.alive}
+
     def move(self, vector):
         logging.debug(str(self._grid))
         logging.debug("-------------------HERO MOVE from {0} on vector {1} -"\
@@ -458,11 +465,11 @@ class BabyMonster(Dynamic_GameObj):
         self.spooked_location = None
 
     def __repr__(self):
-        return "GameObj('{0}', {1!s}, {2!s}, {3!s}, {4!s})".format(self._type,
-            self._location, self.alive, self.mywall, self.spooked_location)
+        return "GameObj('{0}', {1!s}, {2!s}, {3!s})".format(self._type,
+            self._location, self.mywall, self.spooked_location)
 
     def json_input(self):
-        return {'type':self._type, 'location':self._location, 'alive':self.alive,
+        return {'type':self._type, 'location':self._location,
                 'mywall':self.mywall, 'spooked_location':self.spooked_location}
 
     def fall(self, location): # BabyMonster
@@ -1077,8 +1084,8 @@ class Grid(object):
             json_dict['grid_objs'].append(grid_row)
         return json_dict
 
-    def game_state_json(self):
-        return json.dumps(self.json_input(), separators=(',', ':'))
+    def game_state_json(self, separators=(',', ':'), **kwargs):
+        return json.dumps(self.json_input(), separators=separators, **kwargs)
 
     def string_view(self, highlight=None):
         '''Return sring of character representation of the grid
@@ -1735,8 +1742,8 @@ class GameDirector(object):
                 self.frontend.quit()
                 return
 
-    def game_state_json(self):
-        return self.grid.game_state_json()
+    def game_state_json(self, **kwargs):
+        return self.grid.game_state_json(**kwargs)
 
     def next_level(self):
         self.grid.current_level += 1
@@ -1838,7 +1845,7 @@ class GameDirector(object):
             self.frontend.wait(SOLUTION_PLAYBACK_DELAY)
         self.grid.update_status()
 
-        #logging.debug("\n{0}\n".format(self.game_state_json())) #DEBUG
+        #logging.debug("\n{0}\n".format(self.game_state_json(indent=' '))) #DEBUG
 
     def move_monsters(self):
         for b in self.grid.baby_monsters:
