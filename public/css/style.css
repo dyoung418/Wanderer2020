@@ -29,12 +29,12 @@ body
     text-transform: uppercase;
     display: block;
     margin: 0 auto;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     border-radius: 15px;
     padding: 1em;
-    width: 300px;
+    width: 240px;
     border: 0px solid black;
-    font-size: 2em;
+    font-size: 1.75em;
     text-align: center;
     color: rgba(131, 131, 131, 0.904);
     background: radial-gradient(rgb(36, 3, 97),rgb(25, 7, 58));
@@ -46,9 +46,9 @@ body
 
 .menu-button:hover
 {
-    font-size: 3em;
-    padding-top: .45em;
-    padding-bottom: .44em;
+    font-size: 2.5em;
+    padding-top: .48em;
+    padding-bottom: .47em;
     color: white;
     background: radial-gradient(rgb(74, 10, 192),rgb(29, 2, 80));
 }
@@ -56,7 +56,7 @@ body
 .grid
 {
     display: grid;
-    width: 75%;
+    width: 50%;
     margin: 0 auto;
     grid-template-columns: auto auto auto auto;
     grid-column-gap: 20px;
@@ -68,7 +68,7 @@ body
     width: 60%;
     margin: 0 auto;
     margin-top: 30px;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-column-gap: 30px;
 }
 
@@ -81,12 +81,13 @@ body
     padding-bottom: .5em;
     width: 100%;
     border: 0px solid black;
+    border-radius: 8px;
     font-size: 1.5em;
     text-align: center;
-    color: rgba(131, 131, 131, 0.904);
-    background: url("../assets/wall_mid.png");
+    color: rgba(185, 185, 185, 0.904);
+    background: radial-gradient(rgb(65, 19, 150),rgb(38, 16, 99));
     background-repeat: repeat;
-    background-size: 25%;
+    background-size: cover;
     transition: font-size .1s ease-in-out 0s, padding .1s ease-in-out 0s, background .1s ease-in-out 0s;
 }
 
@@ -95,15 +96,15 @@ body
     font-family: 'Francois One', sans-serif;
     text-transform: uppercase;
     display: block;
-    border-radius: 10px;
+    border-radius: 40px;
     padding-top: .5em;
     padding-bottom: .5em;
     width: 100%;
     border: 0px solid black;
     font-size: 1.5em;
     text-align: center;
-    color: rgba(131, 131, 131, 0.904);
-    background: radial-gradient(rgb(36, 3, 97),rgb(25, 7, 58));
+    color: rgba(185, 185, 185, 0.904);
+    background: radial-gradient(rgb(67, 26, 143),rgb(39, 16, 102));
     background-size: cover;
     background-repeat: no-repeat;
     transition: font-size .1s ease-in-out 0s, padding .1s ease-in-out 0s, background .1s ease-in-out 0s;
@@ -125,14 +126,14 @@ body
 .level-button:hover
 {
     color: white;
-    background: radial-gradient(rgba(216, 211, 147, 0.123),rgba(216, 211, 147, 0.123)), url("../assets/wall_mid.png");
-    background-size: 25%;
+    background: radial-gradient(rgb(102, 63, 175),rgb(42, 22, 97));
+    background-size: cover;
 }
 
 .page-button:hover
 {
     color: white;
-    background: radial-gradient(rgb(90, 21, 218),rgb(29, 2, 80));
+    
 }
 
 .title
@@ -153,7 +154,7 @@ body
     justify-content: center;
     margin: 0 auto; 
     margin-top: 3%;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     width: 100%;
     align-items: stretch;
     height: 6em;
@@ -191,7 +192,7 @@ h2:hover{
     width: calc(75vw);
     height: calc(75vw * (17/40));
     margin: 0 auto;
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     display: grid;
 }
 
@@ -203,113 +204,114 @@ h2:hover{
 .block
 {
     display: block;
-    background-image: radial-gradient(rgb(78, 78, 78), rgb(0,0,0));
-    background-size: cover;
+    background-image: url("../assets/fl.png");
+    background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
 }
 
 .babymonster {
-    background-image: url("../assets/babymonster.gif") !important;
+    background-image: url("../assets/bm1_w.png") !important;
 }
 
 .balloon {
-    background-image: url("../assets/balloon.gif") !important;
+    background-image: url("../assets/balloon.gif"), url("../assets/fl.png") !important;
 }
 
 .blank {
-    background-image: url("../assets/blank.gif") !important;
+    background-image: url("../assets/blank.gif"), url("../assets/fl.png") !important;
 }
 
 .bomb {
-    background-image: url("../assets/bomb.gif") !important;
+    background-image: url("../assets/bomb.gif"), url("../assets/fl.png") !important;
 }
 
 .boom {
-    background-image: url("../assets/boom.gif") !important;
+    background-image: url("../assets/boom.gif"), url("../assets/fl.png") !important;
 }
 
 .brickwall {
-    background-image: url("../assets/brickwall.gif") !important;
+    background-image: url("../assets/brickwall.gif"), url("../assets/fl.png") !important;
 }
 
 .cage {
-    background-image: url("../assets/cage.gif") !important;
+    background-image: url("../assets/cage.gif"), url("../assets/fl.png") !important;
 }
 
 .clock {
-    background-image: url("../assets/clock.gif") !important;
+    background-image: url("../assets/clock.gif"), url("../assets/fl.png") !important;
 }
 
 .dirt {
-    background-image: url("../assets/dirt.gif") !important;
+    background-image: url("../assets/dirt.gif"), url("../assets/fl.png") !important;
 }
 
 .edge {
-    background-image: url("../assets/edge.gif") !important;
+    background-image: url("../assets/edge.gif"), url("../assets/fl.png") !important;
 }
 
 .exit {
-    background-image: url("../assets/blank.gif") !important;
+    background-image: url("../assets/blank.gif"), url("../assets/fl.png") !important;
 }
 
 .funkydirt {
-    background-image: url("../assets/funkydirt.gif") !important;
+    background-image: url("../assets/funkydirt.gif"), url("../assets/fl.png") !important;
 }
 
 .leftarrow {
-    background-image: url("../assets/leftarrow.gif") !important;
+    background-image: url("../assets/arl_w_00000.png") !important;
 }
 
 .leftupramp {
-    background-image: url("../assets/leftupramp.gif") !important;
+    background-image: url("../assets/leftupramp.gif"), url("../assets/fl.png") !important;
 }
 
 .money {
-    background-image: url("../assets/money.gif") !important;
+    background-image: url("../assets/ch.png"), url("../assets/fl.png") !important;
 }
 
 .monster {
-    background-image: url("../assets/monster.gif") !important;
+    background-image: url("../assets/mo2.png"), url("../assets/fl.png") !important;
 }
 
 .player {
-    background-image: url("../assets/he1.png") !important;
+    background-image: url("../assets/he1.png"), url("../assets/fl.png") !important;
 }
 
 .poison {
-    background-image: url("../assets/poison.gif") !important;
+    background-image: url("../assets/sp.png"), url("../assets/fl.png") !important;
 }
 
 .rightarrow {
-    background-image: url("../assets/rightarrow.gif") !important;
+    background-image: url("../assets/arrr_w_00000.png") !important;
 }
 
 .rightupramp {
-    background-image: url("../assets/rightupramp.gif") !important;
+    background-image: url("../assets/rightupramp.gif"), url("../assets/fl.png") !important;
 }
 
 .rock {
-    background-image: url("../assets/rock.gif") !important;
+    background-image: url("../assets/rock.gif"), url("../assets/fl.png") !important;
 }
 
 .rug {
-    background-image: url("../assets/rug.gif") !important;
+    background-image: url("../assets/rug.gif"), url("../assets/fl.png") !important;
 }
 
 .stonewall {
-    background-image: url("../assets/stonewall.gif") !important;
+    background-image: url("../assets/wm.png"), url("../assets/fl.png") !important;
 }
 
 .teleportdestination {
-    background-image: url("../assets/teleportdestination.gif") !important;
+    background-image: url("../assets/ld.png"), url("../assets/fl.png") !important;
 }
 
 .teleporter {
-    background-image: url("../assets/teleporter.gif") !important;
+    background-image: url("../assets/ld.png"), url("../assets/fl.png") !important;
 }
 
 .wrappingedge {
-    background-image: url("../assets/wrapping\ edge.gif") !important;
+    background-image: url("../assets/wrapping\ edge.gif"), url("../assets/fl.png") !important;
 }
 
 #footer
@@ -344,4 +346,43 @@ a:hover{
     background: url("../assets/back1.gif");
     background-size: cover;
     color: white;
+}
+
+#level-details
+{
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+#level-title
+{
+    font-size: 2em;
+    color: rgba(255, 255, 255, 0.227);
+}
+
+#level-author
+{
+    font-size: 1em;
+    color: rgba(160, 160, 160, 0);
+    margin-top: 5px;
+}
+
+.about-page
+{
+    width: 60%;
+    margin: 0 auto;
+}
+
+h4{
+    font-size: 150%;
+    color: rgba(255, 255, 255, 0.349);
+}
+
+h3{
+    font-size: 250%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 30px;
+    color: white;
+    text-decoration: underline;
 }
