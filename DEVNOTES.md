@@ -41,8 +41,15 @@ Wanderer2020 is primarily a web-based version of wanderer, but it has been desig
 
 ```
 pip install flask
+pip install bson 
+pip install pymongo
 ```
+
+### Mongodb Server <a id="mongodb"></a>
+* The wanderer backend requires a MongoDB server.  You can find [MongoDB installation instructions here](https://docs.mongodb.com/manual/installation/)
+
 ---
+
 ### (Optional) Pygame standalone <a id="pygame"></a>
 * If you would like to run a standalone version of the game offline, you need to install the following in the virtual environment:
 

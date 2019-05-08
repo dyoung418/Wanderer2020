@@ -38,47 +38,50 @@ FPS = 3000 # Frames per second
 BUTTON_OK_CANCEL, BUTTON_YES_NO, BUTTON_OK = list(range(3))
 
 OGTuple = collections.namedtuple('OGTuple', 'name imagefile')
-objectGraphics = {' ': OGTuple(name="Empty", imagefile="blank.gif"),
-                  '-': OGTuple(name="Empty", imagefile="blank.gif"),
-                  'A': OGTuple(name="Teleport destination",
-                               imagefile="teleportdestination.gif"),
-                  'B': OGTuple(name="Bomb", imagefile="bomb.gif"),
-                  '#': OGTuple(name="Stone wall", imagefile="stonewall.gif"),
-                  '=': OGTuple(name="Brick wall", imagefile="brickwall.gif"),
-                  '/': OGTuple(name="Ramp", imagefile="rightupramp.gif"),
-                  "\\": OGTuple(name="Ramp", imagefile="leftupramp.gif"),
-                  ':': OGTuple(name="Dirt", imagefile="dirt.gif"),
-                  'F': OGTuple(name="Funky Dirt", imagefile="funkydirt.gif"),
-                  '!': OGTuple(name="Poison", imagefile="poison.gif"),
-                  'X': OGTuple(name="Exit", imagefile="exit.gif"),
-                  '*': OGTuple(name="Money bag", imagefile="money.gif"),
-                  'T': OGTuple(name="Teleport booth", imagefile="teleporter.gif"),
-                  'C': OGTuple(name="Time capsule", imagefile="clock.gif"),
-                  '+': OGTuple(name="Cage", imagefile="cage.gif"),
-                  'O': OGTuple(name="Rock", imagefile="rock.gif"),
-                  '>': OGTuple(name="Arrow", imagefile="rightarrow.gif"),
-                  '<': OGTuple(name="Arrow", imagefile="leftarrow.gif"),
-                  '^': OGTuple(name="Balloon", imagefile="balloon.gif"),
-                  'M': OGTuple(name="Hungry monster", imagefile="monster.gif"),
-                  'S': OGTuple(name="Baby monster", imagefile="babymonster.gif"),
-                  '~': OGTuple(name="Rug", imagefile="rug.gif"),
-                  '@': OGTuple(name="Player", imagefile="player.gif"),
-                  'E': OGTuple(name="Edge", imagefile="edge.gif"),
-                  'W': OGTuple(name="Wrapping edge", imagefile="wrapping edge.gif"),
-                 }
+objectGraphics = {
+    ' ': OGTuple(name="Empty", imagefile="blank.gif"),
+    '-': OGTuple(name="Empty", imagefile="blank.gif"),
+    'A': OGTuple(name="Teleport destination",
+                 imagefile="teleportdestination.gif"),
+    'B': OGTuple(name="Bomb", imagefile="bomb.gif"),
+    '#': OGTuple(name="Stone wall", imagefile="stonewall.gif"),
+    '=': OGTuple(name="Brick wall", imagefile="brickwall.gif"),
+    '/': OGTuple(name="Ramp", imagefile="rightupramp.gif"),
+    "\\": OGTuple(name="Ramp", imagefile="leftupramp.gif"),
+    ':': OGTuple(name="Dirt", imagefile="dirt.gif"),
+    'F': OGTuple(name="Funky Dirt", imagefile="funkydirt.gif"),
+    '!': OGTuple(name="Poison", imagefile="poison.gif"),
+    'X': OGTuple(name="Exit", imagefile="exit.gif"),
+    '*': OGTuple(name="Money bag", imagefile="money.gif"),
+    'T': OGTuple(name="Teleport booth", imagefile="teleporter.gif"),
+    'C': OGTuple(name="Time capsule", imagefile="clock.gif"),
+    '+': OGTuple(name="Cage", imagefile="cage.gif"),
+    'O': OGTuple(name="Rock", imagefile="rock.gif"),
+    '>': OGTuple(name="Arrow", imagefile="rightarrow.gif"),
+    '<': OGTuple(name="Arrow", imagefile="leftarrow.gif"),
+    '^': OGTuple(name="Balloon", imagefile="balloon.gif"),
+    'M': OGTuple(name="Hungry monster", imagefile="monster.gif"),
+    'S': OGTuple(name="Baby monster", imagefile="babymonster.gif"),
+    '~': OGTuple(name="Rug", imagefile="rug.gif"),
+    '@': OGTuple(name="Player", imagefile="player.gif"),
+    'E': OGTuple(name="Edge", imagefile="edge.gif"),
+    'W': OGTuple(name="Wrapping edge", imagefile="wrapping edge.gif"),
+}
 boom_imagefile = 'boom.gif'
 
 def getFrontEnd(size='m'):
-    '''Factory function for getting a window.  This function determines which
-    window implementation (e.g. pygame, tkinter, curses) to use'''
+    '''Factory function for getting a window.  This function
+    determines which window implementation (e.g. pygame, tkinter,
+    curses) to use'''
     #DAY - eventually, read from options which windows system to use
     return Window_Pygame(size=size)
 
 class Window(object):
-    '''Window defines a logical interface. Subclasses implement specific system
-    Window keeps a dictionary which maps GameObject objects to structures
-    (such as sprite objects or image objects) needed to paint that GameObject
-    on the screen.
+    '''Window defines a logical interface. Subclasses implement
+    specific system. Window keeps a dictionary which maps
+    GameObject objects to structures (such as sprite objects
+    or image objects) needed to paint that GameObject on
+    the screen.
     '''
     def __init__(self):
         raise NotImplementedError
@@ -99,7 +102,8 @@ class Window(object):
     def move_obj(self, mover, old_location, new_location, replacement):
         raise NotImplementedError
     def register_event(self, event_type, event_value):
-        '''Register a callback function to be invoked when an event happens'''
+        '''Register a callback function to be invoked when an
+        event happens'''
         raise NotImplementedError
     def _onEvent(self, event):
         '''Called for all events, this method looks up appropriate
@@ -116,6 +120,10 @@ class Window(object):
         raise NotImplementedError
     def refresh_all(self):
         '''Refresh entire screen and mark all areas as clean'''
+        raise NotImplementedError
+    def remove_gameobj(self, gameobj):
+        raise NotImplementedError
+    def update_obj_location(self, gameobj):
         raise NotImplementedError
     def start_event_loop(self):
         '''Begin processing mouse and keyboard and window system events'''
@@ -155,8 +163,9 @@ class Window_Pygame(Window):
     def post_init_setup(self, grid):
         '''Called after __init__ to finalize graphic setup
         (after level objects are defined, etc.)'''
-        self.screen = pygame.display.set_mode((grid.num_cols * self.cellWidth,
-                                               grid.num_rows * self.cellHeight))
+        self.screen = pygame.display.\
+            set_mode((grid.num_cols * self.cellWidth,
+                      grid.num_rows * self.cellHeight))
         self.grid = grid
         pygame.mouse.set_visible(0)
         # Set key repeat parameters -- delay and interval
@@ -165,85 +174,92 @@ class Window_Pygame(Window):
         self.boom.image, self.boom.rect = self._load_image(
             os.path.join(self.imageDir, boom_imagefile))
     def set_status_line(self, message):
-        pygame.display.set_caption(message) #DAY - do a better job here
+        pygame.display.set_caption(message)
 ##        pygame.display.flip() #DAY is this needed?
     def initialize_gameobj_data(self, gameobj):
         '''Called with each gameobj created.  Return any structures
-        (sprites, etc.) needed to draw and move. The GameObj will store
-        that structure and we can use it later to draw objects that
-        request our .draw_obj()'''
+        (sprites, etc.) needed to draw and move. The GameObj will
+        store that structure and we can use it later to draw objects
+        that request our .draw_obj()'''
         s = pygame.sprite.Sprite()
-        # DAY -- eventually just read all image data into a dict and reuse it for each game type
+        # DAY -- eventually just read all image data into a dict
+        #        and reuse it for each game type
         s.image, s.rect = self._load_image(
-            os.path.join(self.imageDir, objectGraphics[gameobj.obj_type].imagefile))
+            os.path.join(self.imageDir,
+                objectGraphics[gameobj.obj_type].imagefile))
         loc = gameobj.location
-        s.rect.top, s.rect.left = (loc.y * self.cellHeight, loc.x * self.cellWidth)
+        s.rect.top, s.rect.left = (loc.y * self.cellHeight,
+                                   loc.x * self.cellWidth)
 ##        s.rect.move(loc.x * self.cellWidth, loc.y * self.cellHeight)
         return s
-    def remove_gameobj(self, gameobj):
-        gameobj.draw_data.kill() #DAY not really needed since I'm not using groups yet
-    def update_obj_location(self, gameobj):
-        s = gameobj.draw_data
-        loc = gameobj.location
-        s.rect.top, s.rect.left = (loc.y * self.cellHeight, loc.x * self.cellWidth)
     def draw_obj(self, gameobj, redraw=True, from_loc=None):
         #DAY - eventually add animation when passed a from_loc
         sprite = gameobj.draw_data
         self.screen.blit(sprite.image, sprite.rect)
         if redraw:
             self.redraw()
-    def move_obj(self, mover, old_location, new_location, replacement):
+    def move_obj(self, mover, old_location,
+                 new_location, replacement):
         raise NotImplementedError
-    def register_event(self, event_value, handler, event_type=KEYBOARD_EVENT):
-        '''Register a callback function to be invoked when an event happens'''
+    def register_event(self, event_value, handler,
+                       event_type=KEYBOARD_EVENT):
+        '''Register a callback function to be invoked when an event
+        happens'''
         self.handlerdb[event_value] = handler
     def _onEvent(self, event):
-        '''Called for all events, this method looks up appropriate handler
-        as stored by .register_event()'''
-        if 'ANY' in self.handlerdb: # Call a handler for 'Any' key, if available
+        '''Called for all events, this method looks up appropriate
+        handler as stored by .register_event()'''
+        if 'ANY' in self.handlerdb:
+            # Call a handler for 'Any' key, if available
             self.handlerdb['ANY'](event)
         if event in self.handlerdb:
-            self.handlerdb[event](event) #call key-specific handler, if any
-    def generate_event(self, event_value, event_type=KEYBOARD_EVENT, timedelay=None):
-        '''Used to artificially create an event (such as a timer event)'''
+            #call key-specific handler, if any
+            self.handlerdb[event](event)
+    def generate_event(self, event_value,
+                       event_type=KEYBOARD_EVENT,
+                       timedelay=None):
+        '''Used to artificially create an event (such as a timer
+        event)'''
         # DAY, need to finish implementation with timer events, etc.
         if event_type == KEYBOARD_EVENT:
-##            key_event = pygame.event.Event(KEYDOWN,
-##                            {'unicode':None, 'key': ord(event_value.encode('ASCII')), 'mod':None})
-            # note that I should change this to be just unicode for py3, but want py2 compat.
-##            key_event = pygame.event.Event(KEYDOWN,
-##                            {'unicode':None, 'key': event_value.encode('ASCII'), 'mod':None})
             key_event = pygame.event.Event(KEYDOWN,
                                            {'unicode':event_value,
                                             'key': event_value,
                                             'mod':None})
         pygame.event.post(key_event)
-
     def mark_dirty(self, dirty_area):
-        '''tag a portion of the screen as 'dirty' (i.e. in need of refresh)'''
+        '''tag a portion of the screen as 'dirty' (i.e. in need
+        of refresh)'''
         raise NotImplementedError
     def refresh_dirty(self):
         '''Refresh the dirty areas of the screen and mark them as clean'''
         raise NotImplementedError
-##    def refresh_all(self):
-##        '''Refresh entire screen and mark all areas as clean'''
-##        raise NotImplementedError
+    def refresh_all(self):
+        '''Refresh entire screen and mark all areas as clean'''
+        raise NotImplementedError
+    def remove_gameobj(self, gameobj):
+        gameobj.draw_data.kill() #DAY not needed - I'm not using groups
+    def update_obj_location(self, gameobj):
+        s = gameobj.draw_data
+        loc = gameobj.location
+        s.rect.top, s.rect.left = (loc.y * self.cellHeight,
+                                   loc.x * self.cellWidth)
     def start_event_loop(self):
         '''Begin processing mouse and keyboard and window system events'''
-        EventTrans = {pygame.K_LEFT: 'LEFT', pygame.K_RIGHT: 'RIGHT', pygame.K_UP: 'UP',
-                      pygame.K_DOWN: 'DOWN', pygame.K_SPACE: 'SPACE', pygame.K_MINUS: 'SPACE',
-                      pygame.K_ESCAPE: 'Q', pygame.K_RETURN: 'RETURN',
-                      pygame.K_a:'A', pygame.K_b:'B', pygame.K_c:'C', pygame.K_d:'D',
-                      pygame.K_e:'E', pygame.K_f:'F', pygame.K_g:'G', pygame.K_h:'H',
-                      pygame.K_i:'I', pygame.K_j:'J', pygame.K_k:'K', pygame.K_l:'L',
-                      pygame.K_m:'M', pygame.K_n:'N', pygame.K_o:'O', pygame.K_p:'P',
-                      pygame.K_q:'Q', pygame.K_r:'R', pygame.K_s:'S', pygame.K_t:'T',
-                      pygame.K_u:'U', pygame.K_v:'V', pygame.K_w:'W', pygame.K_x:'X',
-                      pygame.K_y:'Y', pygame.K_z:'Z',
-                      pygame.K_0:'0', pygame.K_1:'1', pygame.K_2:'2', pygame.K_3:'3',
-                      pygame.K_4:'4', pygame.K_5:'5', pygame.K_6:'6', pygame.K_7:'7',
-                      pygame.K_8:'8', pygame.K_9:'9',
-                     }
+        EventTrans = {pygame.K_LEFT: 'LEFT', pygame.K_RIGHT: 'RIGHT',
+            pygame.K_UP: 'UP', pygame.K_DOWN: 'DOWN', pygame.K_SPACE: 'SPACE',
+            pygame.K_MINUS: 'SPACE', pygame.K_ESCAPE: 'Q',
+            pygame.K_RETURN: 'RETURN', pygame.K_a:'A', pygame.K_b:'B',
+            pygame.K_c:'C', pygame.K_d:'D', pygame.K_e:'E', pygame.K_f:'F',
+            pygame.K_g:'G', pygame.K_h:'H', pygame.K_i:'I', pygame.K_j:'J',
+            pygame.K_k:'K', pygame.K_l:'L', pygame.K_m:'M', pygame.K_n:'N',
+            pygame.K_o:'O', pygame.K_p:'P', pygame.K_q:'Q', pygame.K_r:'R',
+            pygame.K_s:'S', pygame.K_t:'T', pygame.K_u:'U', pygame.K_v:'V',
+            pygame.K_w:'W', pygame.K_x:'X', pygame.K_y:'Y', pygame.K_z:'Z',
+            pygame.K_0:'0', pygame.K_1:'1', pygame.K_2:'2', pygame.K_3:'3',
+            pygame.K_4:'4', pygame.K_5:'5', pygame.K_6:'6', pygame.K_7:'7',
+            pygame.K_8:'8', pygame.K_9:'9',
+        }
         while True:
             for event in pygame.event.get():
                 if self.boom_on:
@@ -290,5 +306,7 @@ class Window_Pygame(Window):
         '''Do necessary steps to quit game'''
         pygame.display.quit()
         #sys.exit()
-    def user_prompt(self, message, button_options=BUTTON_OK_CANCEL, input_field=False):
+    def user_prompt(self, message,
+                    button_options=BUTTON_OK_CANCEL,
+                    input_field=False):
         raise NotImplementedError

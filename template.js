@@ -2,6 +2,7 @@
 let req = 
 {
     playerMove: "",
+    gameId: "",
 }
 
 

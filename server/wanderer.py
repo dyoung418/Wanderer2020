@@ -11,7 +11,12 @@ import collections
 import os.path
 import logging
 import re
-import json
+import imp
+try:
+    imp.find_module('simplejson')
+    import simplejson as json
+except ImportError:
+    import json as json
 from location import Location
 import pygame_frontend as frontend
 
@@ -103,7 +108,7 @@ class GameObj(object):
     def __repr__(self):
         return "GameObj('{0}', {1!s})".format(self._type, self._location)
 
-    def json_input(self):
+    def state_dict(self):
         return {'type':self._type, 'location':self._location}
 
     @property
@@ -133,7 +138,7 @@ class GameObj(object):
 
     def delete(self):
         '''Do any cleanup before I get deleted'''
-        self._frontend.remove_gameobj(self)
+        self._frontend.remove_gameobj(self) #not functional right now
         self._drawdata = None
 
     def draw(self, redraw_screen=False):
@@ -330,7 +335,7 @@ class Hero(Dynamic_GameObj):
     def __repr__(self):
         return "GameObj('{0}', {1!s}, {2!s})".format(self._type, self._location, self.alive)
 
-    def json_input(self):
+    def state_dict(self):
         return {'type':self._type, 'location':self._location, 'alive':self.alive}
 
     def move(self, vector):
@@ -468,7 +473,7 @@ class BabyMonster(Dynamic_GameObj):
         return "GameObj('{0}', {1!s}, {2!s}, {3!s})".format(self._type,
             self._location, self.mywall, self.spooked_location)
 
-    def json_input(self):
+    def state_dict(self):
         return {'type':self._type, 'location':self._location,
                 'mywall':self.mywall, 'spooked_location':self.spooked_location}
 
@@ -1055,7 +1060,7 @@ class Grid(object):
     def __str__(self):
         return self.string_view()
 
-    def json_input(self):
+    def state_dict(self):
         json_dict = {
             'num_rows':self.num_rows,
             'num_cols':self.num_cols,
@@ -1079,13 +1084,13 @@ class Grid(object):
             for c in range(self.num_cols):
                 cell_objs = []
                 for obj in self.get_cell(Location((c, r))).get_gameobjs():
-                    cell_objs.append(obj.json_input())
+                    cell_objs.append(obj.state_dict())
                 grid_row.append(cell_objs)
             json_dict['grid_objs'].append(grid_row)
         return json_dict
 
-    def game_state_json(self, separators=(',', ':'), **kwargs):
-        return json.dumps(self.json_input(), separators=separators, **kwargs)
+    def state_json(self, separators=(',', ':'), **kwargs):
+        return json.dumps(self.state_dict(), separators=separators, **kwargs)
 
     def string_view(self, highlight=None):
         '''Return sring of character representation of the grid
@@ -1699,6 +1704,12 @@ class GridBuilder(object):
         return True
 
 class GameDirector(object):
+    '''This is the top-level class of the wanderer game-logic module
+    other modules like the server module instantiate an instance of
+    this class to start playing a game.
+    The server sits in between the game logic module (this class) and
+    the front-end module and speaks to both
+    '''
     def __init__(self,
                  startlevel=1,
                  startscreen=None,
@@ -1706,6 +1717,9 @@ class GameDirector(object):
                  size='m'):
 
         # NON-STATE variables
+
+        #TODO have server call this instead only server should
+        #talk to front-end because servers and front-ends are paired
         self.frontend = frontend.getFrontEnd(size=size)
         self.mediator = Mediator()
         if startscreen:
@@ -1720,6 +1734,8 @@ class GameDirector(object):
         self.grid.solution_index = 0
         self.grid.playing_solution = False
         self.grid.input_queue = []
+        # TODO the place where we register the event handler is
+        # going to move to the server
         self.frontend.register_event('ANY', self.event_handler)
         while True:
             try:
@@ -1742,8 +1758,11 @@ class GameDirector(object):
                 self.frontend.quit()
                 return
 
+    def game_state_dict(self):
+        return self.grid.state_dict()
+
     def game_state_json(self, **kwargs):
-        return self.grid.game_state_json(**kwargs)
+        return self.grid.state_json(**kwargs)
 
     def next_level(self):
         self.grid.current_level += 1
@@ -1754,6 +1773,10 @@ class GameDirector(object):
     def restart(self):
         self.grid.current_level -= 1
         return self.next_level()
+
+    def read_new_level_num(self, level_num):
+        return read_new_level(
+            'screen{0}.txt'.format(level_num), level_num)
 
     def read_new_level(self, filename, level_num, grid=None, solution_file=None):
         if grid:
@@ -1772,6 +1795,7 @@ class GameDirector(object):
         self.reading_input = False
         self.input_level = False
         grid.update_status()
+        self.grid = grid
         return grid
 
     def event_handler(self, event):
