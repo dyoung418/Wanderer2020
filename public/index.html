@@ -31,6 +31,7 @@
             <source src="./assets/sfx/level-start.wav" type="audio/wav">
         </audio>
         <script src="script/sound.js"></script>
+        <script src="script/leveldata.js"></script>
     </head>
     <body onclick="playMusic();">
         <div id="game">
@@ -104,7 +105,7 @@
                     <div class="block" id="01-04"></div>
                     <div class="block" id="01-05"></div>
                     <div class="block" id="01-06"></div>
-                    <div class="block" id="01-07"></div>
+                    <div class="block stonewall" id="01-07"></div>
                     <div class="block" id="01-08"></div>
                     <div class="block" id="01-09"></div>
                     <div class="block" id="01-10"></div>
@@ -115,7 +116,7 @@
                     <div class="block" id="01-15"></div>
                     <div class="block" id="01-16"></div>
                     <div class="block" id="01-17"></div>
-                    <div class="block" id="01-18"></div>
+                    <div class="block monster" id="01-18"></div>
                     <div class="block" id="01-19"></div>
                     <div class="block" id="01-20"></div>
                     <div class="block" id="01-21"></div>
@@ -125,7 +126,7 @@
                     <div class="block" id="01-25"></div>
                     <div class="block" id="01-26"></div>
                     <div class="block" id="01-27"></div>
-                    <div class="block" id="01-28"></div>
+                    <div class="block babymonster" id="01-28"></div>
                     <div class="block" id="01-29"></div>
                     <div class="block" id="01-30"></div>
                     <div class="block" id="01-31"></div>
@@ -250,7 +251,7 @@
                     <div class="block" id="04-24"></div>
                     <div class="block" id="04-25"></div>
                     <div class="block" id="04-26"></div>
-                    <div class="block" id="04-27"></div>
+                    <div class="block leftarrow" id="04-27"></div>
                     <div class="block" id="04-28"></div>
                     <div class="block" id="04-29"></div>
                     <div class="block" id="04-30"></div>
@@ -359,7 +360,7 @@
                     <div class="block" id="07-07"></div>
                     <div class="block" id="07-08"></div>
                     <div class="block" id="07-09"></div>
-                    <div class="block" id="07-10"></div>
+                    <div class="block money" id="07-10"></div>
                     <div class="block" id="07-11"></div>
                     <div class="block" id="07-12"></div>
                     <div class="block" id="07-13"></div>
@@ -367,7 +368,7 @@
                     <div class="block" id="07-15"></div>
                     <div class="block" id="07-16"></div>
                     <div class="block" id="07-17"></div>
-                    <div class="block" id="07-18"></div>
+                    <div class="block teleporter" id="07-18"></div>
                     <div class="block" id="07-19"></div>
                     <div class="block" id="07-20"></div>
                     <div class="block" id="07-21"></div>
@@ -404,7 +405,7 @@
                     <div class="block" id="08-10"></div>
                     <div class="block" id="08-11"></div>
                     <div class="block" id="08-12"></div>
-                    <div class="block" id="08-13"></div>
+                    <div class="block poison" id="08-13"></div>
                     <div class="block" id="08-14"></div>
                     <div class="block" id="08-15"></div>
                     <div class="block" id="08-16"></div>
@@ -772,69 +773,73 @@
                     <div class="title2">
                         <h2 @mouseover="hover()" >L</h2><h2 @mouseover="hover()" >E</h2><h2 @mouseover="hover()" >V</h2><h2 @mouseover="hover()" >E</h2><h2 @mouseover="hover()" >L</h2><h2 @mouseover="hover()" > </h2><h2 @mouseover="hover()" >S</h2><h2 @mouseover="hover()" >E</h2><h2 @mouseover="hover()" >L</h2><h2 @mouseover="hover()" >E</h2><h2 @mouseover="hover()" >C</h2><h2 @mouseover="hover()" >T</h2>
                     </div>
+                    <div id="level-details">
+                        <div id="level-title">Hover for Details</div>
+                        <div id="level-author">EMPTY</div>
+                    </div>
                     <div class="grid">
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(1)">1</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(2)">2</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(3)">3</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(4)">4</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(5)">5</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(6)">6</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(7)">7</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(8)">8</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(9)">9</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(10)">10</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(11)">11</button>
-                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hover()"  @click="newLevel(12)">12</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(13)">13</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(14)">14</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(15)">15</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(16)">16</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(17)">17</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(18)">18</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(19)">19</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(20)">20</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(21)">21</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(22)">22</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(23)">23</button>
-                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hover()"  @click="newLevel(24)">24</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(25)">25</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(26)">26</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(27)">27</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(28)">28</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(29)">29</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(30)">30</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(31)">31</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(32)">32</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(33)">33</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(34)">34</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(35)">35</button>
-                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hover()"  @click="newLevel(36)">36</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(37)">37</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(38)">38</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(39)">39</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(40)">40</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(41)">41</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(42)">42</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(43)">43</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(44)">44</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(45)">45</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(46)">46</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(47)">47</button>
-                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hover()"  @click="newLevel(48)">48</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(49)">49</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(50)">50</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(51)">51</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(52)">52</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(53)">53</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(54)">54</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(55)">55</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(56)">56</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(57)">57</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(58)">58</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(59)">59</button>
-                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hover()"  @click="newLevel(60)">60</button>
-                        <button v-if="levelData.levelPage == 6" class="level-button" @mouseover="hover()"  @click="newLevel(61)">61</button>
-                        <button v-if="levelData.levelPage == 6" class="level-button" @mouseover="hover()"  @click="newLevel(62)">62</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(1)" @mouseleave="unHoverLevel()" @click="newLevel(1)">1</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(2)" @mouseleave="unHoverLevel()" @click="newLevel(2)">2</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(3)" @mouseleave="unHoverLevel()" @click="newLevel(3)">3</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(4)" @mouseleave="unHoverLevel()" @click="newLevel(4)">4</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(5)" @mouseleave="unHoverLevel()" @click="newLevel(5)">5</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(6)" @mouseleave="unHoverLevel()" @click="newLevel(6)">6</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(7)" @mouseleave="unHoverLevel()" @click="newLevel(7)">7</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(8)" @mouseleave="unHoverLevel()" @click="newLevel(8)">8</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(9)" @mouseleave="unHoverLevel()" @click="newLevel(9)">9</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(10)" @mouseleave="unHoverLevel()" @click="newLevel(10)">10</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(11)" @mouseleave="unHoverLevel()" @click="newLevel(11)">11</button>
+                        <button v-if="levelData.levelPage == 1" class="level-button" @mouseover="hoverLevel(12)" @mouseleave="unHoverLevel()" @click="newLevel(12)">12</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(13)" @mouseleave="unHoverLevel()" @click="newLevel(13)">13</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(14)" @mouseleave="unHoverLevel()" @click="newLevel(14)">14</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(15)" @mouseleave="unHoverLevel()" @click="newLevel(15)">15</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(16)" @mouseleave="unHoverLevel()" @click="newLevel(16)">16</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(17)" @mouseleave="unHoverLevel()" @click="newLevel(17)">17</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(18)" @mouseleave="unHoverLevel()" @click="newLevel(18)">18</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(19)" @mouseleave="unHoverLevel()" @click="newLevel(19)">19</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(20)" @mouseleave="unHoverLevel()" @click="newLevel(20)">20</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(21)" @mouseleave="unHoverLevel()" @click="newLevel(21)">21</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(22)" @mouseleave="unHoverLevel()" @click="newLevel(22)">22</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(23)" @mouseleave="unHoverLevel()" @click="newLevel(23)">23</button>
+                        <button v-if="levelData.levelPage == 2" class="level-button" @mouseover="hoverLevel(24)" @mouseleave="unHoverLevel()" @click="newLevel(24)">24</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(25)" @mouseleave="unHoverLevel()" @click="newLevel(25)">25</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(26)" @mouseleave="unHoverLevel()" @click="newLevel(26)">26</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(27)" @mouseleave="unHoverLevel()" @click="newLevel(27)">27</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(28)" @mouseleave="unHoverLevel()" @click="newLevel(28)">28</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(29)" @mouseleave="unHoverLevel()" @click="newLevel(29)">29</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(30)" @mouseleave="unHoverLevel()" @click="newLevel(30)">30</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(31)" @mouseleave="unHoverLevel()" @click="newLevel(31)">31</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(32)" @mouseleave="unHoverLevel()" @click="newLevel(32)">32</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(33)" @mouseleave="unHoverLevel()" @click="newLevel(33)">33</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(34)" @mouseleave="unHoverLevel()" @click="newLevel(34)">34</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(35)" @mouseleave="unHoverLevel()" @click="newLevel(35)">35</button>
+                        <button v-if="levelData.levelPage == 3" class="level-button" @mouseover="hoverLevel(36)" @mouseleave="unHoverLevel()" @click="newLevel(36)">36</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(37)" @mouseleave="unHoverLevel()" @click="newLevel(37)">37</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(38)" @mouseleave="unHoverLevel()" @click="newLevel(38)">38</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(39)" @mouseleave="unHoverLevel()" @click="newLevel(39)">39</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(40)" @mouseleave="unHoverLevel()" @click="newLevel(40)">40</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(41)" @mouseleave="unHoverLevel()" @click="newLevel(41)">41</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(42)" @mouseleave="unHoverLevel()" @click="newLevel(42)">42</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(43)" @mouseleave="unHoverLevel()" @click="newLevel(43)">43</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(44)" @mouseleave="unHoverLevel()" @click="newLevel(44)">44</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(45)" @mouseleave="unHoverLevel()" @click="newLevel(45)">45</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(46)" @mouseleave="unHoverLevel()" @click="newLevel(46)">46</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(47)" @mouseleave="unHoverLevel()" @click="newLevel(47)">47</button>
+                        <button v-if="levelData.levelPage == 4" class="level-button" @mouseover="hoverLevel(48)" @mouseleave="unHoverLevel()" @click="newLevel(48)">48</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(49)" @mouseleave="unHoverLevel()" @click="newLevel(49)">49</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(50)" @mouseleave="unHoverLevel()" @click="newLevel(50)">50</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(51)" @mouseleave="unHoverLevel()" @click="newLevel(51)">51</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(52)" @mouseleave="unHoverLevel()" @click="newLevel(52)">52</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(53)" @mouseleave="unHoverLevel()" @click="newLevel(53)">53</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(54)" @mouseleave="unHoverLevel()" @click="newLevel(54)">54</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(55)" @mouseleave="unHoverLevel()" @click="newLevel(55)">55</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(56)" @mouseleave="unHoverLevel()" @click="newLevel(56)">56</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(57)" @mouseleave="unHoverLevel()" @click="newLevel(57)">57</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(58)" @mouseleave="unHoverLevel()" @click="newLevel(58)">58</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(59)" @mouseleave="unHoverLevel()" @click="newLevel(59)">59</button>
+                        <button v-if="levelData.levelPage == 5" class="level-button" @mouseover="hoverLevel(60)" @mouseleave="unHoverLevel()" @click="newLevel(60)">60</button>
+                        <button v-if="levelData.levelPage == 6" class="level-button" @mouseover="hoverLevel(61)" @mouseleave="unHoverLevel()" @click="newLevel(61)">61</button>
+                        <button v-if="levelData.levelPage == 6" class="level-button" @mouseover="hoverLevel(62)" @mouseleave="unHoverLevel()" @click="newLevel(62)">62</button>
                     </div>
                     <div class="pagebuttons">
                         <button v-if="levelData.levelPage == 1" class="dead page-button"   @click="deny">Start</button>
@@ -851,6 +856,65 @@
                     <div class="backbutton">
                         <button class="level-button" @mouseover="hover()"  @click="menuButton(1)">Back</button>
                     </div>
+                </div>
+            </div>
+
+            <div v-if="page == 3" id="about">
+                <div class="title2">
+                    <h2 @mouseover="hover()" >A</h2><h2 @mouseover="hover()" >B</h2><h2 @mouseover="hover()" >O</h2><h2 @mouseover="hover()" >U</h2><h2 @mouseover="hover()" >T</h2>
+                </div>
+                <div class="pagebuttons">
+                    <button class="level-button" @mouseover="hover()"  @click="aboutPages(1)">Credits</button>
+                    <button class="level-button" @mouseover="hover()"  @click="aboutPages(2)">Game Play</button>
+                    <button class="level-button" @mouseover="hover()"  @click="aboutPages(3)">Development</button>
+                    <button class="level-button" @mouseover="hover()"  @click="menuButton(1)">Back</button>
+                </div>
+                <div class="about-page" v-if="about == 1">
+                    <h3>Credits</h3>
+                    <p>Wanderer2010 is a python re-write of a game originally created by Steven Shipway in 1988.  He wrote the original in C on a sun/3-160 at Warwick University.</p>  
+                    <p>A github repository of his original (which can be compiled under Linux) is here.</p>
+                    <a href="https://github.com/sshipway/wanderer">Original Code</a>
+                    
+                </div>
+                <div class="about-page" v-if="about == 2">
+                    <h3>Game Play</h3>
+                    <p>The goal of the game is to get all the money bags and get to the exit. Each level however is laced with traps that will prohibit you from gathering all the money you need. You have to think ahead and look for unwanted affects of every action.
+                    <h4>The Blocks</h4>
+                    <h4>Money</h4>
+                    <p>You must collect each of these in order to go through the exit and complete the level. Be careful that you don't block yourself from reaching one or it's game over!</p>
+                    <h4>Exit</h4>
+                    <p>Successfully beat a level by reaching this after collecting all the money bags.</p>
+                    <h4>Wall</h4>
+                    <p>Walls don't allow objects to pass through them. They come in stone or brick. The latter of which can be blown up by bombs.</p>
+                    <h4>Ramp</h4>
+                    <p>Ramps are walls that when hit by a falling rock, shooting arrow or balloon, can allow the object to slide off of them into another row or column.</p>
+                    <h4>Dirt</h4>
+                    <p>Dirt can be collected by the player when passed over and increments your score.</p>
+                    <h4>Poison</h4>
+                    <p>Poison is an instant game over!</p>
+                    <h4>Rock</h4>
+                    <p>Rocks fall with gravity when something moves by them.</p>
+                    <h4>Arrow</h4>
+                    <p>Arrows shoot in one direction when something moves by them.</p>
+                    <h4>Teleporter</h4>
+                    <p>Teleporters will "teleport" something to their other end!</p>
+                    <h4>Monster</h4>
+                    <p>Monsters move towards the player with every move and will kill the player if they reach you. They can be killed in every way the player can be killed.</p>
+                    <h4>Baby Monster</h4>
+                    <p>Baby monsters run against a wall, and need to be put into Cages, which turn them into nessisary money bags for completing the level. Because they're nessisary for completing the level, they cannot be killed like regular monsters.</p>
+                    <h4>Balloon</h4>
+                    <p>Ballons rise when something moves by them.</p>
+                    <h4>Rug</h4>
+                    <p>Rugs can stop baby monsters from moving.</p>
+                    </p>
+                </div>
+                <div class="about-page" v-if="about == 3">
+                    <h3>Development</h3>
+                    <p>This project is a colab between Andrew Young and his father, Danny Young.</p>
+                    <p>Andrew:</p>
+                    <p>In 2008, my father decided to revisit this game in order to recode it in Python.</p>
+                    <p>Watching him do that as a kid inspired me to learn a bit of python as a 10 year old.</p>
+                    <p>I'm now a computer science major in college. This project is a way for my dad and I to work together and revist an old project.</p>
                 </div>
             </div>
             

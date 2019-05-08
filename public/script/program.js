@@ -2,6 +2,7 @@ var game = new Vue({
     el: '#game',
     data:
     {
+        about: 0,
         page: 1,
         menuData: {
             menuNum: 1,
@@ -26,6 +27,24 @@ var game = new Vue({
             {
                 this.playSound(0,0);
             }
+            if (page == 3)
+            {
+                this.about = 0;
+            }
+        },
+        aboutPages(page)
+        {
+            if (this.about != page)
+            {
+                this.about = page;
+                this.levelData.levelPage = 1;
+                this.playSound(0,0);
+            }
+            else
+            {
+                this.playSound(3,0);
+            }
+            
         },
         hover()
         {
@@ -118,143 +137,21 @@ var game = new Vue({
         hoverLevel(id)
         {
             this.hover();
-            var element = document.getElementById(id);
-            var levelName = "";
-            switch (id)
-            {
-                case "lev1":
-                levelName = "Unplug the Cistern #1";
-                break;
-                case "lev2":
-                levelName = "Unplug the Cistern #2";
-                break;
-                case "lev3":
-                levelName = "My favorite one of the lot - Steve";
-                break;
-                case "lev4":
-                levelName = "Hanging by a thread";
-                break;
-                case "lev6":
-                levelName = "Yet another Beckett screen";
-                break;
-                case "lev10":
-                levelName = "Meet the Baby Monsters!";
-                break;
-                case "lev11":
-                levelName = "play@nl.cwi is responsible for this mess";
-                break;
-                case "lev12":
-                levelName = "Get a load of this one then";
-                break;
-                case "lev13":
-                levelName = "Return of the Dutch designer";
-                break;
-                case "lev14":
-                levelName = "Is there no stopping these Dutchmen?  They'll be flying next";
-                break;
-                case "lev15":
-                levelName = "The Aussies start to move in";
-                break;
-                case "lev16":
-                levelName = "All but the one";
-                break;
-                case "lev18":
-                levelName = "And another offering from Oz";
-                break;
-                case "lev19":
-                levelName = "More from the Netherlands";
-                break;
-                case "lev20":
-                levelName = "and still more (but this is the last of his)";
-                break;
-                case "lev21":
-                levelName = "Max moves in Under:S,40,16,0,1 Under:S,40,16,0,1 Under:S,40,16,0,1 Under:S,40,16,0,1 Under:S,40,16,0,1";
-                break;
-                case "lev22":
-                levelName = "and then moves out again";
-                break;
-                case "lev23":
-                levelName = "Introducing THE BALLOONS!";
-                break;
-                case "lev24":
-                levelName = "The Shrine of Quetzacoatl";
-                break;
-                case "lev26":
-                levelName = "Revitalization of the Dutch";
-                break;
-
-                case "lev27":
-                levelName = "Revived from the dead";
-                break;
-                case "lev29":
-                levelName = "Kenton's swan song";
-                break;
-                case "lev30":
-                levelName = "Who's is it?";
-                break;
-                case "lev31":
-                levelName = "Alan Bland did this and the Amiga port";
-                break;
-                case "lev34":
-                levelName = "Cause and Effect";
-                break;
-                case "lev26":
-                levelName = "The Combination Lock";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-                case "lev26":
-                levelName = "";
-                break;
-
-                
-                default:
-                levelName = "Unnamed";
-                break;
-            }
-            element.innerHTML = levelName;
+            var element = document.getElementById("level-title");
+            element.innerHTML = LEVELS["level" + id].title;
+            element.style.color = "rgba(255, 255, 255, 0.527)";
+            element = document.getElementById("level-author");
+            element.innerHTML = LEVELS["level" + id].author;
+            element.style.color = "rgba(150, 150, 150,.4)";
         },
-        unHoverLevel(id)
+        unHoverLevel()
         {
-            var element = document.getElementById(id);
-            element.innerText = id.substring(3, id.length);
+            var element = document.getElementById("level-title");
+            element.innerText = "Hover for Details";
+            element.style.color = "rgba(255, 255, 255, 0)";
+            element = document.getElementById("level-author");
+            element.innerHTML = "EMPTY";
+            element.style.color = "rgba(160, 160, 160,0)";
         },
         deny()
         {
