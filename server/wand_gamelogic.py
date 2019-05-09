@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from __future__ import with_statement, print_function, unicode_literals
 from __future__ import division
 from __future__ import absolute_import
@@ -18,7 +17,7 @@ try:
 except ImportError:
     import json as json
 from location import Location
-import pygame_frontend as frontend
+
 
 sys.py3kwarning = True  #Turn on Python 3 warnings
 

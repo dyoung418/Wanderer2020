@@ -25,7 +25,7 @@ from pymongo import MongoClient
 import bson.json_util
 from bson.objectid import ObjectId
 import json
-import wanderer
+from wand_gamelogic import GameDirector
 
 app = flask.Flask(__name__)
 
