@@ -20,7 +20,8 @@ interface.
 '''
 
 import flask
-import pymongo
+from flask import request
+from pymongo import MongoClient
 import bson.json_util
 from bson.objectid import ObjectId
 import json
@@ -28,20 +29,41 @@ import wanderer
 
 app = flask.Flask(__name__)
 
-client = pymongo.MongoClient('localhost', 27017)
-gameDB = client['gameDB'].get_collection
+client = MongoClient('localhost', 27017)
+gameDB = client['gameDB']
 gameCollection = gameDB['gameCollection']
 
 # TODO Make this into a class so that the interface with
 # the front-end can be standardized.
 
-gDirector = wanderer.GameDirector()
-flask.request.
-@app.route('/wanderer/newlevel')
+#gDirector = wanderer.GameDirector()
+
+@app.route('/wanderer/newlevel', methods=['POST'])
 def newlevel():
     #payload = bson.json_util.loads(flask.request.get_json())
-    payload = flask.Request.data
+    payload = request.form
+    print(payload)
+    #return 'mischief managed'
+    gDirector = wanderer.GameDirector()
+    gDirector.read_new_level_num(int(payload['level']))
+    game_state = gDirector.game_state_dict()
+    gameId = gameCollection.insert_one(game_state).inserted_id
+    response = {
+        'gameId': str(gameId),
+        'level': [],
+    }
+    for rowList in game_state['grid_objs']:
+        for cell in rowList:
+            response['level'].append({
+                'row': cell.location[1],
+                'col': cell.location[0],
+                'add': cell.type,
+                })
+    return response
+
+if False:
     if 'level' in payload:
+        gDirector = wanderer.GameDirector()
         gDirector.read_new_level_num(int(payload['level']))
         game_state = gDirector.game_state_dict()
         gameId = gameCollection.insert_one(game_state).inserted_id
@@ -50,7 +72,7 @@ def newlevel():
             'level': [],
         }
         for rowList in game_state['grid_objs']:
-            for cell in rowList):
+            for cell in rowList:
                 response['level'].append({
                     'row': cell.location[1],
                     'col': cell.location[0],
@@ -66,12 +88,18 @@ def move():
     payload = flask.Request.data
     if not ('playerMove' in payload) and ('gameId' in payload):
         flask.abort('404')
-    game_state = gameCollection.find_one({"_id": ObjectId(payload['gameId'])})
+    game_state = gameCollection.find_one({
+        "_id": ObjectId(payload['gameId'])
+        })
     gDirector.restore_state(game_state)
-    gDirector.event_handler(payload['playerMove']) # game logic does the move...
+    # game logic does the move...
+    gDirector.event_handler(payload['playerMove'])
     game_state = gDirector.game_state_dict()
-    gameCollection.find_one({"_id": ObjectId(payload['gameId'])}).update(game_state) #update game_state in mongo
-    updates = gDirector.get_display_updates() # get display updates for front-end
+    gameCollection.find_one({
+        "_id": ObjectId(payload['gameId'])
+        }).update(game_state) #update game_state in mongo
+    # get display updates for front-end
+    updates = gDirector.get_display_updates()
     response = {
         'updates': updates,
     }

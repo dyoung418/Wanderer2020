@@ -43,6 +43,7 @@ Wanderer2020 is primarily a web-based version of wanderer, but it has been desig
 pip install flask
 pip install bson 
 pip install pymongo
+pip install simplejson
 ```
 
 ### Mongodb Server <a id="mongodb"></a>
