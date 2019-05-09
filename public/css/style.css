@@ -37,7 +37,7 @@ body
     font-size: 1.75em;
     text-align: center;
     color: rgba(131, 131, 131, 0.904);
-    background: radial-gradient(rgb(36, 3, 97),rgb(25, 7, 58));
+    background: radial-gradient(rgb(48, 7, 124),rgb(35, 4, 92));
     background-size: cover;
     background-repeat: no-repeat;
     transition: font-size .1s ease-in-out 0s, padding .1s ease-in-out 0s, background .1s ease-in-out 0s;
@@ -88,7 +88,7 @@ body
     background: radial-gradient(rgb(65, 19, 150),rgb(38, 16, 99));
     background-repeat: repeat;
     background-size: cover;
-    transition: font-size .1s ease-in-out 0s, padding .1s ease-in-out 0s, background .1s ease-in-out 0s;
+    transition: font-size .1s ease-in-out 0s, padding .1s ease-in-out 0s, background .2s ease-in-out 0s;
 }
 
 .page-button
@@ -127,7 +127,6 @@ body
 {
     color: white;
     background: radial-gradient(rgb(102, 63, 175),rgb(42, 22, 97));
-    background-size: cover;
 }
 
 .page-button:hover
@@ -341,9 +340,9 @@ a:hover{
     margin: 0 auto;
     margin-top: 10px;
     margin-bottom: 30px;
-    padding: 10px;
-    border-radius: 5px;
-    background: url("../assets/back1.gif");
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(170, 169, 173, 0.37);
     background-size: cover;
     color: white;
 }
@@ -385,4 +384,45 @@ h3{
     margin-top: 30px;
     color: white;
     text-decoration: underline;
+}
+
+.opposite-grid
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+h5
+{
+    font-size: 1em;
+    margin: 0px;
+}
+
+#main-level-menu
+{
+    display: flex;
+    justify-content: space-around;
+    width: 90%;
+    background: rgba(44, 27, 88, 0.623);
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.main-level-menu-button
+{
+    display: block;
+    border: 0px;
+    text-transform: uppercase;
+    background: rgba(44, 27, 88, 0);
+    color: rgb(167, 167, 167);
+    font-size: 1.2em;
+    text-align: center;
+    width: 100%;
+}
+
+.main-level-menu-button:hover
+{
+    color: rgb(255, 255, 255);
 }
