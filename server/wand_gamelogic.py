@@ -20,16 +20,9 @@ from location import Location
 
 
 sys.py3kwarning = True  #Turn on Python 3 warnings
-
-#import future_builtins
-
-#import multiprocessing, Decimal, collections, numbers, fractions
-#from abc import ABCMeta, abstractmethod, abstractproperty
-
 sys.setrecursionlimit(2000)
 
 # Globals
-#DEBUGFLAG = True
 LOG_INDENT = 1
 
 # Constants
@@ -37,8 +30,6 @@ SOLUTION_PLAYBACK_DELAY = 25
 PUSHED, FALL, MOVE = list(range(3))
 (NO, YES, PUSH, SLIDE_ROCK, DIE, WRAP, EXIT, TELEPORT,
  CAPTURE, BOMB, CHECK_STANDSTILL, COEXIST, SPOOK) = list(range(13))
-IMAGEDIR = 'images'
-SOUNDDIR = 'sounds'
 LEVELDIR = 'screens'
 TESTDIR = 'tests'
 KEYBOARD_EVENT, MOUSE_EVENT = list(range(2))
@@ -59,8 +50,192 @@ PLAYER_MOVES = frozenset(['LEFT', 'H', 'h', 'RIGHT', 'L', 'l',
                           'UP', 'K', 'k', 'DOWN', 'J', 'j',
                           'SPACE', ' ', '-'])
 
+class GameDirector(object):
+    '''This is the top-level class of the wanderer game-logic
+    module other modules like the server module instantiate an
+    instance of this class to start playing a game. The server
+    sits in between the game logic module (this class) and
+    the front-end module and speaks to both
+    '''
+    def __init__(self, level_num=None, state=None):
+        '''Return a GameDirector object.  Note that the
+        read_new_leve() method or restore_state() method
+        is also required for a properly initialized game'''
+
+        # NON-STATE variables
+        self.mediator = Mediator()
+        # the Grid() below needs initialization in either
+        # retorst_state() or read_new_leve(), but put one
+        # here anyway so we don't have to test for the presence
+        # of self.grid in every other method
+        self.grid = Grid() 
+
+        if state:
+            self.restore_state(state)
+        elif level_num:
+            self.read_new_level_num(level_num)
+        
+        
+        # TODO the place where we register the event handler is
+        # going to move to the server
+
+        # self.frontend.register_event('ANY', self.event_handler)
+        # while True:
+        #     try:
+        #         self.frontend.start_event_loop()
+        #     except LevelExitException:
+        #         logging.info("Level {0} successfully exited! "\
+        #                      "Score is {1}".format(self.grid.current_level, self.grid.score))
+        #         if self.grid.recorded_moves:
+        #             logging.info("Moves recorded on level {1}: \n {0}".format(
+        #                 ''.join(self.grid.recorded_moves), self.grid.current_level))
+        #         self.next_level()
+        #     except HeroDiedException:
+        #         self.hero.alive = False
+        #         self.grid.update_status() #DAY Add player death reason
+        #     except ExitGame:
+        #         if self.grid.recorded_moves:
+        #             logging.info("Moves recorded in level{1}: \n {0}".format(
+        #                 ''.join(self.grid.recorded_moves), self.grid.current_level))
+        #         self.frontend.quit()
+        #         return
+
+    def restore_state(self, state):
+        raise NotImplementedError
+
+    def game_state_dict(self):
+        return self.grid.state_dict()
+
+    def game_state_json(self, **kwargs):
+        return self.grid.state_json(**kwargs)
+
+    def read_new_level(self, filename, level_num, solution_file=None):
+        if self.grid:
+            self.grid.delete()
+        self.grid = GridBuilder(self.mediator)\
+            .read_level(filename, level_num, solution_file=solution_file)
+        self.mediator.set_grid(self.grid)
+        self.grid.set_mediator(self.mediator)
+        self.hero = self.grid.hero
+        self.grid.solution_index = 0
+        self.grid.playing_solution = False
+        self.grid.input_queue = []
+        self.grid.recorded_moves = []
+        self.reading_input = False
+        self.input_level = False
+        self.grid.update_status()
+        self.grid.current_level = level_num 
+        self.grid.recorded_moves = []
+        self.grid.solution_index = 0
+        self.grid.playing_solution = False
+        self.grid.input_queue = []
+
+    def next_level(self):
+        self.grid.current_level += 1
+        logging.info("Loading level {0}".format(self.grid.current_level))
+        return self.read_new_level('screen{0}.txt'.format(self.grid.current_level),
+                            self.grid.current_level, self.grid)
+
+    def restart(self):
+        self.grid.current_level -= 1
+        return self.next_level()
+
+    def read_new_level_num(self, level_num):
+        read_new_level(
+            'screen{0}.txt'.format(level_num), level_num)
+
+    def event_handler(self, event):
+        logging.debug("   GameDirector event_handler received event {0}".format(event))
+        if self.grid.time and (self.grid.time == 0):
+            self.grid.lost_game("You died by running out of time")
+        if self.reading_input and event != 'RETURN':
+            self.grid.input_queue.append(event)
+            if self.input_level:
+                self.grid.update_status(
+                    "Level: {0}".format(''.join(self.grid.input_queue)))
+            return
+        if event in PLAYER_MOVES:
+            if event in ['LEFT', 'H', 'h', b'H', b'h']:
+                self.grid.recorded_moves.append('H')
+                self.hero.move(DIR_WEST)
+            elif event in ['RIGHT', 'L', 'l', b'L', b'l']:
+                self.grid.recorded_moves.append('L')
+                self.hero.move(DIR_EAST)
+            elif event in ['UP', 'K', 'k', b'K', b'k']:
+                self.grid.recorded_moves.append('K')
+                self.hero.move(DIR_NORTH)
+            elif event in ['DOWN', 'J', 'j', b'J', b'j']:
+                self.grid.recorded_moves.append('J')
+                self.hero.move(DIR_SOUTH)
+            elif event in ['SPACE', ' ', '-', b' ', b'-']:
+                #DAY - implement clicking down the clock
+                self.grid.recorded_moves.append('-')
+                pass
+            self.move_monsters()
+            self.grid.change_time()
+
+        elif event in ['Q', 'q', b'Q', b'q']:
+            raise ExitGame
+        elif event in ['N', 'n', b'N', b'n']:
+           self.grid = self.next_level()
+        elif event in ['R', 'r', b'R', b'r']:
+            self.grid = self.restart()
+        elif event in ['S', 's', b'S', b's']: # Play full solution
+            if self.grid.solution:
+                if self.grid.playing_solution:
+                    self.grid.playing_solution = False
+                else:
+                    self.grid.playing_solution = True
+                    self.play_next_solution()
+            else:
+                logging.debug("There is no solution to play")
+        elif event in ['P', 'p', b'P', b'p']: # Play one step of solution
+            if self.grid.solution:
+                self.play_next_solution()
+            else:
+                logging.debug("There is no solution step to play")
+        elif event in ['O', 'o', b'O', b'o']: # Skip to level specified
+            self.reading_input = True
+            self.input_level = True
+            self.grid.update_status("Level: ")
+            return
+        elif event == 'RETURN': # End reading input
+            if self.input_level:
+                try:
+                    self.grid.current_level = int(''.join(self.grid.input_queue))-1
+                    self.grid.input_queue = []
+                    self.grid = self.next_level()
+                except ValueError:
+                    self.grid.update_status("Error, must enter an integer")
+                finally:
+                    self.input_level = False
+            self.reading_input = False
+
+        if self.grid.playing_solution:
+            self.play_next_solution()
+        self.grid.update_status()
+
+        #logging.debug("\n{0}\n".format(self.game_state_json(indent=' '))) #DEBUG
+
+    def move_monsters(self):
+        for b in self.grid.baby_monsters:
+            b.move()
+        for m in self.grid.hungry_monsters:
+            m.move()
+
+    def play_next_solution(self):
+        num_moves = self.grid.solution_count
+        if self.grid.solution_index >= num_moves:
+            self.grid.playing_solution = False
+        else:
+            # TODO: refactor the playing of solution into the
+            #       server
+            self.frontend.generate_event(self.grid.solution[self.grid.solution_index])
+            self.grid.solution_index += 1
+
+
 class GameObj(object):
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
+    def __init__(self, gameobj_type, mediator, grid, location):
 
         # STATE variables
         self._type = gameobj_type   # a single-character string denoting type
@@ -69,7 +244,6 @@ class GameObj(object):
         self.alive = True
 
         # NON-STATE variable
-        self._frontend = new_frontend # Front End object
         self._mediator = mediator # Handles all obj-to-obj interactions
         self._grid = grid # aggregation of grid objects which store list of
         #     these are non-state because they are covered by _type or _location
@@ -77,12 +251,7 @@ class GameObj(object):
         self._pushvectors = None # must be initialized by subclasses
         self.causewake = True   #i.e. do I cause a wake, as in the wake of a boat
         self._cell = self._grid.get_cell(self._location)
-        # Call the Window object to initialize a data structure which will hold
-        # info needed to draw me.  I (GameObj) don't know the format of this
-        # data, but I'll hold it in self._drawdata and pass it to my Window
-        # object which will know how to use it to draw me on whatever specific
-        # window system is being used.
-        self._drawdata = self._frontend.initialize_gameobj_data(self)
+        
         #     these are non-state because they only changes within a move, not between
         self.standstill = True  #e.g. A rock starting at standstill doesn't fall into hero
         # being_pushed: a flag to not falsely trigger falls from origin place when
@@ -137,12 +306,13 @@ class GameObj(object):
 
     def delete(self):
         '''Do any cleanup before I get deleted'''
-        self._frontend.remove_gameobj(self) #not functional right now
-        self._drawdata = None
+        pass
 
     def draw(self, redraw_screen=False):
         '''Draw self at current location using my reference to Window obj'''
-        self._frontend.draw_obj(self, redraw=redraw_screen)
+        pass
+        # TODO: Enter this item on a queue of changes to be made
+        #self._frontend.draw_obj(self, redraw=redraw_screen)
 
     def react_to_visitor(self, movetype, special_instructions=None):
         '''Another object just moved into my space -- React to it (usually by dying)'''
@@ -164,16 +334,14 @@ class GameObj(object):
         logging.debug("        DIE - {0}".format(self))
         self.alive = False
         self._cell.remove_gameobj(self)
-        self._frontend.remove_gameobj(self)
-        self._drawdata = None #remove last reference to this var
 
 
 class Static_GameObj(GameObj):
     '''Game objects that don't move or change (other than dying).
     In the future, I may implement FLYWEIGHT pattern on these, but for now
     it is not worth the effort.'''
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
-        super(Static_GameObj, self).__init__(new_frontend, gameobj_type, mediator,
+    def __init__(self, gameobj_type, mediator, grid, location):
+        super(Static_GameObj, self).__init__(gameobj_type, mediator,
                                              grid, location)
 class Space(Static_GameObj):
     '''Blank space'''
@@ -242,8 +410,8 @@ class Ramp(Static_GameObj):
             return False
 
 class Bomb(Static_GameObj):
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
-        super(Bomb, self).__init__(new_frontend, gameobj_type, mediator,
+    def __init__(self, gameobj_type, mediator, grid, location):
+        super(Bomb, self).__init__(gameobj_type, mediator,
                                    grid, location)
     def react_to_visitor(self, movetype, special_instructions=None):
         c = self._cell
@@ -253,14 +421,16 @@ class Bomb(Static_GameObj):
                 for obj in cell.get_gameobjs():
                     if obj.obj_type not in self._mediator.unbombables:
                         obj.die()
-        self._frontend.turn_boom_on(self._location)
+        # TODO: Change turn_boom_on into a entry into the
+        #       queue of updates to be made
+        #self._frontend.turn_boom_on(self._location)
         self.die()
     def fall(self, location):
         return False
 
 class Dynamic_GameObj(GameObj):
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
-        super(Dynamic_GameObj, self).__init__(new_frontend, gameobj_type, mediator,
+    def __init__(self, gameobj_type, mediator, grid, location):
+        super(Dynamic_GameObj, self).__init__(gameobj_type, mediator,
                                               grid, location)
     def fall(self, location):       # Dynamic_GameObj
         '''Fall into location if possible'''
@@ -299,7 +469,9 @@ class Dynamic_GameObj(GameObj):
         self._cell = self._grid.get_cell(new_location)
         old_cell.remove_gameobj(self)
         self._cell.insert_gameobj(self)
-        self._frontend.update_obj_location(self)
+        # TODO: Change this to enter an item into the queue of updates
+        #       to be made
+        #self._frontend.update_obj_location(self)
         # Redraw myself (possibly animate the move). redraw_screen=True means
         #   this spot drawn, then FPS is waited
         self.draw(redraw_screen=True)
@@ -327,8 +499,8 @@ class Dynamic_GameObj(GameObj):
                 old_cell.cause_wake(new_location - old_location)
 
 class Hero(Dynamic_GameObj):
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
-        super(Hero, self).__init__(new_frontend, gameobj_type, mediator,
+    def __init__(self, gameobj_type, mediator, grid, location):
+        super(Hero, self).__init__(gameobj_type, mediator,
                                    grid, location)
 
     def __repr__(self):
@@ -355,8 +527,8 @@ class Hero(Dynamic_GameObj):
 
 class Rock(Dynamic_GameObj):
 
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
-        super(Rock, self).__init__(new_frontend, gameobj_type, mediator,
+    def __init__(self, gameobj_type, mediator, grid, location):
+        super(Rock, self).__init__(gameobj_type, mediator,
                                    grid, location)
         self._fallvector = DIR_SOUTH
         self._pushvectors = [DIR_WEST, DIR_EAST]
@@ -387,8 +559,8 @@ class Rock(Dynamic_GameObj):
 
 class Arrow(Dynamic_GameObj):
 
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
-        super(Arrow, self).__init__(new_frontend, gameobj_type, mediator,
+    def __init__(self, gameobj_type, mediator, grid, location):
+        super(Arrow, self).__init__(gameobj_type, mediator,
                                     grid, location)
         if gameobj_type == '<':
             self._fallvector = DIR_WEST
@@ -398,16 +570,16 @@ class Arrow(Dynamic_GameObj):
 
 class Balloon(Dynamic_GameObj):
 
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
-        super(Balloon, self).__init__(new_frontend, gameobj_type, mediator,
+    def __init__(self, gameobj_type, mediator, grid, location):
+        super(Balloon, self).__init__(gameobj_type, mediator,
                                       grid, location)
         self._fallvector = DIR_NORTH
         self._pushvectors = [DIR_WEST, DIR_EAST]
 
 class Monster(Dynamic_GameObj):
 
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
-        super(Monster, self).__init__(new_frontend, gameobj_type, mediator,
+    def __init__(self, gameobj_type, mediator, grid, location):
+        super(Monster, self).__init__(gameobj_type, mediator,
                                       grid, location)
         self.causewake = False
 
@@ -461,8 +633,8 @@ class Monster(Dynamic_GameObj):
 
 class BabyMonster(Dynamic_GameObj):
 
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
-        super(BabyMonster, self).__init__(new_frontend, gameobj_type, mediator,
+    def __init__(self, gameobj_type, mediator, grid, location):
+        super(BabyMonster, self).__init__(gameobj_type, mediator,
                                           grid, location)
         # STATE variables
         self.mywall = None
@@ -595,8 +767,8 @@ class BabyMonster(Dynamic_GameObj):
 
 class Rug(Dynamic_GameObj):
 
-    def __init__(self, new_frontend, gameobj_type, mediator, grid, location):
-        super(Rug, self).__init__(new_frontend, gameobj_type, mediator,
+    def __init__(self, gameobj_type, mediator, grid, location):
+        super(Rug, self).__init__(gameobj_type, mediator,
                                   grid, location)
         self._pushvectors = [DIR_NORTH, DIR_SOUTH, DIR_WEST, DIR_EAST]
 
@@ -952,7 +1124,7 @@ class Mediator(object):     #DAY - make this a SINGLETON?
                 mover.die()         # Then the baby moster dies
                 # Now put in a money bag (but don't increase money count since
                 # the cage was already counted)
-                new_money = Money(self._grid.frontend, '*', self, self._grid, new_location)
+                new_money = Money('*', self, self._grid, new_location)
                 destination_cell.insert_gameobj(new_money)
                 new_money.draw()
                 return True
@@ -1045,16 +1217,22 @@ class Grid(object):
         self._grid = None
         self.score = 0
         self.time = None
+        self.hero = None
         self.remaining_money_and_cages = None
         self.alive_monsters = None
         self.teleport_destination = None
-        self.current_level = 1
+        self.current_level = None
         self.recorded_moves = []
+        self.solution = None
+        self.solution_count = 0
+        self.solution_score = 0
         self.solution_index = 0
         self.playing_solution = False
         self.input_queue = []
         self.level_name = ''
         self.level_author = ''
+        self.hungry_monsters = []
+        self.baby_monsters = []
 
     def __str__(self):
         return self.string_view()
@@ -1065,11 +1243,15 @@ class Grid(object):
             'num_cols':self.num_cols,
             'score':self.score,
             'time':self.time,
+            'hero':self.hero,
             'remaining_money_and_cages':self.remaining_money_and_cages,
             'alive_monsters':self.alive_monsters,
             'teleport_destination':self.teleport_destination,
             'current_level':self.current_level,
             'recorded_moves':self.recorded_moves,
+            'solution':self.solution
+            'solution_count':self.solution_count
+            'solution_score':self.solution_score
             'solution_index':self.solution_index,
             'playing_solution':self.playing_solution,
             'input_queue':self.input_queue,
@@ -1077,6 +1259,9 @@ class Grid(object):
             'level_author':self.level_author,
             'grid_objs':[
             ],
+            'hungry_monsters':self.hungry_monsters,
+            'baby_monsters':self.baby_monsters,
+            'alive_monsters':self.alive_monsters,
         }
         for r in range(self.num_rows):
             grid_row = []
@@ -1115,9 +1300,6 @@ class Grid(object):
             + col_header_second_digits\
             + '\n'.join(outlist)
         return outstr
-
-    def set_frontend(self, new_frontend):
-        self.frontend = new_frontend
 
     def set_mediator(self, mediator):
         self.mediator = mediator
@@ -1163,24 +1345,22 @@ class Grid(object):
     def insert_gameobj(self, game_obj, location):
         self._grid[location.row][location.col].insert_gameobj(game_obj)
 
-    def refresh_all(self):
-        for row in self._grid:
-            for cell in row:
-                cell.refresh()
-        self.frontend.redraw()
-
     def update_status(self, optional_message=None):
-        if optional_message:
-            self.frontend.set_status_line(optional_message)
-        elif self.hero.alive:
-            self.frontend.set_status_line("Level {0}: {1} , Score: {2}, Gold: {3}, Time: {4}".format(
-                self.current_level, self.level_name, self.score,
-                self.remaining_money_and_cages, self.time))
-        else:
-            self.frontend.set_status_line("YOU DIED!!     Level {0}: {1} , "\
-                                     "Score: {2}, Gold: {3}, Time: {4}".format(
-                                         self.level_num, self.level_name, self.score,
-                                         self.remaining_money_and_cages, self.time))
+        # TODO: change this to a command for getting status elements
+        #       instead of calling front-end to change the status
+        #       string
+        pass
+        # if optional_message:
+        #     self.frontend.set_status_line(optional_message)
+        # elif self.hero.alive:
+        #     self.frontend.set_status_line("Level {0}: {1} , Score: {2}, Gold: {3}, Time: {4}".format(
+        #         self.current_level, self.level_name, self.score,
+        #         self.remaining_money_and_cages, self.time))
+        # else:
+        #     self.frontend.set_status_line("YOU DIED!!     Level {0}: {1} , "\
+        #                              "Score: {2}, Gold: {3}, Time: {4}".format(
+        #                                  self.level_num, self.level_name, self.score,
+        #                                  self.remaining_money_and_cages, self.time))
 
     def change_time(self, delta=-1):
         if self.time:
@@ -1418,8 +1598,9 @@ class Cell(object):
                     "not exist.  Gameobj={0}, Error={1}".format(gameobj, str(err_detail)))
             return
         if not self._gameobjs:
-            blank = Static_GameObj(self._grid.frontend, ' ',
-                                   self._grid.mediator, self._grid,
+            blank = Static_GameObj(' ',
+                                   self._grid.mediator,
+                                   self._grid,
                                    self._location)
             self.insert_gameobj(blank)
             blank.draw()
@@ -1439,13 +1620,7 @@ class Cell(object):
 
 class GridBuilder(object):
     '''Factory class for reading level file and building Grid object collection'''
-    def __init__(self, new_frontend, mediator, grid=None, current_level=1):
-        if not grid:
-            self.grid = Grid()
-        else:
-            self.grid = grid
-        self.grid.current_level = current_level
-        self.frontend = new_frontend
+    def __init__(self, mediator):
         self.mediator = mediator
         self.types = {
             ' ': Space, # blank
@@ -1476,17 +1651,19 @@ class GridBuilder(object):
             'W': Static_GameObj, # wrapping edge
         }
 
-    def read_level(self, level_file, level_num, solution_file=None):
+    def read_level(self,
+                   level_file,
+                   level_num,
+                   solution_file=None):
         '''Return Grid collection object after reading level file.'''
         level_dict = {}     #will be populated by _section_parser
         logging.debug("Reading {0}".format(level_file))
         self._level_parser(level_file, level_dict)
         rows = level_dict['num_rows']
         cols = level_dict['num_cols']
-        grid = self.grid
-        self.grid.current_level = level_num
-        self.grid.set_size(rows, cols)
-        self.frontend.post_init_setup(self.grid)
+        grid = Grid()
+        grid.current_level = level_num
+        grid.set_size(rows, cols)
         type_count = {}
         money_and_cages = 0
         monster_count = 0
@@ -1500,7 +1677,7 @@ class GridBuilder(object):
                 loc = Location((icol, irow))
                 game_obj = self._create_obj(obj_type, loc)
                 if obj_type == '@': # the Hero
-                    self.grid.set_hero(game_obj)
+                    grid.set_hero(game_obj)
                 elif obj_type in ['*', '+']: # Money and Cages
                     money_and_cages += 1
                 elif obj_type == 'M': # Hungry monster
@@ -1509,7 +1686,7 @@ class GridBuilder(object):
                 elif obj_type == 'S': # Baby monster
                     baby_monsters.append(game_obj)
                 elif obj_type == 'A': # Teleport Destination
-                    self.grid.teleport_destination = loc
+                    grid.teleport_destination = loc
         for under_dict in level_dict['under_objects']:
             t = under_dict['type']
             l = under_dict['location']
@@ -1525,7 +1702,7 @@ class GridBuilder(object):
             elif t in ['*', '+']: # Money and Cages
                 money_and_cages += 1
             elif t == 'A': # Teleport Destination
-                self.grid.teleport_destination = loc
+                grid.teleport_destination = loc
         grid.time = int(level_dict['time'])
         if grid.time == -1:
             grid.time = None
@@ -1554,15 +1731,15 @@ class GridBuilder(object):
         grid.level_author = level_dict.get('author', None)
         return grid
 
-    def _create_obj(self, obj_type, location):
+    def _create_obj(self, obj_type, grid, location):
         if obj_type in self.types:
-            game_obj = self.types[obj_type](self.frontend, obj_type, self.mediator,
-                                            self.grid, location)
+            game_obj = self.types[obj_type](obj_type, self.mediator,
+                                            grid, location)
         else:
             # Funky dirt replaces anything we don't recognize
-            game_obj = self.types['F'](self.frontend, 'F', self.mediator,
-                                       self.grid, location)
-        self.grid.insert_gameobj(game_obj, location)
+            game_obj = self.types['F']('F', self.mediator,
+                                       grid, location)
+        grid.insert_gameobj(game_obj, location)
         return game_obj
 
     def _get_screenfile_lines(self, level_file):
@@ -1702,188 +1879,6 @@ class GridBuilder(object):
         level_dict['solution'] = ''
         return True
 
-class GameDirector(object):
-    '''This is the top-level class of the wanderer game-logic module
-    other modules like the server module instantiate an instance of
-    this class to start playing a game.
-    The server sits in between the game logic module (this class) and
-    the front-end module and speaks to both
-    '''
-    def __init__(self,
-                 startlevel=1,
-                 startscreen=None,
-                 solution_file=None,
-                 size='m'):
-
-        # NON-STATE variables
-
-        #TODO have server call this instead only server should
-        #talk to front-end because servers and front-ends are paired
-        self.frontend = frontend.getFrontEnd(size=size)
-        self.mediator = Mediator()
-        if startscreen:
-            self.grid = self.read_new_level(startscreen, startlevel,
-                                solution_file=solution_file)
-        else:
-            self.grid = self.read_new_level('screen{0}.txt'.format(startlevel),
-                                startlevel,
-                                solution_file=solution_file)
-        self.grid.current_level = startlevel #Already part of grid state
-        self.grid.recorded_moves = []
-        self.grid.solution_index = 0
-        self.grid.playing_solution = False
-        self.grid.input_queue = []
-        # TODO the place where we register the event handler is
-        # going to move to the server
-        self.frontend.register_event('ANY', self.event_handler)
-        while True:
-            try:
-                self.frontend.start_event_loop()
-            except LevelExitException:
-                logging.info("Level {0} successfully exited! "\
-                             "Score is {1}".format(self.grid.current_level, self.grid.score))
-                if self.grid.recorded_moves:
-                    logging.info("Moves recorded on level {1}: \n {0}".format(
-                        ''.join(self.grid.recorded_moves), self.grid.current_level))
-                self.next_level()
-            except HeroDiedException:
-                self.grid.refresh_all()
-                self.hero.alive = False
-                self.grid.update_status() #DAY Add player death reason
-            except ExitGame:
-                if self.grid.recorded_moves:
-                    logging.info("Moves recorded in level{1}: \n {0}".format(
-                        ''.join(self.grid.recorded_moves), self.grid.current_level))
-                self.frontend.quit()
-                return
-
-    def game_state_dict(self):
-        return self.grid.state_dict()
-
-    def game_state_json(self, **kwargs):
-        return self.grid.state_json(**kwargs)
-
-    def next_level(self):
-        self.grid.current_level += 1
-        logging.info("Loading level {0}".format(self.grid.current_level))
-        return self.read_new_level('screen{0}.txt'.format(self.grid.current_level),
-                            self.grid.current_level, self.grid)
-
-    def restart(self):
-        self.grid.current_level -= 1
-        return self.next_level()
-
-    def read_new_level_num(self, level_num):
-        return read_new_level(
-            'screen{0}.txt'.format(level_num), level_num)
-
-    def read_new_level(self, filename, level_num, grid=None, solution_file=None):
-        if grid:
-            grid.delete()
-        grid = GridBuilder(self.frontend, self.mediator, grid=grid,
-            current_level=level_num)\
-            .read_level(filename, level_num, solution_file=solution_file)
-        grid.set_frontend(self.frontend)
-        self.mediator.set_grid(grid)
-        grid.set_mediator(self.mediator)
-        self.hero = grid.hero
-        grid.solution_index = 0
-        grid.playing_solution = False
-        grid.input_queue = []
-        grid.recorded_moves = []
-        self.reading_input = False
-        self.input_level = False
-        grid.update_status()
-        self.grid = grid
-        return grid
-
-    def event_handler(self, event):
-        logging.debug("   GameDirector event_handler received event {0}".format(event))
-        if self.grid.time and (self.grid.time == 0):
-            self.grid.lost_game("You died by running out of time")
-        if self.reading_input and event != 'RETURN':
-            self.grid.input_queue.append(event)
-            if self.input_level:
-                self.grid.update_status("Level: {0}".format(''.join(self.grid.input_queue)))
-            return
-        if event in PLAYER_MOVES:
-            if event in ['LEFT', 'H', 'h', b'H', b'h']:
-                self.grid.recorded_moves.append('H')
-                self.hero.move(DIR_WEST)
-            elif event in ['RIGHT', 'L', 'l', b'L', b'l']:
-                self.grid.recorded_moves.append('L')
-                self.hero.move(DIR_EAST)
-            elif event in ['UP', 'K', 'k', b'K', b'k']:
-                self.grid.recorded_moves.append('K')
-                self.hero.move(DIR_NORTH)
-            elif event in ['DOWN', 'J', 'j', b'J', b'j']:
-                self.grid.recorded_moves.append('J')
-                self.hero.move(DIR_SOUTH)
-            elif event in ['SPACE', ' ', '-', b' ', b'-']:
-                #DAY - implement clicking down the clock
-                self.grid.recorded_moves.append('-')
-                pass
-            self.move_monsters()
-            self.grid.change_time()
-
-        elif event in ['Q', 'q', b'Q', b'q']:
-            raise ExitGame
-        elif event in ['N', 'n', b'N', b'n']:
-           self.grid = self.next_level()
-        elif event in ['R', 'r', b'R', b'r']:
-            self.grid = self.restart()
-        elif event in ['S', 's', b'S', b's']: # Play full solution
-            if self.grid.solution:
-                if self.grid.playing_solution:
-                    self.grid.playing_solution = False
-                else:
-                    self.grid.playing_solution = True
-                    self.play_next_solution()
-            else:
-                logging.debug("There is no solution to play")
-        elif event in ['P', 'p', b'P', b'p']: # Play one step of solution
-            if self.grid.solution:
-                self.play_next_solution()
-            else:
-                logging.debug("There is no solution step to play")
-        elif event in ['O', 'o', b'O', b'o']: # Skip to level specified
-            self.reading_input = True
-            self.input_level = True
-            self.grid.update_status("Level: ")
-            return
-        elif event == 'RETURN': # End reading input
-            if self.input_level:
-                try:
-                    self.grid.current_level = int(''.join(self.grid.input_queue))-1
-                    self.grid.input_queue = []
-                    self.grid = self.next_level()
-                except ValueError:
-                    self.grid.update_status("Error, must enter an integer")
-                finally:
-                    self.input_level = False
-            self.reading_input = False
-
-        if self.grid.playing_solution:
-            self.play_next_solution()
-            self.frontend.wait(SOLUTION_PLAYBACK_DELAY)
-        self.grid.update_status()
-
-        #logging.debug("\n{0}\n".format(self.game_state_json(indent=' '))) #DEBUG
-
-    def move_monsters(self):
-        for b in self.grid.baby_monsters:
-            b.move()
-        for m in self.grid.hungry_monsters:
-            m.move()
-
-    def play_next_solution(self):
-        num_moves = self.grid.solution_count
-        if self.grid.solution_index >= num_moves:
-            self.grid.playing_solution = False
-        else:
-            self.frontend.generate_event(self.grid.solution[self.grid.solution_index])
-            self.grid.solution_index += 1
-
 class LevelExitException(Exception):
     pass
 class HeroDiedException(Exception):
@@ -1891,70 +1886,3 @@ class HeroDiedException(Exception):
 class ExitGame(Exception):
     pass
 
-def main(startlevel=1, startscreen=None, debugflag=False):
-    import argparse
-    # Parse command-line arguments
-    parser = argparse.ArgumentParser()
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument("-f", "--filename", action='store',
-                       help="starting screen filename")#.completer = fileCompleter
-    group.add_argument("-l", "--level", type=int, action='store',
-                       help="starting screen number", default=1)
-    parser.add_argument("-s", "--solution_file", action='store',
-                        help="filename for optional external solution entry",
-                        default=None)#.completer = fileCompleter
-    parser.add_argument("-d", "--debug", action='store_true',
-                        help="Start in debug mode",
-                        default=False)
-    parser.add_argument("-z", "--size", action='store', choices=['s', 'm', 'l'],
-                        help="Specify size of window",
-                        default='m')
-    args = parser.parse_args()
-    solution_filename = None
-    size = 'm'
-    if args.filename:
-        startscreen = args.filename
-    if args.level:
-        startlevel = args.level
-    if args.solution_file:
-        solution_filename = args.solution_file
-    if args.size:
-        size = args.size
-    debugflag = args.debug
-
-    # Set up logging
-    # define Handler to write INFO messages or higher to
-    # the sys.stderr
-    logging.basicConfig(level=logging.DEBUG,
-        format = '%(module)-7s l:%(lineno)4s %(message)s',\
-        filename='logfile.txt', filemode='w') #'w' mode will overwrite
-    logging.basicConfig(level=logging.INFO)
-    console = logging.StreamHandler()
-    #console.setLevel(logging.INFO)
-    console.setLevel(logging.INFO) #Set this back to INFO after done debugging
-    formatter = logging.Formatter('%(levelname)-8s %(message)s')
-    console.setFormatter(formatter)
-    # add the handler to the root logger
-    logging.getLogger(None).addHandler(console)
-    logging.info('Logging turned on')
-
-    if debugflag:
-        import doctest
-        doctest.testmod()
-    else:
-        logging.disable(logging.DEBUG)
-
-    try:
-        GameDirector(startlevel=startlevel,
-                    startscreen=startscreen,
-                    solution_file=solution_filename,
-                    size=size)
-    except:
-        logging.error("Error caught at top level", exc_info=sys.exc_info())
-    finally:
-        err_info = None  #allow garbage collection on the traceback info
-        answer = input("\n\nPress return to exit")
-
-
-if __name__ == "__main__":
-    main()

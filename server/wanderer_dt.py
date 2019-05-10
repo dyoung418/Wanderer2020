@@ -24,8 +24,26 @@ import pygame_frontend as frontend
 sys.py3kwarning = True  #Turn on Python 3 warnings
 
 class WandererGame(object):
-    def __init__(self):
-        pass
+    def __init__(self, 
+                 startlevel=1,
+                 startscreen=None,
+                 solution_file=None,
+                 size='m'):
+        self.gameLogic = GameDirector()
+        if not startscreen:
+            self.gameLogic.read_new_level_num(
+                startlevel)
+        else:
+            self.gameLogic.read_new_level(
+                filename=startscreen,
+                solution_file=solution_file)
+        self.gameLogic.read_new_level(
+            startlevel=startlevel,
+            startscreen=startscreen,
+            solution_file=solution_file)
+        self.frontEnd = frontend.GetFrontEnd(size=size)
+        #TODO need to have a loop here where I gather input,
+        # feed it to the game logic, call the frontend to update,
     def new_game(self):
         pass
 
@@ -36,16 +54,17 @@ def main(startlevel=1, startscreen=None, debugflag=False):
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-f", "--filename", action='store',
-                       help="starting screen filename")#.completer = fileCompleter
+                       help="starting screen filename")
     group.add_argument("-l", "--level", type=int, action='store',
                        help="starting screen number", default=1)
     parser.add_argument("-s", "--solution_file", action='store',
                         help="filename for optional external solution entry",
-                        default=None)#.completer = fileCompleter
+                        default=None)
     parser.add_argument("-d", "--debug", action='store_true',
                         help="Start in debug mode",
                         default=False)
-    parser.add_argument("-z", "--size", action='store', choices=['s', 'm', 'l'],
+    parser.add_argument("-z", "--size", action='store', 
+                        choices=['s', 'm', 'l'],
                         help="Specify size of window",
                         default='m')
     args = parser.parse_args()
@@ -64,9 +83,11 @@ def main(startlevel=1, startscreen=None, debugflag=False):
     # Set up logging
     # define Handler to write INFO messages or higher to
     # the sys.stderr
-    logging.basicConfig(level=logging.DEBUG,
-        format = '%(module)-7s l:%(lineno)4s %(message)s',\
-        filename='logfile.txt', filemode='w') #'w' mode will overwrite
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format = '%(module)-7s l:%(lineno)4s %(message)s',
+        filename='logfile.txt',
+        filemode='w') #'w' mode will overwrite
     logging.basicConfig(level=logging.INFO)
     console = logging.StreamHandler()
     #console.setLevel(logging.INFO)
@@ -84,18 +105,15 @@ def main(startlevel=1, startscreen=None, debugflag=False):
         logging.disable(logging.DEBUG)
 
     try:
-        GameDirector(startlevel=startlevel,
-                    startscreen=startscreen,
-                    solution_file=solution_filename,
-                    size=size)
-        #TODO need to have a loop here where I gather input, feed
-        # it to the game logic, call the frontend to update, etc.
-        #
+        WandererGame(startlevel=startlevel,
+                     startscreen=startscreen,
+                     solution_file=solution_filename,
+                     size=size)
     except:
         logging.error("Error caught at top level", exc_info=sys.exc_info())
     finally:
         err_info = None  #allow garbage collection on the traceback info
-        answer = input("\n\nPress return to exit")
+        #answer = input("\n\nPress return to exit")
 
 
 if __name__ == "__main__":
