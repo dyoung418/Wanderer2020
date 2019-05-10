@@ -1,6 +1,6 @@
-var game = new Vue({
-    el: '#game',
-    data:
+var game = new Vue({ // Vue is used for the front end.
+    el: '#game', // Selects item from DOM
+    data:   // Collection of variables.
     {
         about: 0,
         page: 1,
@@ -9,12 +9,71 @@ var game = new Vue({
         },
         levelData: {
             level: 0,
-            levelPage: 1,
             gameId: "",
-        }
+            chests: 0,
+            totalChests: 0,
+            time: 0,
+            score: 0,
+            leveltitle: "",
+            levelauthor: "",
+
+            levelPage: 1,
+        },
     },
     methods:
     {
+        // GAME FUNCTIONS
+        async newLevel(level)
+        {
+            this.levelData.level = level;
+            pauseMusic();
+            songSelection = 1;
+            this.playSound(5,0);
+            playMusic();
+
+            this.levelData.title = LEVELS["level" + this.levelData.level].title;
+            this.levelData.author = LEVELS["level" + this.levelData.level].author;
+
+            let payload = 
+            {
+                level: this.level
+            };
+            let res = await axios.post('/wanderer/newlevel', payload);
+            this.levelData.gameId = res.data.gameId;
+            this.updateBoard(res.data);
+        },
+        async sendMove(key) {
+            let payload = 
+            {
+                key: key,
+                gameId: this.levelData.gameId,
+            };
+            let res = await axios.put('/wanderer/move', payload);
+            this.updateBoard(res.data);
+        },
+        updateBoard(data)
+        {
+            for (var i = 0; i < data.updates.length; i++)
+            {
+                for (var j = 0; j < data.updates[i].length; j++)
+                {
+                    var id = this.getId(data.updates[i][j].row, data.updates[i][j].col);
+                    var element = document.getElementById(id);
+                    if (data.updates[i][j].add != "")
+                    {
+                        element.classList.add(data.updates[i][j].add);
+                    }
+                    if (data.updates[i][j].sub != "")
+                    {
+                        if (element.classList.contains(data.updates[i][j].sub))
+                        {
+                            element.classList.remove(data.updates[i][j].sub);
+                        }
+                    }
+                }
+            }
+        },
+        // MENU FUNCTIONS
         menuButton(page)
         {
             this.page = page;
@@ -49,45 +108,6 @@ var game = new Vue({
         hover()
         {
             this.playSound(2,0);
-        },
-        async newLevel(level)
-        {
-            this.levelData.level = level;
-            pauseMusic();
-            songSelection = 1;
-            this.playSound(5,0);
-            playMusic();
-            
-            let payload = {level: this.level};
-            //let res = await axios.put('/wanderer/level', payload);
-            //this.updateBoard(res.data);
-        },
-        async sendMove() {
-            let payload = {key: "r"};
-            let res = await axios.put('/wanderer/move', payload);
-            this.updateBoard(res.data);
-        },
-        updateBoard(data)
-        {
-            for (var i = 0; i < data.updates.length; i++)
-            {
-                for (var j = 0; j < data.updates[i].length; j++)
-                {
-                    var id = this.getId(data.updates[i][j].row, data.updates[i][j].col);
-                    var element = document.getElementById(id);
-                    if (data.updates[i][j].add != "")
-                    {
-                        element.classList.add(data.updates[i][j].add);
-                    }
-                    if (data.updates[i][j].sub != "")
-                    {
-                        if (element.classList.contains(data.updates[i][j].sub))
-                        {
-                            element.classList.remove(data.updates[i][j].sub);
-                        }
-                    }
-                }
-            }
         },
         getId(item)
         {
@@ -158,6 +178,45 @@ var game = new Vue({
             this.playSound(3,0);
             console.log("Denied");
         },
+        levelmenu(button)
+        {
+            if (button == 0)
+            {
+                this.page = 1;
+                this.menuData.menuNum = 1;
+                this.levelData.levelPage = 1;
+                this.playSound(1,0);
+            }
+            else if (button == 1)
+            {
+                this.page = 2;
+                this.levelData.level = 0;
+                this.levelData.levelPage = 1;
+                this.menuData.menuNum = 1;
+                this.playSound(0,0);
+            }
+            else if (button == 2)
+            {
+                this.page = 3;
+                this.levelData.levelPage = 1;
+                this.menuData.menuNum = 1;
+                this.playSound(0,0);
+                this.about = 0;
+            }
+            this.deleteData();
+        },
+        deleteData()
+        {
+            this.menuData = 1;
+            this.levelData.level = 0;
+            this.levelData.gameId = "";
+            this.levelData.chests = 0;
+            this.levelData.totalChests = 0;
+            this.levelData.time = 0;
+            this.levelData.score = 0;
+            this.levelData.leveltitle = "";
+            this.levelData.levelauthor = "";
+        },
         playSound(sound, volume)
         {
             var media = document.getElementById(SOUNDS[sound].tag);
@@ -177,11 +236,35 @@ var game = new Vue({
     },
     computed:
     {
-
+        timeAvailable()
+        {
+            if (this.levelData.time >= 1)
+            {
+                return this.levelData.time;
+            }
+            else if (this.levelData.time == -1)
+            {
+                return "Unlimited";
+            }
+            else
+            {
+                return "Unsure";
+            }
+        },
+        currentScore()
+        {
+            return this.levelData.score;
+        },
+        chestCollected()
+        {
+            var string = "";
+            string += this.levelData.chests;
+            string += " / ";
+            string += this.levelData.totalChests;
+            return string;
+        }
     },
     created()
     {
-        console.log("script");
-        //let res = axios.post('/wanderer/', payload);
     }
 });

@@ -48,8 +48,26 @@
             </div>
 
             <div v-if="page == 2" id="game">
+                <div v-if="levelData.level" id="main-level-menu">
+                    <button @click="levelmenu(0)" class="main-level-menu-button">Home</button>
+                    <button @click="levelmenu(1)" class="main-level-menu-button">Levels</button>
+                    <button @click="levelmenu(2)" class="main-level-menu-button">About</button>
+                </div>
                 <div v-if="levelData.level" id="top-bar">
-                    <h3>Level {{levelData.level}}</h3>
+                    <div class="opposite-grid">
+                        <h5 id="levelTitle">{{levelData.title}}</h5>
+                        <h5 id="money">Chests: {{chestCollected}}</h5>
+                    </div>
+                    <div class="opposite-grid">
+                        
+                        <h5 id="levelAuthor">by {{levelData.author}}</h5>
+                        <h5 id="score">Score: {{currentScore}}</h5>
+                    </div>
+                    <div class="opposite-grid">
+                        
+                        <h5 id="levelNumber">Level {{levelData.level}}</h5>
+                        <h5 id="time">Time: {{timeAvailable}}</h5>
+                    </div>
                 </div>
                 <div v-if="levelData.level" id="board">
                     <input type="hidden" v-on:keyup.left="moveLeft">
