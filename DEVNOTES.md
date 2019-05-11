@@ -46,6 +46,24 @@ pip install pymongo
 pip install simplejson
 ```
 
+* After installing these components, the API service provided by Flask can be tested by doing the following:
+
+### In shell #1:
+```
+cd server
+. venv/bin/activate
+export FLASK_APP=server.py
+export FLASK_DEBUG=1
+flask run
+```
+
+### In shell #2:
+```
+cd server
+. venv/bin/activate
+python flask_test.py
+```
+
 ### Mongodb Server <a id="mongodb"></a>
 * The wanderer backend requires a MongoDB server.  You can find [MongoDB installation instructions here](https://docs.mongodb.com/manual/installation/)
 
