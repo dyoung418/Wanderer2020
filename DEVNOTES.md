@@ -80,15 +80,27 @@ pip install pygame
 
 ---
 ### Web Front-End <a id="web"></a>
-* There is no special setup for the Web front-end
-* Using python, you can test the front-end by going to `public/` and typing as follows:
-
+* The front end uses Vue CLI to display and run its DOM.
+* In order to test the code, you first need to install Vue.
+* First, within the directory of **public-vue**, run:
 ```
-python3 -m http.server 8000 --bind 127.0.0.1
+nvm use stable
 ```
-
-Alternatively you can install extensions on Visual Studio Code that will allow you to open the **index.html** directly in your default browser without the hassle.
-
+to install Node.js.
+* Next you need to install Vue.
+```
+npm install -g @vue/cli
+```
+* Within **public-vue** you should be able to run:
+```
+npm run serve
+```
+and get the website running on a local server, usually **8080**.
+* To finish off the code, run:
+```
+npm run build
+```
+which will put your finished files into **dist** which you can copy into your public folder on your website.
 ## License
 Wanderer2020 is licensed under the GPL.  See [LICENSE](LICENSE.md) for more information.
 
