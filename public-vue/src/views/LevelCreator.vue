@@ -1,7 +1,7 @@
 <template>
   <div class="levelmenucustom">
-    <moving-title-small class="movingTitle" title="Community Levels"/>
-    <LevelMenu tag="community" page="this.$route.params.page"/>  </div>
+    <moving-title-small class="movingTitle" title="Level Creator"/>
+    <LevelMenu tag="usersaved" page="this.$route.params.page"/>  </div>
 </template>
 
 <script>

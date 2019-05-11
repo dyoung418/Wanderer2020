@@ -1,7 +1,7 @@
 <template>
   <div class="levelmenuoriginal">
-    <moving-title-small class="movingTitle" title="Original Levels"/>
-    <LevelMenu levels="originalLevels" page="this.$route.params.page" isOriginal="1"/>
+    <moving-title-small class="movingTitle" title="Original Game"/>
+    <LevelMenu tag="original" page="this.$route.params.page"/>
   </div>
 </template>
 

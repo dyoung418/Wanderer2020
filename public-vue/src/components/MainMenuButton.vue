@@ -1,6 +1,6 @@
 <template>
   <div class="mainmenubuttons">
-    <button class="menu-button" @mouseover="hover()" @click="press()">{{label}}</button>
+    <button class="menu-button" @mouseover="hover" @click="press">{{label}}</button>
   </div>
 </template>
 

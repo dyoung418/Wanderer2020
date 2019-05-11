@@ -1,7 +1,7 @@
 <template>
 <div id="movingtitlelarge">
     <div class="title-div">
-        <h1 @mouseover="hover()" v-for="char in chars" v-bind:key="char.id">{{char.c}}</h1>
+        <h1 @mouseover="hover" v-for="char in chars" v-bind:key="char.id">{{char.c}}</h1>
     </div>
 </div>
 </template>
