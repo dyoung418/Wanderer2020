@@ -5,8 +5,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // USER DATA
     user: null,
     userData: null,
+
+    // SOUND CONSTANTS
     MUSIC: [
       {tag: "song11", volume: 0.3},
       {tag: "song04", volume: 0.1},
@@ -21,35 +24,89 @@ export default new Vuex.Store({
       {tag: "monsterdeath", volume: 0.1},
       {tag: "level-start", volume: 0.2},
     ],
+
+    // LEVEL MENUS
     displayedLevels: [],
-    displayedComments: [],
+
+    // IN GAME DATA
     level: {},
+    path: [],
+    displayedComments: [],
+    displayedPaths: [],
     gameId: "",
   },
   mutations: {
+    // USER DATA
     setUser(state, user) {
       state.user = user;
     },
     setUserData(state, userData) {
       state.userData = userData;
     },
+    // SOUND DATA
     setSong(state, song) {
       state.song = song;
     },
-    setDisplayed(state, displayedLevels) {
+    // LEVEL MENUS
+    setDisplayedLevels(state, displayedLevels) {
       state.displayedLevels = displayedLevels;
+    },
+    // GAME DATA
+    setGameId(state, gameId) {
+      state.gameId = gameId;
     },
     setDisplayedComments(state, displayedComments) {
       state.displayedComments = displayedComments;
     },
+    setDisplayedPaths(state, displayedPaths) {
+      state.displayedPaths = displayedPaths;
+    },
     setLevel(state, level) {
       state.level = level;
     },
-    setGameId(state, gameId) {
-      state.gameId = gameId;
-    }
+    setPath(state, path) {
+      state.path = path;
+    },
   },
   actions: {
+    // USER METHODS
+    async register(context, data) {
+      try {
+        let response = await axios.post("/api/users", data);
+        context.commit('setUser', response.data);
+        return "";
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async login(context, data) {
+      try {
+        let response = await axios.post("/api/users/login", data);
+        context.commit('setUser', response.data);
+        return "";
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async logout(context) {
+      try {
+        await axios.delete("/api/users");
+        context.commit('setUser', null);
+        return "";
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async getUser(context) {
+      try {
+        let response = await axios.get("/api/users");
+        context.commit('setUser', response.data);
+        return "";
+      } catch (error) {
+        return "";
+      }
+    },
+    // SOUND METHODS
     playSound(context, payload)
     {
       try {
@@ -88,5 +145,31 @@ export default new Vuex.Store({
         console.log(error);
       }
     },
+    // LEVEL MENU ACTIONS
+    async getDisplayed(context, payload) {
+      
+    },
+    // GAME METHODS
+    async newLevel(context, payload) {
+      
+    },
+    async saveProgress(context, payload) {
+
+    },
+    async reloadProcess(context, payload) {
+
+    },
+    async sendMove(context, payload) {
+
+    },
+    async deleteLevel(context, payload) {
+
+    },
+    async getComments(context, payload) {
+
+    },
+    async getPaths(context, payload) {
+
+    }
   }
 })

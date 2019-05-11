@@ -25,6 +25,10 @@ html
   font-family: 'Francois One', sans-serif;
 }
 
+body{
+  font-family: 'Francois One', sans-serif;
+}
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
