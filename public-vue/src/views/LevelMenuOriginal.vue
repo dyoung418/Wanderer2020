@@ -1,5 +1,6 @@
 <template>
   <div class="levelmenuoriginal">
+    <moving-title-small class="movingTitle" title="Original Levels"/>
     <LevelMenu levels="originalLevels" page="this.$route.params.page" isOriginal="1"/>
   </div>
 </template>
@@ -7,13 +8,15 @@
 <script>
 // @ is an alias to /src
 import LevelMenu from '@/components/LevelMenu.vue'
+import MovingTitleSmall from '@/components/MovingTitleSmall.vue'
 
 export default {
   name: 'levelmenuoriginal',
   props: {
   },
   components: {
-    LevelMenu
+    LevelMenu,
+    MovingTitleSmall
   },
   created()
   {
