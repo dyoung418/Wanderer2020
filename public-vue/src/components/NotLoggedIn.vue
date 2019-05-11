@@ -1,27 +1,17 @@
 <template>
-<div>
-  <div v-if="user" class="account">
-    HELLO
+<div id="notloggedin">
+  <div class="center sign-in">
+    <p class="center margin pure-form-message-inline">Please Register for an Account or Login.</p>
+    <router-link to="/register" class="link pure-button">Register</router-link> or
+    <router-link to="/login" class="link pure-button">Login</router-link>
   </div>
-  <not-logged-in v-else />
 </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import NotLoggedIn from '@/components/NotLoggedIn.vue'
-
 export default {
-  name: 'account',
-  components: {
-    NotLoggedIn
-  },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    },
-  }
-}
+    name: 'notloggedin',
+};
 </script>
 
 <style scoped>
