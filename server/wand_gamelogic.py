@@ -69,11 +69,13 @@ class GameDirector(object):
         # here anyway so we don't have to test for the presence
         # of self.grid in every other method
         self.grid = Grid() 
+        self.grid.set_size(1,1)
 
         if state:
             self.restore_state(state)
         elif level_num:
             self.read_new_level_num(level_num)
+        self.update_list = [] # this will hold all updates to be written to screen
         
         
         # TODO the place where we register the event handler is
@@ -100,7 +102,7 @@ class GameDirector(object):
         #         self.frontend.quit()
         #         return
 
-    def restore_state(self, state):
+    def restore_state(self, state): # GameDirector
         if self.grid:
             self.grid.delete()
         self.grid = GridBuilder(self.mediator)\
@@ -111,13 +113,13 @@ class GameDirector(object):
         self.reading_input = False
         self.input_level = False
 
-    def game_state_dict(self):
+    def game_state_dict(self): # GameDirector
         return self.grid.state_dict()
 
-    def game_state_json(self, **kwargs):
+    def game_state_json(self, **kwargs): # GameDirector
         return self.grid.state_json(**kwargs)
 
-    def read_new_level(self, filename, level_num, solution_file=None):
+    def read_new_level(self, filename, level_num=0, solution_file=None): # GameDirector
         if self.grid:
             self.grid.delete()
         self.grid = GridBuilder(self.mediator)\
@@ -138,30 +140,41 @@ class GameDirector(object):
         self.grid.playing_solution = False
         self.grid.input_queue = []
 
-    def next_level(self):
+    def next_level(self): # GameDirector
         self.grid.current_level += 1
         logging.info("Loading level {0}".format(self.grid.current_level))
         return self.read_new_level('screen{0}.txt'.format(self.grid.current_level),
                             self.grid.current_level, self.grid)
 
-    def restart(self):
+    def restart(self): # GameDirector
         self.grid.current_level -= 1
         return self.next_level()
 
-    def read_new_level_num(self, level_num):
-        read_new_level(
+    def read_new_level_num(self, level_num): # GameDirector
+        self.read_new_level(
             'screen{0}.txt'.format(level_num), level_num)
 
-    def event_handler(self, event):
+    def event_handler(self, event, state=None): # GameDirector
+        '''In the new three-module scheme, the game logic event handler must return
+        a tuple with the following:
+            (
+                <state> # new state after all the repercussions of the event
+                <list of updates> # ordered list of updates to the screen
+            )
+        '''
         logging.debug("   GameDirector event_handler received event {0}".format(event))
+        if state:
+            self.restore_state(state)
+        self.update_list = [] # clear out the updates for a fresh start
         if self.grid.time and (self.grid.time == 0):
             self.grid.lost_game("You died by running out of time")
+            raise ExitGame
         if self.reading_input and event != 'RETURN':
             self.grid.input_queue.append(event)
             if self.input_level:
                 self.grid.update_status(
                     "Level: {0}".format(''.join(self.grid.input_queue)))
-            return
+            return (self.game_state_dict(), self.update_list)
         if event in PLAYER_MOVES:
             if event in ['LEFT', 'H', 'h', b'H', b'h']:
                 self.grid.recorded_moves.append('H')
@@ -181,65 +194,760 @@ class GameDirector(object):
                 pass
             self.move_monsters()
             self.grid.change_time()
+            return (self.game_state_dict(), self.update_list)
 
-        elif event in ['Q', 'q', b'Q', b'q']:
+        if event in ['Q', 'q', b'Q', b'q']:
             raise ExitGame
-        elif event in ['N', 'n', b'N', b'n']:
-           self.grid = self.next_level()
-        elif event in ['R', 'r', b'R', b'r']:
+        if event in ['N', 'n', b'N', b'n']:
+            self.grid = self.next_level()
+            self.update_all() # trigger drawing of all cells
+            return (self.game_state_dict(), self.update_list)
+        if event in ['R', 'r', b'R', b'r']:
             self.grid = self.restart()
-        elif event in ['S', 's', b'S', b's']: # Play full solution
-            if self.grid.solution:
-                if self.grid.playing_solution:
-                    self.grid.playing_solution = False
-                else:
-                    self.grid.playing_solution = True
-                    self.play_next_solution()
-            else:
-                logging.debug("There is no solution to play")
-        elif event in ['P', 'p', b'P', b'p']: # Play one step of solution
-            if self.grid.solution:
-                self.play_next_solution()
-            else:
-                logging.debug("There is no solution step to play")
-        elif event in ['O', 'o', b'O', b'o']: # Skip to level specified
+            self.update_all() # trigger drawing of all cells
+            return (self.game_state_dict(), self.update_list)
+
+
+        # TODO: refactor this reading of level to the server
+        if event in ['O', 'o', b'O', b'o']: # Skip to level specified
             self.reading_input = True
             self.input_level = True
             self.grid.update_status("Level: ")
-            return
-        elif event == 'RETURN': # End reading input
-            if self.input_level:
-                try:
+            return (self.game_state_dict(), self.update_list)
+        if event == 'RETURN': # End reading input
+            try:
+                if self.input_level:
                     self.grid.current_level = int(''.join(self.grid.input_queue))-1
                     self.grid.input_queue = []
                     self.grid = self.next_level()
-                except ValueError:
-                    self.grid.update_status("Error, must enter an integer")
-                finally:
-                    self.input_level = False
-            self.reading_input = False
+                    self.update_all()
+            except ValueError:
+                self.grid.update_status("Error, must enter an integer")
+            finally:
+                self.input_level = False
+                self.reading_input = False
+            return (self.game_state_dict(), self.update_list)
 
-        if self.grid.playing_solution:
-            self.play_next_solution()
-        self.grid.update_status()
 
         #logging.debug("\n{0}\n".format(self.game_state_json(indent=' '))) #DEBUG
 
-    def move_monsters(self):
+    def move_monsters(self): # GameDirector
         for b in self.grid.baby_monsters:
             b.move()
         for m in self.grid.hungry_monsters:
             m.move()
 
-    def play_next_solution(self):
-        num_moves = self.grid.solution_count
-        if self.grid.solution_index >= num_moves:
-            self.grid.playing_solution = False
+    def update_all(self): # GameDirector
+        for row in range(self.grid.num_rows):
+            for col in range(self.grid.num_cols):
+                obj = self.grid.get_cell(Location((col, row)))\
+                    .get_topmost_gameobj()
+                self.update_list.append(tuple([obj.obj_type, Location((col, row))]))
+        return self.update_list
+
+class Grid(object):
+    '''A collection of Cell objects representing the entire playing grid'''
+    #DAY - implement __new__ to force Grid to be a singleton?
+
+    def __init__(self): # Grid
+        self.num_rows = self.num_cols = None
+        self._grid = None
+        self.score = 0
+        self.time = None
+        self.hero = None
+        self.remaining_money_and_cages = None
+        self.alive_monsters = None
+        self.teleport_destination = None
+        self.current_level = None
+        self.recorded_moves = []
+        self.solution = None
+        self.solution_count = 0
+        self.solution_score = 0
+        self.solution_index = 0
+        self.playing_solution = False
+        self.input_queue = []
+        self.level_name = ''
+        self.level_author = ''
+        self.hungry_monsters = []
+        self.baby_monsters = []
+
+    def __str__(self): # Grid
+        return self.string_view()
+
+    def state_dict(self): # Grid
+        json_dict = {
+            'num_rows':self.num_rows,
+            'num_cols':self.num_cols,
+            'score':self.score,
+            'time':self.time,
+            'hero':self.hero,
+            'remaining_money_and_cages':self.remaining_money_and_cages,
+            'alive_monsters':self.alive_monsters,
+            'teleport_destination':self.teleport_destination,
+            'current_level':self.current_level,
+            'recorded_moves':self.recorded_moves,
+            'solution':self.solution,
+            'solution_count':self.solution_count,
+            'solution_score':self.solution_score,
+            'solution_index':self.solution_index,
+            'playing_solution':self.playing_solution,
+            'input_queue':self.input_queue,
+            'level_name':self.level_name,
+            'level_author':self.level_author,
+            'grid_objs':[
+            ],
+            'hungry_monsters':[],
+            'baby_monsters':[],
+        }
+        for r in range(self.num_rows):
+            grid_row = []
+            for c in range(self.num_cols):
+                cell_objs = []
+                for obj in self.get_cell(Location((c, r))).get_gameobjs():
+                    cell_objs.append(obj.state_dict())
+                grid_row.append(cell_objs)
+            json_dict['grid_objs'].append(grid_row)
+        for h in self.hungry_monsters:
+            json_dict['hungry_monsters'].append(h.state_dict())
+        for b in self.baby_monsters:
+            json_dict['baby_monsters'].append(b.state_dict())
+        return json_dict
+
+    def state_json(self, separators=(',', ':'), **kwargs):
+        return json.dumps(self.state_dict(), separators=separators, **kwargs)
+
+    def string_view(self, highlight=None): # Grid
+        '''Return sring of character representation of the grid
+        with row and column headers at the left and top.  "highlight" is
+        an optional Location argument which will mark the location with
+        an "?"'''
+        column_nums = ['{0:02}'.format(col) for col in range(self.num_cols)]
+        col_header_first_digits = '\n  ' + ''.join([num[0] for num in column_nums])
+        col_header_second_digits = '  ' + ''.join([num[1] for num in column_nums]) + '\n'
+        outlist = [
+            '{0:02}'.format(row) + ''.join([str(self._grid[row][col])
+                for col in range(self.num_cols)])
+            for row in range(self.num_rows)
+            ]
+        if highlight:
+            rowstring = outlist[highlight.y]
+            if rowstring[highlight.x+2] in [' ', ':']: #+2 because of row num added above
+                outlist[highlight.y] =\
+                    rowstring[:highlight.x+2]\
+                    + '?' + rowstring[highlight.x+3:]
+        outstr = col_header_first_digits\
+            + '\n'\
+            + col_header_second_digits\
+            + '\n'.join(outlist)
+        return outstr
+
+    def set_mediator(self, mediator): # Grid
+        self.mediator = mediator
+
+    def try_exit(self): # Grid
+        if self.alive_monsters == 0 and self.remaining_money_and_cages == 0:
+            raise LevelExitException
+            return True #DAY -- I don't think the code ever gets here
         else:
-            # TODO: refactor the playing of solution into the
-            #       server
-            self.frontend.generate_event(self.grid.solution[self.grid.solution_index])
-            self.grid.solution_index += 1
+            return False
+
+    def lost_game(self, message): # Grid
+        logging.debug(message) #DAY -- need to implement here.
+        raise HeroDiedException
+
+    def set_hero(self, hero): # Grid
+        self.hero = hero
+
+    def set_size(self, rows, columns): # Grid
+        self.num_rows = rows
+        self.num_cols = columns
+        # Create the grid populated with Cell objects
+        self._grid = [[Cell(self, Location((col, row)))
+                       for col in range(columns)] for row in range(rows)]
+        # Now that Cell objects are all created, call init_refs() on each one
+        for row in range(rows):
+            for col in range(columns):
+                self._grid[row][col].init_refs()
+
+    def get_cell(self, loc):
+        if loc.x < 0 or loc.x >= self.num_cols or loc.y < 0 or loc.y >= self.num_rows:
+            return None
+        else:
+            return self._grid[loc.y][loc.x]
+
+    def delete(self):
+        ''' Delete all cell objects in me and ready myself for re-init'''
+        for row in self._grid:
+            for cell in row:
+                cell.delete()
+        self.__init__()
+
+    def insert_gameobj(self, game_obj, location):
+        self._grid[location.row][location.col].insert_gameobj(game_obj)
+
+    def update_status(self, optional_message=None):
+        # TODO: change this to a command for getting status elements
+        #       instead of calling front-end to change the status
+        #       string
+        pass
+        # if optional_message:
+        #     self.frontend.set_status_line(optional_message)
+        # elif self.hero.alive:
+        #     self.frontend.set_status_line("Level {0}: {1} , Score: {2}, Gold: {3}, Time: {4}".format(
+        #         self.current_level, self.level_name, self.score,
+        #         self.remaining_money_and_cages, self.time))
+        # else:
+        #     self.frontend.set_status_line("YOU DIED!!     Level {0}: {1} , "\
+        #                              "Score: {2}, Gold: {3}, Time: {4}".format(
+        #                                  self.level_num, self.level_name, self.score,
+        #                                  self.remaining_money_and_cages, self.time))
+
+    def change_time(self, delta=-1):
+        if self.time:
+            self.time += delta
+
+    #DAY implement magic functions __ref__?? so I can say grid[location] and
+    # get a cell reference
+
+
+class Cell(object):
+    '''Cell objects represent one location on the playing grid.  The main
+    function of a Cell object is twofold:
+    1. To hold a collection of all the GameObj objects that are currently
+    occupying that cell (there can be more than one)
+    2. To implement trigger logic.  Triggering in Wanderer is when moving
+    objects 'triggger' movement/falling in nearby objects.  Since triggering
+    is all about cell locations and whether gameobj objects fall into a location,
+    it makes sense to have cell objects handle the logic (rather than
+    forcing gameobj objects to be aware of the playing grid topology)'''
+    def __init__(self, grid, location):    # Cell
+        self._grid = grid
+        self._location = location
+        # ._gamobjs: Ordered list of gameobj objects in this cell, topmost at index -1
+        self._gameobjs = []
+
+        # ._triggerneighbors: list of ordered refs to neighboring cell objs
+        #       which might hold gameobj which could fall into this cell
+        self._triggerneighbors = []
+
+        # ._wakelocations: dict with vectors as keys. the value for each vector
+        #       key will be an ordered list of wake locations.  When an object
+        #       moves out of this cell, this cell will call trigger() on each of
+        #       the wakelocations based on the vector of movement
+        self._wakelocations = {}
+
+        # ._slidelocations: dict with a tuple of (slide_dir, fall_vector)
+        #       as keys and list of locations as values.  The locations are the
+        #       spots to check to make sure they are empty before allowing a
+        #       slide around me. For example, an > arrow sliding around a '/'
+        #       ramp will come into my .allow_slider() method with a slide_dir
+        #       of SLIDE_NORTH and the arrow has a fall_vector of (1,0).
+        #       Therefore, .allow_slider will check the locations in the
+        #       dictionary entry that looks like this:
+        #           { (SLIDE_NORTH, (1,0)):[location1, location2] }
+        self._slidelocations = {}
+
+    def __repr__(self):    # Cell
+        return "Cell{0!s}".format(self._location)
+
+    def __str__(self): #Cell
+        obj_char = self._gameobjs[-1].obj_type
+        if obj_char in ['E', 'W']:
+            return '.' #show edges as '.' for simpler output
+        else:
+            return obj_char # char of topmost object
+
+    @property
+    def location(self):    # Cell
+        return self._location
+
+    @property
+    def slide_locations(self):    # Cell
+        return self._slidelocations
+
+    def delete(self):    # Cell
+        ''' Delete all objects in me (called before my one reference is deleted)'''
+        for obj in self.get_gameobjs():
+            obj.delete()
+        self._gameobjs = None
+
+    def init_refs(self):    # Cell
+        '''Initializes lists of references to other Cell objects, particularly
+
+        _triggerneighbors and _wakelocations.  This is not done in __init__()
+        because all the other Cell objects aren't necessarily created yet at
+        that point.'''
+        myloc = self._location
+        grid = self._grid
+        # triggerneighbors are the compass point cells around me in the order of
+        # North, East, West and South
+        self.north = grid.get_cell(myloc + (0, -1))
+        self.east = grid.get_cell(myloc + (1, 0))
+        self.west = grid.get_cell(myloc + (-1, 0))
+        self.south = grid.get_cell(myloc + (0, 1))
+        if self.north: self._triggerneighbors.append(self.north)
+        if self.east: self._triggerneighbors.append(self.east)
+        if self.west: self._triggerneighbors.append(self.west)
+        if self.south: self._triggerneighbors.append(self.south)
+        # North, south, east and west are also used for slide logic.  In addition,
+        # we need northeast, southeast, northwest and southwest
+        self.northeast = grid.get_cell(myloc + (1, -1))
+        self.northwest = grid.get_cell(myloc + (-1, -1))
+        self.southeast = grid.get_cell(myloc + (1, 1))
+        self.southwest = grid.get_cell(myloc + (-1, 1))
+        # Now fill in the self._slidelocations structure
+        # The key is a tuple of ( "slide_dir", "fall_vector" )
+        # In the following circumstance:
+        #    .1O..
+        #    .2/..
+        # It is slide_dir WEST and fall_vector SOUTH and I would check #1 first and #2 second,
+        # which is [self.northwest, self.west]
+        if self.north and self.northeast:
+            self._slidelocations[(SLIDE_NORTH, DIR_WEST)] = [self.northeast, self.north]
+        if self.east and self.northeast:
+            self._slidelocations[(SLIDE_EAST, DIR_SOUTH)] = [self.northeast, self.east]
+        if self.north and self.northwest:
+            self._slidelocations[(SLIDE_NORTH, DIR_EAST)] = [self.northwest, self.north]
+        if self.west and self.northwest:
+            self._slidelocations[(SLIDE_WEST, DIR_SOUTH)] = [self.northwest, self.west]
+        if self.south and self.southeast:
+            self._slidelocations[(SLIDE_SOUTH, DIR_WEST)] = [self.southeast, self.south]
+        if self.east and self.southeast:
+            self._slidelocations[(SLIDE_EAST, DIR_NORTH)] = [self.southeast, self.east]
+        if self.south and self.southwest:
+            self._slidelocations[(SLIDE_SOUTH, DIR_EAST)] = [self.southwest, self.south]
+        if self.west and self.southwest:
+            self._slidelocations[(SLIDE_WEST, DIR_NORTH)] = [self.southwest, self.west]
+        # When an object moves *out* of my location, I call check_triggers() on cells
+        # around me (in .wakelocations) to see if they have objects that can
+        # fall into any of those locations
+        # Here is the shape of the wake:
+        #
+        #            . n .      n = new object location (object moving up in this example)
+        #          . l m r .    m = "me" - just vacated old object location
+        #          . 1 b 2 .    l, r, b, 1, 2 = left, right, behind, behind-left, behind-right
+        #            . . .      . = addtnl spots where objects could fall into l, m, r, l, b or 2
+        #                     
+        for v in [Location((0, -1)), Location((1, 0)),
+                  Location((-1, 0)), Location((0, 1))]: #for all vectors...
+            me = grid.get_cell(myloc)
+            behind_me = grid.get_cell(myloc - v)
+            my_left = grid.get_cell(Location((myloc.x - v.y, myloc.y - v.x)))
+            my_right = grid.get_cell(Location((myloc.x + v.y, myloc.y + v.x)))
+            behind_left = grid.get_cell(Location((myloc.x - v.x - v.y, myloc.y - v.y - v.x)))
+            behind_right = grid.get_cell(Location((myloc.x - v.x + v.y, myloc.y - v.y + v.x)))
+            wakelist = []
+            if me: wakelist.append(me) #i.e this is the just-vacated location
+            if behind_me: wakelist.append(behind_me) # behind the just-vacated location
+            if my_left: wakelist.append(my_left)
+            if my_right: wakelist.append(my_right)
+            if behind_left: wakelist.append(behind_left)
+            if behind_right: wakelist.append(behind_right)
+            self._wakelocations[v] = wakelist
+
+    def cause_wake(self, vector):    # Cell
+        ''' An object just moved out of me moving on vector.  Call
+        .check_triggers() on all the locations near me as specified in the
+        ._wakelocations structure (depending on the vector of movement).
+        This will result in a domino as each of those locations looks to
+        see if objects fall into them'''
+        global LOG_INDENT
+        LOG_INDENT += 3
+        logging.debug("{1}++ causing wake at {0._location}".format(self, " "*LOG_INDENT))
+        for cell in self._wakelocations[vector]:
+            cell.check_triggers(wake=True)
+        LOG_INDENT -= 3
+
+    def check_triggers(self, wake=False):    # Cell
+        ''' Check all the locations around me
+        in ._triggerneighbors to see if any of them have objects that fall into
+        me.  I do this by calling those neighbor location's .fall_into()
+        method
+        This is called by an object's ._continue_fall() method to see
+        if it (the object) continues to fall into that spot and/or if other objects
+        fall into it first.  In this case, standstill objects don't get triggered.
+        It is also called by cause_wake().  In this case, standstill objects do
+        get triggered.'''
+
+        #Original wanderer behavior here is tricky: if multiple
+        #  objects can trigger into the same space, they all do trigger
+        #  (it does *not* stop triggering after the first one).  However, for
+        #  the subsequent triggers, it applies sliding logic as if the situation
+        #  were still as it was before anything triggered.  Thus, in the case
+        #  below, the Rock triggers first, but the arrow doesn't slide because
+        #  before the rock triggered, the spot was blank and therefore no sliding
+        #  logic was employed (instead, it just sees that the spot in front of it
+        #  is *not* empty so it does not trigger).  Likewise, if a rock was there
+        #  initially, but by the time the next trigger object is processed, the
+        #  rock is no longer there, the triggered object will slide as if the rock
+        #  is still there.
+        #    1 2 3
+        #  1 . . .       (Rock triggers into (2,3) first, but arrow doesn't
+        #  2 . O .        slide because arrow only 'slides' if there was a sliding
+        #  3 . . <        object in (2,3) before anything triggers)
+        #  4 . # .
+        #One interesting case is balloons and rocks.
+        #    1 2 3
+        #  1 . . .
+        #  2 . O .
+        #  3 . . .
+        #  4 . ^ .
+        #If fall is called on the empty space at (2,3), the rock will
+        #  trigger first, then stop (since it does not slide around balloons).
+        #  Then the balloon will try to trigger into (2,3).  When it tries, it
+        #  is not starting from the beginning where it would apply sliding rules
+        #  around the rock, it just checks space (2,3) and if it is empty, it
+        #  triggers.  In this case, since it is not empty, it does not trigger.
+        #However, if there is another rock at (2,1), then after all of the
+        #  above happens, this  other rock will trigger first into (2,2)
+        #  (now empty) and then try to trigger into (2,3) (where the first
+        #  rock is now). the rock will slide to (1,2), but then the balloon will
+        #  take its turn triggering into (2,3).  This time, when the balloon
+        #  checks for triggering into (2,3), the rock sliding logic is already
+        #  applied (since the first rock was there to begin with) and so the
+        #  balloon slides around to (3,3).  (level 29 & 30 test cases for this)
+        #
+        #First take a snapshot of which compass points can move (need to do
+        #  this to 'freeze' the status of sliding because the initial setup
+        #  determines whether sliding is allowed, not the setup when we finally
+        #  get to each compass point.  This is complex and not entirely consistent.  In the future,
+        #  I may break backward compatibility with the old game in this regard
+        #  (it will only break about 5 levels).
+
+        #logging.debug("{1}checktrigger at {0._location}".format(self, " "*LOG_INDENT))
+        for cell in self._triggerneighbors:
+            cell.fall_into(self._location, wake=wake)
+
+    def fall_into(self, location, wake=False):    # Cell
+        ''' Query my objects and see if any of them fall into location'''
+        for obj in self._gameobjs:
+            if (not wake) and  obj.standstill: #see dosstring for check_triggers()
+                pass
+            else:
+                obj.fall(location)
+
+    def insert_gameobj(self, gameobj):    # Cell
+        ''' Gameobj came into my cell.  Put it as topmost object'''
+        self._gameobjs.append(gameobj)
+
+    def remove_gameobj(self, gameobj):    # Cell
+        try:
+            self._gameobjs.remove(gameobj)
+        except ValueError as err_detail:
+            logging.error("Tried to remove a gameobj that did "\
+                    "not exist.  Gameobj={0}, Error={1}".format(gameobj, str(err_detail)))
+            return
+        if not self._gameobjs:
+            blank = Static_GameObj(' ',
+                                   self._grid.mediator,
+                                   self._grid,
+                                   self._location)
+            self.insert_gameobj(blank)
+            blank.draw()
+        else:
+            self._gameobjs[-1].draw()
+    def get_topmost_gameobj(self):    # Cell
+        return self._gameobjs[-1]
+    def get_gameobjs(self):    # Cell
+        '''iterable which returns all gameobjs starting with topmost'''
+        for i in range(len(self._gameobjs)-1, -1, -1):
+            # don't include "being_pushed" objects since this is a temp
+            #   state that is just a delay of being in a diff cell
+            if not self._gameobjs[i].being_pushed: 
+                yield self._gameobjs[i]
+    def refresh(self):    # Cell
+        self._gameobjs[-1].draw()
+
+class GridBuilder(object):
+    '''Factory class for reading level file and building Grid object collection'''
+    def __init__(self, mediator):
+        self.mediator = mediator
+        self.types = {
+            ' ': Space, # blank
+            '-': Space, # blank
+            'A': Static_GameObj, # teleport destination
+            'B': Bomb, # bomb
+            '#': Static_GameObj, # stone wall
+            '=': Static_GameObj, # brick wall
+            '/': Ramp, # right ramp
+            "\\": Ramp,# left ramp
+            ':': Dirt, # dirt
+            'F': Dirt, # funky dirt
+            '!': Static_GameObj, # poison
+            'X': Static_GameObj, # exit
+            '*': Money, # money
+            'T': Teleporter, # teleport booth
+            'C': TimeCapsule, # clock
+            '+': Cage, # cage
+            'O': Rock, # rock
+            '>': Arrow, # right arrow
+            '<': Arrow, # left arrow
+            '^': Balloon, # balloon
+            'M': Monster, # hungry monster
+            'S': BabyMonster, # baby monster
+            '~': Rug, # rug
+            '@': Hero, # hero
+            'E': Static_GameObj, # edge
+            'W': Static_GameObj, # wrapping edge
+        }
+
+    def read_level(self,
+                   level_file,
+                   level_num=0,
+                   solution_file=None):
+        '''Return Grid collection object after reading level file.'''
+        level_dict = {}     #will be populated by _section_parser
+        logging.debug("Reading {0}".format(level_file))
+        self._level_parser(level_file, level_dict)
+        rows = level_dict['num_rows']
+        cols = level_dict['num_cols']
+        grid = Grid()
+        grid.current_level = level_num
+        grid.set_size(rows, cols)
+        type_count = {}
+        money_and_cages = 0
+        monster_count = 0
+        hungry_monsters = []
+        baby_monsters = []
+        for irow in range(rows):
+            row = level_dict['grid_data'][irow]
+            for icol in range(cols):
+                obj_type = row[icol]
+                type_count[obj_type] = type_count.get(obj_type, 0) + 1
+                loc = Location((icol, irow))
+                game_obj = self._create_obj(obj_type, grid, loc)
+                if obj_type == '@': # the Hero
+                    grid.set_hero(game_obj)
+                elif obj_type in ['*', '+']: # Money and Cages
+                    money_and_cages += 1
+                elif obj_type == 'M': # Hungry monster
+                    monster_count += 1
+                    hungry_monsters.append(game_obj)
+                elif obj_type == 'S': # Baby monster
+                    baby_monsters.append(game_obj)
+                elif obj_type == 'A': # Teleport Destination
+                    grid.teleport_destination = loc
+        for under_dict in level_dict['under_objects']:
+            t = under_dict['type']
+            l = under_dict['location']
+            wall_vector = under_dict.get('wall_vector', None)
+            game_obj = self._create_obj(t, l)
+            if t == 'S':
+                baby_monsters.append(game_obj)
+                if wall_vector:
+                    game_obj.set_wallvector(wall_vector)
+            elif t == 'M':
+                monster_count += 1
+                hungry_monsters.append(game_obj)
+            elif t in ['*', '+']: # Money and Cages
+                money_and_cages += 1
+            elif t == 'A': # Teleport Destination
+                grid.teleport_destination = loc
+        grid.time = int(level_dict['time'])
+        if grid.time == -1:
+            grid.time = None
+        grid.remaining_money_and_cages = money_and_cages
+        grid.alive_monsters = monster_count
+        grid.hungry_monsters = hungry_monsters
+        grid.baby_monsters = baby_monsters
+        for bmonster in baby_monsters:
+            bmonster.set_wallvector()
+        if 'solution' in level_dict:
+            grid.solution = level_dict['solution']
+            grid.solution_count = level_dict['solution_moves']
+            grid.solution_score = level_dict['solution_score']
+        else:
+            grid.solution = None
+        if solution_file: # optional solution_file overwrites level solution
+            with open(solution_file, 'r') as sf:
+                lines = sf.readlines()
+            solution = []
+            for line in lines:
+                solution.extend(line.strip())
+            grid.solution = solution
+            grid.solution_count = len(solution)
+        grid.current_level = level_num
+        grid.level_name = level_dict.get('title', None)
+        grid.level_author = level_dict.get('author', None)
+        return grid
+
+    def restore_state(self, state):
+        logging.debug("GridBuilder.restore_state()")
+        grid = Grid()
+        grid.set_size(state.num_rows, state.num_cols)
+        for attribute in ['score', 'time', 'remaining_money_and_cages', 'alive_monsters',
+                          'current_level', 'recorded_moves', 'solution', 'solution_count',
+                          'solution_score', 'solution_index', 'playing_solution',
+                          'input_queue', 'level_name', 'level_author']:
+            grid[attribute] = state[attribute]
+        grid.hungry_monsters = []
+        grid.baby_monsters = []
+        for row in state.gri_objs:
+            for cell in row:
+                for obj in cell:
+                    loc = Location((obj.col, obj.row))
+                    game_obj = self._create_obj(obj.type, grid, loc)
+                    if game_obj.is_hero():
+                        grid.set_hero(game_obj)
+                    if game_obj.is_monster():
+                        grid.hungry_monsters.append(game_obj)
+                    if game_obj.is_baby_monster():
+                        grid.baby_monsters.append(game_obj)
+        return grid
+
+    def _create_obj(self, obj_type, grid, location, alive=True,
+                    mywall=None, spooked_location=None):
+        if obj_type in self.types:
+            game_obj = self.types[obj_type](obj_type, self.mediator,
+                                            grid, location)
+            game_obj.alive = alive
+            if mywall:
+                game_obj.mywall = mywall
+            if spooked_location:
+                game_obj.spooked_location = spooked_location
+        else:
+            # Funky dirt replaces anything we don't recognize
+            game_obj = self.types['F']('F', self.mediator,
+                                       grid, location)
+        grid.insert_gameobj(game_obj, location)
+        return game_obj
+
+    def _get_screenfile_lines(self, level_file):
+        '''Open the file, trying several different directory locations.
+        return the lines read'''
+        lines = []
+        try:
+            with open(os.path.join(LEVELDIR, level_file), 'r') as lf:
+                lines = lf.readlines()
+        except FileNotFoundError:
+            # try the tests directory
+            try:
+                with open(os.path.join(TESTDIR, level_file), 'r') as lf:
+                    lines = lf.readlines()
+            except FileNotFoundError:
+                # try finding the file in the local directory
+                with open(level_file, 'r') as lf:
+                    lines = lf.readlines()
+        return lines
+
+    def _level_parser(self, level_file, level_dict):
+        '''read input file and populate level_dict with section info'''
+        lines = self._get_screenfile_lines(level_file)
+        # match the first line of form "40x17", or "40 x 17"
+        match = re.search(r'(\d+)\s*[xX]\s*(\d+)', lines[0])
+        if not match:
+            if self._level_parser_oldstyle(level_file, level_dict):
+                return
+            else:
+                raise ValueError("First line of file ({0}) not in ddxdd format".format(level_file))
+        num_cols, num_rows = int(match.group(1)), int(match.group(2))
+        lines = lines[1:] # move past first line now
+        # DAY - DEBUG - figure out how to make the below OS neutral
+        grid_data = [line.rstrip('\r\n') for line in lines[:num_rows]]
+        lines = lines[num_rows:]
+        #Some old files assume space padding at end of incomplete lines.
+        for i in range(num_rows):
+            length_delta = num_cols-len(grid_data[i])
+            if length_delta > 0:
+                grid_data[i] += ' '*length_delta
+        assert num_rows == len(grid_data), "Incorrect number of rows in screen file"
+        #I only test the first line here -- could need DEBUG in future
+        assert num_cols == len(grid_data[0]), "Incorrect number of columns in screen file"
+        #Check if Edge (or Wrapping_Edge) objects already there. If not, insert
+        if grid_data[0][0] not in ['E', 'e', 'W', 'w']:
+            #Insert Edge objects around the perimeter
+            for i in range(len(grid_data)):
+                grid_data[i] = 'E' + grid_data[i] + 'E'
+            edgerow = 'E' * (num_cols+2)
+            grid_data.insert(0, edgerow)
+            grid_data.append(edgerow)
+            num_rows += 2
+            num_cols += 2
+        level_dict['num_rows'] = num_rows
+        level_dict['num_cols'] = num_cols
+        level_dict['grid_data'] = grid_data
+        level_dict['under_objects'] = []
+        in_solution = False
+        for line in lines:
+            lowline = line.lower().strip()
+            if in_solution:
+                if first_solution_line:
+                    first_solution_line = False
+                    numbers = lowline.split()
+                    level_dict['solution_score'] = int(numbers[0])
+                    level_dict['solution_moves'] = int(numbers[1])
+                    solution = []
+                elif lowline.startswith('end solution:'):
+                    in_solution = False
+                    if len(solution) != level_dict['solution_moves']:
+                        logging.debug('Warning: Solution read ({0}) does not'\
+                                      'equal solution_moves'.format(len(solution)))
+#                    assert len(solution) == level_dict['solution_moves'], \
+#                        "Solution captured ({0}) does not equal "\
+#                            "solution_moves".format(len(solution))
+                    level_dict['solution'] = solution
+                else:
+                    solution.extend(line.strip())
+            elif lowline.startswith('solution:'):
+                in_solution = True
+                first_solution_line = True
+            elif lowline.startswith('time:'):
+                level_dict['time'] = int(lowline.split(':')[-1])
+            elif lowline.startswith('author:'):
+                level_dict['author'] = line.split(':')[-1].strip()
+            elif lowline.startswith('title:'):
+                level_dict['title'] = line.split(':')[-1].strip()
+            elif lowline.startswith('under:'):
+                under_dict = {}
+                rhs = line.split(':')[-1].strip()
+                rhslist = rhs.split(',')
+                assert len(rhslist) >= 3
+                under_dict['type'] = rhslist[0]
+                under_dict['location'] = Location((int(rhslist[1]), int(rhslist[2])))
+                if len(rhslist) >= 5:
+                    under_dict['wall_vector'] = Location((int(rhslist[3]), int(rhslist[4])))
+                level_dict['under_objects'].append(under_dict)
+            else:
+                pass
+        #logging.debug(str(level_dict))
+
+    def _level_parser_oldstyle(self, level_file, level_dict):
+        '''Parse an old style wanderer level file.  Return
+        true if successful'''
+        OLD_ROWS = num_rows = 17
+        OLD_COLS = num_cols = 40
+        lines = self._get_screenfile_lines(level_file)
+        grid_data = [line.rstrip('\r\n') for line in lines[:num_rows]]
+        lines = lines[num_rows:]
+        #Some old files assume space padding at end of incomplete lines.
+        for i in range(num_rows):
+            length_delta = num_cols-len(grid_data[i])
+            if length_delta > 0:
+                grid_data[i] += ' '*length_delta
+        if grid_data[0][0] not in ['E', 'e', 'W', 'w']:
+            #Insert Edge objects around the perimeter
+            for i in range(len(grid_data)):
+                grid_data[i] = 'E' + grid_data[i] + 'E'
+            edgerow = 'E' * (num_cols+2)
+            grid_data.insert(0, edgerow)
+            grid_data.append(edgerow)
+            num_rows += 2
+            num_cols += 2
+        if len(lines) > 0:
+            level_dict['title'] = lines[0]
+        lines = lines[1:]
+        if len(lines) > 0:
+            level_dict['time'] = int(lines[0])
+        else:
+            level_dict['time'] = 999
+        level_dict['num_rows'] = num_rows
+        level_dict['num_cols'] = num_cols
+        level_dict['grid_data'] = grid_data
+        level_dict['under_objects'] = []
+        level_dict['solution_score'] = 0
+        level_dict['solution_moves'] = 0
+        level_dict['solution'] = ''
+        return True
 
 
 class GameObj(object):
@@ -1240,709 +1948,6 @@ class Mediator(object):     #DAY - make this a SINGLETON?
             else:
                 raise NotImplementedError
 
-class Grid(object):
-    '''A collection of Cell objects representing the entire playing grid'''
-    #DAY - implement __new__ to force Grid to be a singleton?
-
-    def __init__(self):
-        self.num_rows = self.num_cols = None
-        self._grid = None
-        self.score = 0
-        self.time = None
-        self.hero = None
-        self.remaining_money_and_cages = None
-        self.alive_monsters = None
-        self.teleport_destination = None
-        self.current_level = None
-        self.recorded_moves = []
-        self.solution = None
-        self.solution_count = 0
-        self.solution_score = 0
-        self.solution_index = 0
-        self.playing_solution = False
-        self.input_queue = []
-        self.level_name = ''
-        self.level_author = ''
-        self.hungry_monsters = []
-        self.baby_monsters = []
-
-    def __str__(self):
-        return self.string_view()
-
-    def state_dict(self):
-        json_dict = {
-            'num_rows':self.num_rows,
-            'num_cols':self.num_cols,
-            'score':self.score,
-            'time':self.time,
-            'hero':self.hero,
-            'remaining_money_and_cages':self.remaining_money_and_cages,
-            'alive_monsters':self.alive_monsters,
-            'teleport_destination':self.teleport_destination,
-            'current_level':self.current_level,
-            'recorded_moves':self.recorded_moves,
-            'solution':self.solution
-            'solution_count':self.solution_count
-            'solution_score':self.solution_score
-            'solution_index':self.solution_index,
-            'playing_solution':self.playing_solution,
-            'input_queue':self.input_queue,
-            'level_name':self.level_name,
-            'level_author':self.level_author,
-            'grid_objs':[
-            ],
-            'hungry_monsters':[],
-            'baby_monsters':[],
-        }
-        for r in range(self.num_rows):
-            grid_row = []
-            for c in range(self.num_cols):
-                cell_objs = []
-                for obj in self.get_cell(Location((c, r))).get_gameobjs():
-                    cell_objs.append(obj.state_dict())
-                grid_row.append(cell_objs)
-            json_dict['grid_objs'].append(grid_row)
-        for h in self.hungry_monsters:
-            json_dict['hungry_monsters'].append(h.state_dict())
-        for b in self.baby_monsters:
-            json_dict['baby_monsters'].append(b.state_dict())
-        return json_dict
-
-    def state_json(self, separators=(',', ':'), **kwargs):
-        return json.dumps(self.state_dict(), separators=separators, **kwargs)
-
-    def string_view(self, highlight=None):
-        '''Return sring of character representation of the grid
-        with row and column headers at the left and top.  "highlight" is
-        an optional Location argument which will mark the location with
-        an "?"'''
-        column_nums = ['{0:02}'.format(col) for col in range(self.num_cols)]
-        col_header_first_digits = '\n  ' + ''.join([num[0] for num in column_nums])
-        col_header_second_digits = '  ' + ''.join([num[1] for num in column_nums]) + '\n'
-        outlist = [
-            '{0:02}'.format(row) + ''.join([str(self._grid[row][col])
-                for col in range(self.num_cols)])
-            for row in range(self.num_rows)
-            ]
-        if highlight:
-            rowstring = outlist[highlight.y]
-            if rowstring[highlight.x+2] in [' ', ':']: #+2 because of row num added above
-                outlist[highlight.y] =\
-                    rowstring[:highlight.x+2]\
-                    + '?' + rowstring[highlight.x+3:]
-        outstr = col_header_first_digits\
-            + '\n'\
-            + col_header_second_digits\
-            + '\n'.join(outlist)
-        return outstr
-
-    def set_mediator(self, mediator):
-        self.mediator = mediator
-
-    def try_exit(self):
-        if self.alive_monsters == 0 and self.remaining_money_and_cages == 0:
-            raise LevelExitException
-            return True #DAY -- I don't think the code ever gets here
-        else:
-            return False
-
-    def lost_game(self, message):
-        logging.debug(message) #DAY -- need to implement here.
-        raise HeroDiedException
-
-    def set_hero(self, hero):
-        self.hero = hero
-
-    def set_size(self, rows, columns):
-        self.num_rows = rows
-        self.num_cols = columns
-        # Create the grid populated with Cell objects
-        self._grid = [[Cell(self, Location((col, row)))
-                       for col in range(columns)] for row in range(rows)]
-        # Now that Cell objects are all created, call init_refs() on each one
-        for row in range(rows):
-            for col in range(columns):
-                self._grid[row][col].init_refs()
-
-    def get_cell(self, loc):
-        if loc.x < 0 or loc.x >= self.num_cols or loc.y < 0 or loc.y >= self.num_rows:
-            return None
-        else:
-            return self._grid[loc.y][loc.x]
-
-    def delete(self):
-        ''' Delete all cell objects in me and ready myself for re-init'''
-        for row in self._grid:
-            for cell in row:
-                cell.delete()
-        self.__init__()
-
-    def insert_gameobj(self, game_obj, location):
-        self._grid[location.row][location.col].insert_gameobj(game_obj)
-
-    def update_status(self, optional_message=None):
-        # TODO: change this to a command for getting status elements
-        #       instead of calling front-end to change the status
-        #       string
-        pass
-        # if optional_message:
-        #     self.frontend.set_status_line(optional_message)
-        # elif self.hero.alive:
-        #     self.frontend.set_status_line("Level {0}: {1} , Score: {2}, Gold: {3}, Time: {4}".format(
-        #         self.current_level, self.level_name, self.score,
-        #         self.remaining_money_and_cages, self.time))
-        # else:
-        #     self.frontend.set_status_line("YOU DIED!!     Level {0}: {1} , "\
-        #                              "Score: {2}, Gold: {3}, Time: {4}".format(
-        #                                  self.level_num, self.level_name, self.score,
-        #                                  self.remaining_money_and_cages, self.time))
-
-    def change_time(self, delta=-1):
-        if self.time:
-            self.time += delta
-
-    #DAY implement magic functions __ref__?? so I can say grid[location] and
-    # get a cell reference
-
-
-class Cell(object):
-    '''Cell objects represent one location on the playing grid.  The main
-    function of a Cell object is twofold:
-    1. To hold a collection of all the GameObj objects that are currently
-    occupying that cell (there can be more than one)
-    2. To implement trigger logic.  Triggering in Wanderer is when moving
-    objects 'triggger' movement/falling in nearby objects.  Since triggering
-    is all about cell locations and whether gameobj objects fall into a location,
-    it makes sense to have cell objects handle the logic (rather than
-    forcing gameobj objects to be aware of the playing grid topology)'''
-    def __init__(self, grid, location):    # Cell
-        self._grid = grid
-        self._location = location
-        # ._gamobjs: Ordered list of gameobj objects in this cell, topmost at index -1
-        self._gameobjs = []
-
-        # ._triggerneighbors: list of ordered refs to neighboring cell objs
-        #       which might hold gameobj which could fall into this cell
-        self._triggerneighbors = []
-
-        # ._wakelocations: dict with vectors as keys. the value for each vector
-        #       key will be an ordered list of wake locations.  When an object
-        #       moves out of this cell, this cell will call trigger() on each of
-        #       the wakelocations based on the vector of movement
-        self._wakelocations = {}
-
-        # ._slidelocations: dict with a tuple of (slide_dir, fall_vector)
-        #       as keys and list of locations as values.  The locations are the
-        #       spots to check to make sure they are empty before allowing a
-        #       slide around me. For example, an > arrow sliding around a '/'
-        #       ramp will come into my .allow_slider() method with a slide_dir
-        #       of SLIDE_NORTH and the arrow has a fall_vector of (1,0).
-        #       Therefore, .allow_slider will check the locations in the
-        #       dictionary entry that looks like this:
-        #           { (SLIDE_NORTH, (1,0)):[location1, location2] }
-        self._slidelocations = {}
-
-    def __repr__(self):    # Cell
-        return "Cell{0!s}".format(self._location)
-
-    def __str__(self): #Cell
-        obj_char = self._gameobjs[-1].obj_type
-        if obj_char in ['E', 'W']:
-            return '.' #show edges as '.' for simpler output
-        else:
-            return obj_char # char of topmost object
-
-    @property
-    def location(self):    # Cell
-        return self._location
-
-    @property
-    def slide_locations(self):    # Cell
-        return self._slidelocations
-
-    def delete(self):    # Cell
-        ''' Delete all objects in me (called before my one reference is deleted)'''
-        for obj in self.get_gameobjs():
-            obj.delete()
-        self._gameobjs = None
-
-    def init_refs(self):    # Cell
-        '''Initializes lists of references to other Cell objects, particularly
-
-        _triggerneighbors and _wakelocations.  This is not done in __init__()
-        because all the other Cell objects aren't necessarily created yet at
-        that point.'''
-        myloc = self._location
-        grid = self._grid
-        # triggerneighbors are the compass point cells around me in the order of
-        # North, East, West and South
-        self.north = grid.get_cell(myloc + (0, -1))
-        self.east = grid.get_cell(myloc + (1, 0))
-        self.west = grid.get_cell(myloc + (-1, 0))
-        self.south = grid.get_cell(myloc + (0, 1))
-        if self.north: self._triggerneighbors.append(self.north)
-        if self.east: self._triggerneighbors.append(self.east)
-        if self.west: self._triggerneighbors.append(self.west)
-        if self.south: self._triggerneighbors.append(self.south)
-        # North, south, east and west are also used for slide logic.  In addition,
-        # we need northeast, southeast, northwest and southwest
-        self.northeast = grid.get_cell(myloc + (1, -1))
-        self.northwest = grid.get_cell(myloc + (-1, -1))
-        self.southeast = grid.get_cell(myloc + (1, 1))
-        self.southwest = grid.get_cell(myloc + (-1, 1))
-        # Now fill in the self._slidelocations structure
-        # The key is a tuple of ( "slide_dir", "fall_vector" )
-        # In the following circumstance:
-        #    .1O..
-        #    .2/..
-        # It is slide_dir WEST and fall_vector SOUTH and I would check #1 first and #2 second,
-        # which is [self.northwest, self.west]
-        if self.north and self.northeast:
-            self._slidelocations[(SLIDE_NORTH, DIR_WEST)] = [self.northeast, self.north]
-        if self.east and self.northeast:
-            self._slidelocations[(SLIDE_EAST, DIR_SOUTH)] = [self.northeast, self.east]
-        if self.north and self.northwest:
-            self._slidelocations[(SLIDE_NORTH, DIR_EAST)] = [self.northwest, self.north]
-        if self.west and self.northwest:
-            self._slidelocations[(SLIDE_WEST, DIR_SOUTH)] = [self.northwest, self.west]
-        if self.south and self.southeast:
-            self._slidelocations[(SLIDE_SOUTH, DIR_WEST)] = [self.southeast, self.south]
-        if self.east and self.southeast:
-            self._slidelocations[(SLIDE_EAST, DIR_NORTH)] = [self.southeast, self.east]
-        if self.south and self.southwest:
-            self._slidelocations[(SLIDE_SOUTH, DIR_EAST)] = [self.southwest, self.south]
-        if self.west and self.southwest:
-            self._slidelocations[(SLIDE_WEST, DIR_NORTH)] = [self.southwest, self.west]
-        # When an object moves *out* of my location, I call check_triggers() on cells
-        # around me (in .wakelocations) to see if they have objects that can
-        # fall into any of those locations
-        # Here is the shape of the wake:
-        #
-        #            . n .      n = new object location (object moving up in this example)
-        #          . l m r .    m = "me" - just vacated old object location
-        #          . 1 b 2 .    l, r, b, 1, 2 = left, right, behind, behind-left, behind-right
-        #            . . .      . = addtnl spots where objects could fall into l, m, r, l, b or 2
-        #                     
-        for v in [Location((0, -1)), Location((1, 0)),
-                  Location((-1, 0)), Location((0, 1))]: #for all vectors...
-            me = grid.get_cell(myloc)
-            behind_me = grid.get_cell(myloc - v)
-            my_left = grid.get_cell(Location((myloc.x - v.y, myloc.y - v.x)))
-            my_right = grid.get_cell(Location((myloc.x + v.y, myloc.y + v.x)))
-            behind_left = grid.get_cell(Location((myloc.x - v.x - v.y, myloc.y - v.y - v.x)))
-            behind_right = grid.get_cell(Location((myloc.x - v.x + v.y, myloc.y - v.y + v.x)))
-            wakelist = []
-            if me: wakelist.append(me) #i.e this is the just-vacated location
-            if behind_me: wakelist.append(behind_me) # behind the just-vacated location
-            if my_left: wakelist.append(my_left)
-            if my_right: wakelist.append(my_right)
-            if behind_left: wakelist.append(behind_left)
-            if behind_right: wakelist.append(behind_right)
-            self._wakelocations[v] = wakelist
-
-    def cause_wake(self, vector):    # Cell
-        ''' An object just moved out of me moving on vector.  Call
-        .check_triggers() on all the locations near me as specified in the
-        ._wakelocations structure (depending on the vector of movement).
-        This will result in a domino as each of those locations looks to
-        see if objects fall into them'''
-        global LOG_INDENT
-        LOG_INDENT += 3
-        logging.debug("{1}++ causing wake at {0._location}".format(self, " "*LOG_INDENT))
-        for cell in self._wakelocations[vector]:
-            cell.check_triggers(wake=True)
-        LOG_INDENT -= 3
-
-    def check_triggers(self, wake=False):    # Cell
-        ''' Check all the locations around me
-        in ._triggerneighbors to see if any of them have objects that fall into
-        me.  I do this by calling those neighbor location's .fall_into()
-        method
-        This is called by an object's ._continue_fall() method to see
-        if it (the object) continues to fall into that spot and/or if other objects
-        fall into it first.  In this case, standstill objects don't get triggered.
-        It is also called by cause_wake().  In this case, standstill objects do
-        get triggered.'''
-
-        #Original wanderer behavior here is tricky: if multiple
-        #  objects can trigger into the same space, they all do trigger
-        #  (it does *not* stop triggering after the first one).  However, for
-        #  the subsequent triggers, it applies sliding logic as if the situation
-        #  were still as it was before anything triggered.  Thus, in the case
-        #  below, the Rock triggers first, but the arrow doesn't slide because
-        #  before the rock triggered, the spot was blank and therefore no sliding
-        #  logic was employed (instead, it just sees that the spot in front of it
-        #  is *not* empty so it does not trigger).  Likewise, if a rock was there
-        #  initially, but by the time the next trigger object is processed, the
-        #  rock is no longer there, the triggered object will slide as if the rock
-        #  is still there.
-        #    1 2 3
-        #  1 . . .       (Rock triggers into (2,3) first, but arrow doesn't
-        #  2 . O .        slide because arrow only 'slides' if there was a sliding
-        #  3 . . <        object in (2,3) before anything triggers)
-        #  4 . # .
-        #One interesting case is balloons and rocks.
-        #    1 2 3
-        #  1 . . .
-        #  2 . O .
-        #  3 . . .
-        #  4 . ^ .
-        #If fall is called on the empty space at (2,3), the rock will
-        #  trigger first, then stop (since it does not slide around balloons).
-        #  Then the balloon will try to trigger into (2,3).  When it tries, it
-        #  is not starting from the beginning where it would apply sliding rules
-        #  around the rock, it just checks space (2,3) and if it is empty, it
-        #  triggers.  In this case, since it is not empty, it does not trigger.
-        #However, if there is another rock at (2,1), then after all of the
-        #  above happens, this  other rock will trigger first into (2,2)
-        #  (now empty) and then try to trigger into (2,3) (where the first
-        #  rock is now). the rock will slide to (1,2), but then the balloon will
-        #  take its turn triggering into (2,3).  This time, when the balloon
-        #  checks for triggering into (2,3), the rock sliding logic is already
-        #  applied (since the first rock was there to begin with) and so the
-        #  balloon slides around to (3,3).  (level 29 & 30 test cases for this)
-        #
-        #First take a snapshot of which compass points can move (need to do
-        #  this to 'freeze' the status of sliding because the initial setup
-        #  determines whether sliding is allowed, not the setup when we finally
-        #  get to each compass point.  This is complex and not entirely consistent.  In the future,
-        #  I may break backward compatibility with the old game in this regard
-        #  (it will only break about 5 levels).
-
-        #logging.debug("{1}checktrigger at {0._location}".format(self, " "*LOG_INDENT))
-        for cell in self._triggerneighbors:
-            cell.fall_into(self._location, wake=wake)
-
-    def fall_into(self, location, wake=False):    # Cell
-        ''' Query my objects and see if any of them fall into location'''
-        for obj in self._gameobjs:
-            if (not wake) and  obj.standstill: #see dosstring for check_triggers()
-                pass
-            else:
-                obj.fall(location)
-
-    def insert_gameobj(self, gameobj):    # Cell
-        ''' Gameobj came into my cell.  Put it as topmost object'''
-        self._gameobjs.append(gameobj)
-
-    def remove_gameobj(self, gameobj):    # Cell
-        try:
-            self._gameobjs.remove(gameobj)
-        except ValueError as err_detail:
-            logging.error("Tried to remove a gameobj that did "\
-                    "not exist.  Gameobj={0}, Error={1}".format(gameobj, str(err_detail)))
-            return
-        if not self._gameobjs:
-            blank = Static_GameObj(' ',
-                                   self._grid.mediator,
-                                   self._grid,
-                                   self._location)
-            self.insert_gameobj(blank)
-            blank.draw()
-        else:
-            self._gameobjs[-1].draw()
-    def get_topmost_gameobj(self):    # Cell
-        return self._gameobjs[-1]
-    def get_gameobjs(self):    # Cell
-        '''iterable which returns all gameobjs starting with topmost'''
-        for i in range(len(self._gameobjs)-1, -1, -1):
-            # don't include "being_pushed" objects since this is a temp
-            #   state that is just a delay of being in a diff cell
-            if not self._gameobjs[i].being_pushed: 
-                yield self._gameobjs[i]
-    def refresh(self):    # Cell
-        self._gameobjs[-1].draw()
-
-class GridBuilder(object):
-    '''Factory class for reading level file and building Grid object collection'''
-    def __init__(self, mediator):
-        self.mediator = mediator
-        self.types = {
-            ' ': Space, # blank
-            '-': Space, # blank
-            'A': Static_GameObj, # teleport destination
-            'B': Bomb, # bomb
-            '#': Static_GameObj, # stone wall
-            '=': Static_GameObj, # brick wall
-            '/': Ramp, # right ramp
-            "\\": Ramp,# left ramp
-            ':': Dirt, # dirt
-            'F': Dirt, # funky dirt
-            '!': Static_GameObj, # poison
-            'X': Static_GameObj, # exit
-            '*': Money, # money
-            'T': Teleporter, # teleport booth
-            'C': TimeCapsule, # clock
-            '+': Cage, # cage
-            'O': Rock, # rock
-            '>': Arrow, # right arrow
-            '<': Arrow, # left arrow
-            '^': Balloon, # balloon
-            'M': Monster, # hungry monster
-            'S': BabyMonster, # baby monster
-            '~': Rug, # rug
-            '@': Hero, # hero
-            'E': Static_GameObj, # edge
-            'W': Static_GameObj, # wrapping edge
-        }
-
-    def read_level(self,
-                   level_file,
-                   level_num,
-                   solution_file=None):
-        '''Return Grid collection object after reading level file.'''
-        level_dict = {}     #will be populated by _section_parser
-        logging.debug("Reading {0}".format(level_file))
-        self._level_parser(level_file, level_dict)
-        rows = level_dict['num_rows']
-        cols = level_dict['num_cols']
-        grid = Grid()
-        grid.current_level = level_num
-        grid.set_size(rows, cols)
-        type_count = {}
-        money_and_cages = 0
-        monster_count = 0
-        hungry_monsters = []
-        baby_monsters = []
-        for irow in range(rows):
-            row = level_dict['grid_data'][irow]
-            for icol in range(cols):
-                obj_type = row[icol]
-                type_count[obj_type] = type_count.get(obj_type, 0) + 1
-                loc = Location((icol, irow))
-                game_obj = self._create_obj(obj_type, grid, loc)
-                if obj_type == '@': # the Hero
-                    grid.set_hero(game_obj)
-                elif obj_type in ['*', '+']: # Money and Cages
-                    money_and_cages += 1
-                elif obj_type == 'M': # Hungry monster
-                    monster_count += 1
-                    hungry_monsters.append(game_obj)
-                elif obj_type == 'S': # Baby monster
-                    baby_monsters.append(game_obj)
-                elif obj_type == 'A': # Teleport Destination
-                    grid.teleport_destination = loc
-        for under_dict in level_dict['under_objects']:
-            t = under_dict['type']
-            l = under_dict['location']
-            wall_vector = under_dict.get('wall_vector', None)
-            game_obj = self._create_obj(t, l)
-            if t == 'S':
-                baby_monsters.append(game_obj)
-                if wall_vector:
-                    game_obj.set_wallvector(wall_vector)
-            elif t == 'M':
-                monster_count += 1
-                hungry_monsters.append(game_obj)
-            elif t in ['*', '+']: # Money and Cages
-                money_and_cages += 1
-            elif t == 'A': # Teleport Destination
-                grid.teleport_destination = loc
-        grid.time = int(level_dict['time'])
-        if grid.time == -1:
-            grid.time = None
-        grid.remaining_money_and_cages = money_and_cages
-        grid.alive_monsters = monster_count
-        grid.hungry_monsters = hungry_monsters
-        grid.baby_monsters = baby_monsters
-        for bmonster in baby_monsters:
-            bmonster.set_wallvector()
-        if 'solution' in level_dict:
-            grid.solution = level_dict['solution']
-            grid.solution_count = level_dict['solution_moves']
-            grid.solution_score = level_dict['solution_score']
-        else:
-            grid.solution = None
-        if solution_file: # optional solution_file overwrites level solution
-            with open(solution_file, 'r') as sf:
-                lines = sf.readlines()
-            solution = []
-            for line in lines:
-                solution.extend(line.strip())
-            grid.solution = solution
-            grid.solution_count = len(solution)
-        grid.current_level = level_num
-        grid.level_name = level_dict.get('title', None)
-        grid.level_author = level_dict.get('author', None)
-        return grid
-
-    def restore_state(self, state):
-        logging.debug("GridBuilder.restore_state()")
-        grid = Grid()
-        grid.set_size(state.num_rows, state.num_cols)
-        for attribute in ['score', 'time', 'remaining_money_and_cages', 'alive_monsters',
-                          'current_level', 'recorded_moves', 'solution', 'solution_count',
-                          'solution_score', 'solution_index', 'playing_solution',
-                          'input_queue', 'level_name', 'level_author']:
-            grid[attribute] = state[attribute]
-        grid.hungry_monsters = []
-        grid.baby_monsters = []
-        for row in state.gri_objs:
-            for cell in row:
-                for obj in cell:
-                    loc = Location((obj.col, obj.row))
-                    game_obj = self._create_obj(obj.type, grid, loc)
-                    if game_obj.is_hero():
-                        grid.set_hero(game_obj)
-                    if game_obj.is_monster():
-                        grid.hungry_monsters.append(game_obj)
-                    if game_obj.is_baby_monster():
-                        grid.baby_monsters.append(game_obj)
-        return grid
-
-    def _create_obj(self, obj_type, grid, location, alive=True,
-                    mywall=None, spooked_location=None):
-        if obj_type in self.types:
-            game_obj = self.types[obj_type](obj_type, self.mediator,
-                                            grid, location)
-            game_obj.alive = alive
-            if mywall:
-                game_obj.mywall = mywall
-            if spooked_location:
-                game_obj.spooked_location = spooked_location
-        else:
-            # Funky dirt replaces anything we don't recognize
-            game_obj = self.types['F']('F', self.mediator,
-                                       grid, location)
-        grid.insert_gameobj(game_obj, location)
-        return game_obj
-
-    def _get_screenfile_lines(self, level_file):
-        '''Open the file, trying several different directory locations.
-        return the lines read'''
-        lines = []
-        try:
-            with open(os.path.join(LEVELDIR, level_file), 'r') as lf:
-                lines = lf.readlines()
-        except FileNotFoundError:
-            # try the tests directory
-            try:
-                with open(os.path.join(TESTDIR, level_file), 'r') as lf:
-                    lines = lf.readlines()
-            except FileNotFoundError:
-                # try finding the file in the local directory
-                with open(level_file, 'r') as lf:
-                    lines = lf.readlines()
-        return lines
-
-    def _level_parser(self, level_file, level_dict):
-        '''read input file and populate level_dict with section info'''
-        lines = self._get_screenfile_lines(level_file)
-        # match the first line of form "40x17", or "40 x 17"
-        match = re.search(r'(\d+)\s*[xX]\s*(\d+)', lines[0])
-        if not match:
-            if self._level_parser_oldstyle(level_file, level_dict):
-                return
-            else:
-                raise ValueError("First line of file ({0}) not in ddxdd format".format(level_file))
-        num_cols, num_rows = int(match.group(1)), int(match.group(2))
-        lines = lines[1:] # move past first line now
-        # DAY - DEBUG - figure out how to make the below OS neutral
-        grid_data = [line.rstrip('\r\n') for line in lines[:num_rows]]
-        lines = lines[num_rows:]
-        #Some old files assume space padding at end of incomplete lines.
-        for i in range(num_rows):
-            length_delta = num_cols-len(grid_data[i])
-            if length_delta > 0:
-                grid_data[i] += ' '*length_delta
-        assert num_rows == len(grid_data), "Incorrect number of rows in screen file"
-        #I only test the first line here -- could need DEBUG in future
-        assert num_cols == len(grid_data[0]), "Incorrect number of columns in screen file"
-        #Check if Edge (or Wrapping_Edge) objects already there. If not, insert
-        if grid_data[0][0] not in ['E', 'e', 'W', 'w']:
-            #Insert Edge objects around the perimeter
-            for i in range(len(grid_data)):
-                grid_data[i] = 'E' + grid_data[i] + 'E'
-            edgerow = 'E' * (num_cols+2)
-            grid_data.insert(0, edgerow)
-            grid_data.append(edgerow)
-            num_rows += 2
-            num_cols += 2
-        level_dict['num_rows'] = num_rows
-        level_dict['num_cols'] = num_cols
-        level_dict['grid_data'] = grid_data
-        level_dict['under_objects'] = []
-        in_solution = False
-        for line in lines:
-            lowline = line.lower().strip()
-            if in_solution:
-                if first_solution_line:
-                    first_solution_line = False
-                    numbers = lowline.split()
-                    level_dict['solution_score'] = int(numbers[0])
-                    level_dict['solution_moves'] = int(numbers[1])
-                    solution = []
-                elif lowline.startswith('end solution:'):
-                    in_solution = False
-                    if len(solution) != level_dict['solution_moves']:
-                        logging.debug('Warning: Solution read ({0}) does not'\
-                                      'equal solution_moves'.format(len(solution)))
-#                    assert len(solution) == level_dict['solution_moves'], \
-#                        "Solution captured ({0}) does not equal "\
-#                            "solution_moves".format(len(solution))
-                    level_dict['solution'] = solution
-                else:
-                    solution.extend(line.strip())
-            elif lowline.startswith('solution:'):
-                in_solution = True
-                first_solution_line = True
-            elif lowline.startswith('time:'):
-                level_dict['time'] = int(lowline.split(':')[-1])
-            elif lowline.startswith('author:'):
-                level_dict['author'] = line.split(':')[-1].strip()
-            elif lowline.startswith('title:'):
-                level_dict['title'] = line.split(':')[-1].strip()
-            elif lowline.startswith('under:'):
-                under_dict = {}
-                rhs = line.split(':')[-1].strip()
-                rhslist = rhs.split(',')
-                assert len(rhslist) >= 3
-                under_dict['type'] = rhslist[0]
-                under_dict['location'] = Location((int(rhslist[1]), int(rhslist[2])))
-                if len(rhslist) >= 5:
-                    under_dict['wall_vector'] = Location((int(rhslist[3]), int(rhslist[4])))
-                level_dict['under_objects'].append(under_dict)
-            else:
-                pass
-        #logging.debug(str(level_dict))
-
-    def _level_parser_oldstyle(self, level_file, level_dict):
-        '''Parse an old style wanderer level file.  Return
-        true if successful'''
-        OLD_ROWS = num_rows = 17
-        OLD_COLS = num_cols = 40
-        lines = self._get_screenfile_lines(level_file)
-        grid_data = [line.rstrip('\r\n') for line in lines[:num_rows]]
-        lines = lines[num_rows:]
-        #Some old files assume space padding at end of incomplete lines.
-        for i in range(num_rows):
-            length_delta = num_cols-len(grid_data[i])
-            if length_delta > 0:
-                grid_data[i] += ' '*length_delta
-        if grid_data[0][0] not in ['E', 'e', 'W', 'w']:
-            #Insert Edge objects around the perimeter
-            for i in range(len(grid_data)):
-                grid_data[i] = 'E' + grid_data[i] + 'E'
-            edgerow = 'E' * (num_cols+2)
-            grid_data.insert(0, edgerow)
-            grid_data.append(edgerow)
-            num_rows += 2
-            num_cols += 2
-        if len(lines) > 0:
-            level_dict['title'] = lines[0]
-        lines = lines[1:]
-        if len(lines) > 0:
-            level_dict['time'] = int(lines[0])
-        else:
-            level_dict['time'] = 999
-        level_dict['num_rows'] = num_rows
-        level_dict['num_cols'] = num_cols
-        level_dict['grid_data'] = grid_data
-        level_dict['under_objects'] = []
-        level_dict['solution_score'] = 0
-        level_dict['solution_moves'] = 0
-        level_dict['solution'] = ''
-        return True
 
 class LevelExitException(Exception):
     pass
