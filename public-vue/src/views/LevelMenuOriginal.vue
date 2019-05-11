@@ -1,19 +1,22 @@
 <template>
   <div class="levelmenuoriginal">
-    <LevelMenu levels="originalLevels" page="this.$route.params.page" isOriginal="1"/>
+    <moving-title-small class="movingTitle" title="Original Game"/>
+    <LevelMenu tag="original" page="this.$route.params.page"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import LevelMenu from '@/components/LevelMenu.vue'
+import MovingTitleSmall from '@/components/MovingTitleSmall.vue'
 
 export default {
   name: 'levelmenuoriginal',
   props: {
   },
   components: {
-    LevelMenu
+    LevelMenu,
+    MovingTitleSmall
   },
   created()
   {

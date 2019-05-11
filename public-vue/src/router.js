@@ -9,6 +9,7 @@ import LevelMenuOriginal from './views/LevelMenuOriginal.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import ViewAccount from './views/ViewAccount.vue'
+import LevelCreator from './views/LevelCreator.vue'
 
 Vue.use(Router)
 
@@ -60,6 +61,11 @@ export default new Router({
       path: '/account/:username',
       name: 'viewaccount',
       component: ViewAccount
+    },
+    {
+      path: '/levelcreator',
+      name: 'levelcreator',
+      component: LevelCreator
     },
   ]
 })

@@ -1,8 +1,9 @@
 <template>
   <div class="home">
     <moving-title-large class="movingTitle" title="Wanderer"/>
-    <main-menu-button class="mainMenuButton" label="Original Levels" route="/levelmenu/original/1" sound="click"/>
-    <main-menu-button class="mainMenuButton" label="Custom Levels" route="/levelmenu/custom/1" sound="click"/>
+    <main-menu-button class="mainMenuButton" label="Original Game" route="/levelmenu/original/1" sound="click"/>
+    <main-menu-button class="mainMenuButton" label="Community" route="/levelmenu/custom/1" sound="click"/>
+    <main-menu-button class="mainMenuButton" label="Level Creator" route="/levelcreator/1" sound="click"/>
   </div>
 </template>
 

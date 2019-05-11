@@ -1,6 +1,6 @@
 <template>
   <div class="mainmenubuttons">
-    <button class="menu-button" @mouseover="hover()" @click="press()">{{label}}</button>
+    <button class="menu-button" @mouseover="hover" @click="press">{{label}}</button>
   </div>
 </template>
 
@@ -28,6 +28,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Francois+One');
 .menu-button
 {
     font-family: 'Francois One', sans-serif;

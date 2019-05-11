@@ -1,6 +1,6 @@
 <template>
 <div id="levelmenu">
-    <h1 class="sticky">{{chat}}</h1>
+    <h1 class="sticky">hi</h1>
     <div id="levelList">
         <div class="level-div" v-for="level in displayed" v-bind:key="level.title">
             <p v-if="isOriginal == 1" class="level-number">{{level.num}}</p>
@@ -31,7 +31,10 @@ export default {
     data()
     {
         return {
-            displayed: [],
+            displayed: [{isOriginal: 1,
+            num: 20,
+            title: "Hello there",
+            author: "Andrew Young"}],
         }
     },
     methods: {
