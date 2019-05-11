@@ -76,7 +76,7 @@ class Window_Pygame(object):
                          "imagefile":"teleportdestination.gif"},
             'B': {"name":"Bomb", "imagefile":"bomb.gif"},
             '#': {"name":"Stone wall", "imagefile":"stonewall.gif"},
-            ':': {"name":"Brick wall", "imagefile":"brickwall.gif"},
+            '=': {"name":"Brick wall", "imagefile":"brickwall.gif"},
             '/': {"name":"Ramp", "imagefile":"rightupramp.gif"},
             "\\": {"name":"Ramp", "imagefile":"leftupramp.gif"},
             ':': {"name":"Dirt", "imagefile":"dirt.gif"},
@@ -148,7 +148,7 @@ class Window_Pygame(object):
 #         # DAY -- eventually just read all image data into a dict
 #         #        and reuse it for each game type
 #         s.image, s.rect = self._load_image(
-#             os.path.join(self.imageDir,
+#             os.path.join(self.imageDir,   
 #                 objectGraphics[gameobj.obj_type].imagefile))
 #         loc = gameobj.location
 #         s.rect.top, s.rect.left = (loc.y * self.cellHeight,

@@ -74,9 +74,7 @@ class GameDirector(object):
         if state:
             self.restore_state(state)
         elif level_num:
-            self.read_new_level_num(level_num)
-        self.update_list = [] # this will hold all updates to be written to screen
-        
+            self.read_new_level_num(level_num)        
         
         # TODO the place where we register the event handler is
         # going to move to the server
@@ -165,7 +163,7 @@ class GameDirector(object):
         logging.debug("   GameDirector event_handler received event {0}".format(event))
         if state:
             self.restore_state(state)
-        self.update_list = [] # clear out the updates for a fresh start
+        self.grid.update_list = [] # clear out the updates for a fresh start
         if self.grid.time and (self.grid.time == 0):
             self.grid.lost_game("You died by running out of time")
             raise ExitGame
@@ -174,7 +172,7 @@ class GameDirector(object):
             if self.input_level:
                 self.grid.update_status(
                     "Level: {0}".format(''.join(self.grid.input_queue)))
-            return (self.game_state_dict(), self.update_list)
+            return (self.game_state_dict(), self.grid.update_list)
         if event in PLAYER_MOVES:
             if event in ['LEFT', 'H', 'h', b'H', b'h']:
                 self.grid.recorded_moves.append('H')
@@ -194,18 +192,18 @@ class GameDirector(object):
                 pass
             self.move_monsters()
             self.grid.change_time()
-            return (self.game_state_dict(), self.update_list)
+            return (self.game_state_dict(), self.grid.update_list)
 
         if event in ['Q', 'q', b'Q', b'q']:
             raise ExitGame
         if event in ['N', 'n', b'N', b'n']:
             self.grid = self.next_level()
             self.update_all() # trigger drawing of all cells
-            return (self.game_state_dict(), self.update_list)
+            return (self.game_state_dict(), self.grid.update_list)
         if event in ['R', 'r', b'R', b'r']:
             self.grid = self.restart()
             self.update_all() # trigger drawing of all cells
-            return (self.game_state_dict(), self.update_list)
+            return (self.game_state_dict(), self.grid.update_list)
 
 
         # TODO: refactor this reading of level to the server
@@ -213,7 +211,7 @@ class GameDirector(object):
             self.reading_input = True
             self.input_level = True
             self.grid.update_status("Level: ")
-            return (self.game_state_dict(), self.update_list)
+            return (self.game_state_dict(), self.grid.update_list)
         if event == 'RETURN': # End reading input
             try:
                 if self.input_level:
@@ -226,7 +224,7 @@ class GameDirector(object):
             finally:
                 self.input_level = False
                 self.reading_input = False
-            return (self.game_state_dict(), self.update_list)
+            return (self.game_state_dict(), self.grid.update_list)
 
 
         #logging.debug("\n{0}\n".format(self.game_state_json(indent=' '))) #DEBUG
@@ -242,8 +240,8 @@ class GameDirector(object):
             for col in range(self.grid.num_cols):
                 obj = self.grid.get_cell(Location((col, row)))\
                     .get_topmost_gameobj()
-                self.update_list.append(tuple([obj.obj_type, Location((col, row))]))
-        return self.update_list
+                self.grid.update_list.append(tuple([obj.obj_type, Location((col, row))]))
+        return self.grid.update_list
 
 class Grid(object):
     '''A collection of Cell objects representing the entire playing grid'''
@@ -270,6 +268,7 @@ class Grid(object):
         self.level_author = ''
         self.hungry_monsters = []
         self.baby_monsters = []
+        self.update_list = [] # holds screen updates to be drawn
 
     def __str__(self): # Grid
         return self.string_view()
@@ -1017,11 +1016,6 @@ class GameObj(object):
         return self._type
 
     @property
-    def draw_data(self):
-        '''Return draw_data'''
-        return self._drawdata
-
-    @property
     def fallvector(self):
         '''Return fallvector'''
         return self._fallvector
@@ -1035,11 +1029,9 @@ class GameObj(object):
         '''Do any cleanup before I get deleted'''
         pass
 
-    def draw(self, redraw_screen=False):
+    def draw(self):
         '''Draw self at current location using my reference to Window obj'''
-        pass
-        # TODO: Enter this item on a queue of changes to be made
-        #self._frontend.draw_obj(self, redraw=redraw_screen)
+        self._grid.update_list.append((self._type, self._location))
 
     def react_to_visitor(self, movetype, special_instructions=None):
         '''Another object just moved into my space -- React to it (usually by dying)'''
@@ -1201,7 +1193,7 @@ class Dynamic_GameObj(GameObj):
         #self._frontend.update_obj_location(self)
         # Redraw myself (possibly animate the move). redraw_screen=True means
         #   this spot drawn, then FPS is waited
-        self.draw(redraw_screen=True)
+        self.draw()
         if self.being_pushed:
             self.being_pushed = False
         # Call ._continue_fall() on myself for the spot in front of me (my

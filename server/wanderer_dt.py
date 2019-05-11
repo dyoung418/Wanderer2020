@@ -89,7 +89,7 @@ class WandererGame(object):
             # web version, we will.
             state, updates = self.gameLogic.event_handler(event)
             self.frontEnd.display_updates(updates)
-            if self.grid.playing_solution:
+            if self.gameLogic.grid.playing_solution:
                 self.play_next_solution()
 
     def play_next_solution(self):
