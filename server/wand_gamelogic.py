@@ -101,7 +101,15 @@ class GameDirector(object):
         #         return
 
     def restore_state(self, state):
-        raise NotImplementedError
+        if self.grid:
+            self.grid.delete()
+        self.grid = GridBuilder(self.mediator)\
+            .restore_state(state)
+        self.mediator.set_grid(self.grid)
+        self.grid.set_mediator(self.mediator)
+        self.hero = self.grid.hero
+        self.reading_input = False
+        self.input_level = False
 
     def game_state_dict(self):
         return self.grid.state_dict()
@@ -277,7 +285,18 @@ class GameObj(object):
         return "GameObj('{0}', {1!s})".format(self._type, self._location)
 
     def state_dict(self):
-        return {'type':self._type, 'location':self._location}
+        return {'type':self._type, 'location':self._location,
+                'alive':self.alive, 'mywall':None, 'spooked_location':None,
+        }
+
+    def is_hero(self):
+        return False
+
+    def is_monster(self):
+        return False
+
+    def is_baby_monster(self):
+        return False
 
     @property
     def location(self):
@@ -507,7 +526,12 @@ class Hero(Dynamic_GameObj):
         return "GameObj('{0}', {1!s}, {2!s})".format(self._type, self._location, self.alive)
 
     def state_dict(self):
-        return {'type':self._type, 'location':self._location, 'alive':self.alive}
+        return {'type':self._type, 'location':self._location,
+                'alive':self.alive, 'mywall':None, 'spooked_location':None,
+        }
+
+    def is_hero(self):
+        return True
 
     def move(self, vector):
         logging.debug(str(self._grid))
@@ -583,6 +607,9 @@ class Monster(Dynamic_GameObj):
                                       grid, location)
         self.causewake = False
 
+    def is_monster(self):
+        return True
+
     def react_to_visitor(self, movetype, special_instructions=None):
         self._grid.score += MONSTER_SCORE
         self._grid.alive_monsters -= 1
@@ -644,9 +671,14 @@ class BabyMonster(Dynamic_GameObj):
         return "GameObj('{0}', {1!s}, {2!s}, {3!s})".format(self._type,
             self._location, self.mywall, self.spooked_location)
 
+    def is_baby_monster(self):
+        return True
+
     def state_dict(self):
         return {'type':self._type, 'location':self._location,
-                'mywall':self.mywall, 'spooked_location':self.spooked_location}
+                'alive':self.alive, 'mywall':self.mywall,
+                'spooked_location':self.spooked_location,
+        }
 
     def fall(self, location): # BabyMonster
         return False
@@ -1259,9 +1291,8 @@ class Grid(object):
             'level_author':self.level_author,
             'grid_objs':[
             ],
-            'hungry_monsters':self.hungry_monsters,
-            'baby_monsters':self.baby_monsters,
-            'alive_monsters':self.alive_monsters,
+            'hungry_monsters':[],
+            'baby_monsters':[],
         }
         for r in range(self.num_rows):
             grid_row = []
@@ -1271,6 +1302,10 @@ class Grid(object):
                     cell_objs.append(obj.state_dict())
                 grid_row.append(cell_objs)
             json_dict['grid_objs'].append(grid_row)
+        for h in self.hungry_monsters:
+            json_dict['hungry_monsters'].append(h.state_dict())
+        for b in self.baby_monsters:
+            json_dict['baby_monsters'].append(b.state_dict())
         return json_dict
 
     def state_json(self, separators=(',', ':'), **kwargs):
@@ -1675,7 +1710,7 @@ class GridBuilder(object):
                 obj_type = row[icol]
                 type_count[obj_type] = type_count.get(obj_type, 0) + 1
                 loc = Location((icol, irow))
-                game_obj = self._create_obj(obj_type, loc)
+                game_obj = self._create_obj(obj_type, grid, loc)
                 if obj_type == '@': # the Hero
                     grid.set_hero(game_obj)
                 elif obj_type in ['*', '+']: # Money and Cages
@@ -1731,10 +1766,40 @@ class GridBuilder(object):
         grid.level_author = level_dict.get('author', None)
         return grid
 
-    def _create_obj(self, obj_type, grid, location):
+    def restore_state(self, state):
+        logging.debug("GridBuilder.restore_state()")
+        grid = Grid()
+        grid.set_size(state.num_rows, state.num_cols)
+        for attribute in ['score', 'time', 'remaining_money_and_cages', 'alive_monsters',
+                          'current_level', 'recorded_moves', 'solution', 'solution_count',
+                          'solution_score', 'solution_index', 'playing_solution',
+                          'input_queue', 'level_name', 'level_author']:
+            grid[attribute] = state[attribute]
+        grid.hungry_monsters = []
+        grid.baby_monsters = []
+        for row in state.gri_objs:
+            for cell in row:
+                for obj in cell:
+                    loc = Location((obj.col, obj.row))
+                    game_obj = self._create_obj(obj.type, grid, loc)
+                    if game_obj.is_hero():
+                        grid.set_hero(game_obj)
+                    if game_obj.is_monster():
+                        grid.hungry_monsters.append(game_obj)
+                    if game_obj.is_baby_monster():
+                        grid.baby_monsters.append(game_obj)
+        return grid
+
+    def _create_obj(self, obj_type, grid, location, alive=True,
+                    mywall=None, spooked_location=None):
         if obj_type in self.types:
             game_obj = self.types[obj_type](obj_type, self.mediator,
                                             grid, location)
+            game_obj.alive = alive
+            if mywall:
+                game_obj.mywall = mywall
+            if spooked_location:
+                game_obj.spooked_location = spooked_location
         else:
             # Funky dirt replaces anything we don't recognize
             game_obj = self.types['F']('F', self.mediator,
