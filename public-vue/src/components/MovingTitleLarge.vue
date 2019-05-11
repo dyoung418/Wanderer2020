@@ -40,6 +40,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Francois+One');
 .title-div
 {
     display: flex;
@@ -54,6 +55,7 @@ h1
 {
     color: white;
     text-transform: uppercase;
+    font-family: 'Francois One', sans-serif;
     margin-top: 0px;
     margin-bottom: 0px;
     font-size: 8em;
