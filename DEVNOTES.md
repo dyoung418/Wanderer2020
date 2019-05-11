@@ -91,7 +91,11 @@ to install Node.js.
 ```
 npm install -g @vue/cli
 ```
-* Within **public-vue** you should be able to run:
+* Within **public-vue** you should then run the following to install the dependecies:
+```
+npm install
+```
+* Now within **public-vue** you should be able to run:
 ```
 npm run serve
 ```

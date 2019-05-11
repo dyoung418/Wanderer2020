@@ -68,14 +68,14 @@ class GameDirector(object):
         # retorst_state() or read_new_leve(), but put one
         # here anyway so we don't have to test for the presence
         # of self.grid in every other method
-        self.grid = Grid() 
+        self.grid = Grid()
         self.grid.set_size(1,1)
 
         if state:
             self.restore_state(state)
         elif level_num:
-            self.read_new_level_num(level_num)        
-        
+            self.read_new_level_num(level_num)
+
         # TODO the place where we register the event handler is
         # going to move to the server
 
@@ -240,7 +240,7 @@ class GameDirector(object):
             for col in range(self.grid.num_cols):
                 obj = self.grid.get_cell(Location((col, row)))\
                     .get_topmost_gameobj()
-                self.grid.update_list.append(tuple([obj.obj_type, Location((col, row))]))
+                self.grid.update_list.append((obj.obj_type, (col, row)))
         return self.grid.update_list
 
 class Grid(object):
@@ -279,7 +279,7 @@ class Grid(object):
             'num_cols':self.num_cols,
             'score':self.score,
             'time':self.time,
-            'hero':self.hero,
+            'hero':self.hero.state_dict(),
             'remaining_money_and_cages':self.remaining_money_and_cages,
             'alive_monsters':self.alive_monsters,
             'teleport_destination':self.teleport_destination,
@@ -992,7 +992,7 @@ class GameObj(object):
         return "GameObj('{0}', {1!s})".format(self._type, self._location)
 
     def state_dict(self):
-        return {'type':self._type, 'location':self._location,
+        return {'type':self._type, 'location':(self._location.x, self._location.y),
                 'alive':self.alive, 'mywall':None, 'spooked_location':None,
         }
 
@@ -1031,7 +1031,7 @@ class GameObj(object):
 
     def draw(self):
         '''Draw self at current location using my reference to Window obj'''
-        self._grid.update_list.append((self._type, self._location))
+        self._grid.update_list.append((self._type, (self._location.x, self._location.y)))
 
     def react_to_visitor(self, movetype, special_instructions=None):
         '''Another object just moved into my space -- React to it (usually by dying)'''
@@ -1226,7 +1226,7 @@ class Hero(Dynamic_GameObj):
         return "GameObj('{0}', {1!s}, {2!s})".format(self._type, self._location, self.alive)
 
     def state_dict(self):
-        return {'type':self._type, 'location':self._location,
+        return {'type':self._type, 'location':(self._location.x, self._location.y),
                 'alive':self.alive, 'mywall':None, 'spooked_location':None,
         }
 
@@ -1375,7 +1375,7 @@ class BabyMonster(Dynamic_GameObj):
         return True
 
     def state_dict(self):
-        return {'type':self._type, 'location':self._location,
+        return {'type':self._type, 'location':(self._location.x, self._location.y),
                 'alive':self.alive, 'mywall':self.mywall,
                 'spooked_location':self.spooked_location,
         }

@@ -3,3 +3,4 @@ server/__pycache__
 server/logfile.txt
 server/venv/
 .vscode
+public-vue/package-lock.json
