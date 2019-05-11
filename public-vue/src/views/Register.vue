@@ -1,9 +1,14 @@
 <template>
 <div>
-  <h1 class="center">Login to your account</h1>
-  <form @submit.prevent="login" class="fifty pure-form pure-form-aligned">
+  <h1 class="center">Register for an account</h1>
+  <form @submit.prevent="register" class="fifty pure-form pure-form-aligned">
     <fieldset>
       <p class="center pure-form-message-inline">All fields are required.</p>
+
+      <div class="pure-control-group">
+        <label for="name">Real Name</label>
+        <input v-model="name" type="text" placeholder="Real Name">
+      </div>
 
       <div class="pure-control-group">
         <label for="username">Username</label>
@@ -20,25 +25,28 @@
       </div>
     </fieldset>
   </form>
-  <router-link to="/register" class="link pure-button">Register Instead</router-link> 
+  
+<router-link to="/login" class="link pure-button">Login Instead</router-link>
   <p v-if="error" class="error">{{error}}</p>
 </div>
 </template>
 
 <script>
 export default {
-  name: 'login',
+  name: 'register',
   data() {
     return {
+      name: '',
       username: '',
       password: '',
       error: '',
     }
   },
   methods: {
-    async login() {
+    async register() {
       try {
-        this.error = await this.$store.dispatch("login", {
+        this.error = await this.$store.dispatch("register", {
+          name: this.name,
           username: this.username,
           password: this.password
         });
@@ -65,6 +73,7 @@ form {
 .pure-controls button {
   margin-left: auto;
 }
+
 .fifty
 {
     margin: 0 auto;
@@ -79,10 +88,5 @@ form {
     padding-bottom: 20px;
     padding-top: 20px;
     text-align: center;
-}
-.link
-{
-  margin: 0 auto;
-  margin-top: 50px;
 }
 </style>

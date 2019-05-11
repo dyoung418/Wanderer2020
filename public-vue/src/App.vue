@@ -37,7 +37,7 @@ html
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
-  background: radial-gradient(rgb(40, 29, 82),rgba(13, 12, 43, 0.884));
+  background: radial-gradient(rgba(40, 29, 82,0),rgba(13, 12, 43, 0));
   
 }
 

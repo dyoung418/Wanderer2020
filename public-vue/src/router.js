@@ -7,6 +7,7 @@ import Level from './views/Level.vue'
 import LevelMenuCustom from './views/LevelMenuCustom.vue'
 import LevelMenuOriginal from './views/LevelMenuOriginal.vue'
 import Login from './views/Login.vue'
+import Register from './views/Register.vue'
 import ViewAccount from './views/ViewAccount.vue'
 
 Vue.use(Router)
@@ -49,6 +50,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
     },
     {
       path: '/account/:username',

@@ -12,6 +12,7 @@ export default new Vuex.Store({
       {tag: "song04", volume: 0.1},
       {tag: "song25", volume: 0.1},
     ],
+    song: 0,
     SOUNDS: [
       {tag: "click", volume: 0.05},
       {tag: "back", volume: 0.05},
@@ -20,7 +21,10 @@ export default new Vuex.Store({
       {tag: "monsterdeath", volume: 0.1},
       {tag: "level-start", volume: 0.2},
     ],
-    song: 0,
+    displayedLevels: [],
+    displayedComments: [],
+    level: {},
+    gameId: "",
   },
   mutations: {
     setUser(state, user) {
@@ -32,6 +36,18 @@ export default new Vuex.Store({
     setSong(state, song) {
       state.song = song;
     },
+    setDisplayed(state, displayedLevels) {
+      state.displayedLevels = displayedLevels;
+    },
+    setDisplayedComments(state, displayedComments) {
+      state.displayedComments = displayedComments;
+    },
+    setLevel(state, level) {
+      state.level = level;
+    },
+    setGameId(state, gameId) {
+      state.gameId = gameId;
+    }
   },
   actions: {
     playSound(context, payload)
@@ -61,7 +77,7 @@ export default new Vuex.Store({
 
         context.commit('setSong', payload.song);
 
-        var media = document.getElementById(this.state.MUSIC[this.state.song].tag);
+        media = document.getElementById(this.state.MUSIC[this.state.song].tag);
         media.volume = this.state.MUSIC[this.state.song].volume;
         playPromise = media.play();
         if (playPromise !== null){
