@@ -38,7 +38,7 @@ class WandererGame(object):
                 filename=startscreen,
                 solution_file=solution_file)
         self.frontEnd = frontend.getFrontEnd(\
-            self.gameLogic.grid.num_rows, 
+            self.gameLogic.grid.num_rows,
             self.gameLogic.grid.num_cols,
             size=size)
         updates = self.gameLogic.update_all()
@@ -50,55 +50,60 @@ class WandererGame(object):
                 self.frontEnd.start_event_loop()
             except LevelExitException:
                 logging.info("Level {0} successfully exited! "\
-                             "Score is {1}".format(self.grid.current_level, self.grid.score))
+                    "Score is {1}".format(self.grid.current_level,
+                    self.grid.score))
                 if self.gameLogic.grid.recorded_moves:
-                    logging.info("Moves recorded on level {1}: \n {0}".format(
-                        ''.join(self.gameLogic.grid.recorded_moves), self.gameLogic.grid.current_level))
+                    logging.info("Moves recorded on level {1}: "\
+                        "\n {0}".format(
+                        ''.join(self.gameLogic.grid.recorded_moves),
+                        self.gameLogic.grid.current_level))
                 self.gameLogic.next_level()
             except HeroDiedException:
                 self.gameLogic.hero.alive = False
                 self.gameLogic.grid.update_status() #DAY Add player death reason
             except ExitGame:
                 if self.gameLogic.grid.recorded_moves:
-                    logging.info("Moves recorded in level{1}: \n {0}".format(
-                        ''.join(self.gameLogic.grid.recorded_moves), self.gameLogic.grid.current_level))
+                    logging.info("Moves recorded in level{1}: "\
+                        "\n {0}".format(
+                        ''.join(self.gameLogic.grid.recorded_moves),
+                        self.gameLogic.grid.current_level))
                 self.frontEnd.quit()
                 return
 
-        #TODO need to have a loop here where I gather input,
-        # feed it to the game logic, call the frontend to update,
-    
+
     def event_handler(self, event):
+        grid = self.gameLogic.grid
         if event in ['S', 's', b'S', b's']: # Play full solution
-            if self.gameLogic.grid.solution:
-                if self.gameLogic.grid.playing_solution:
-                    self.gameLogic.grid.playing_solution = False
+            if grid.solution:
+                if grid.playing_solution:
+                    grid.playing_solution = False
                 else:
-                    self.gameLogic.grid.playing_solution = True
+                    grid.playing_solution = True
                     self.play_next_solution()
             else:
                 logging.debug("There is no solution to play")
         elif event in ['P', 'p', b'P', b'p']: # Play one step of solution
-            if self.gameLogic.grid.solution:
+            if grid.solution:
                 self.play_next_solution()
             else:
                 logging.debug("There is no solution step to play")
         else:
-            # send all other events to the game logic.  For pygame, we don't 
-            # need to send the state with each event, but for the server of the
-            # web version, we will.
+            # send all other events to game logic.  For pygame, we don't 
+            # need to send the state with each event, but for the
+            # server of the web version, we will.
             state, updates = self.gameLogic.event_handler(event)
             self.frontEnd.display_updates(updates)
-            if self.gameLogic.grid.playing_solution:
+            if grid.playing_solution:
                 self.play_next_solution()
 
     def play_next_solution(self):
-        num_moves = self.gameLogic.grid.solution_count
-        if self.gameLogic.grid.solution_index >= num_moves:
-            self.gameLogic.grid.playing_solution = False
+        grid = self.gameLogic.grid
+        num_moves = grid.solution_count
+        if grid.solution_index >= num_moves:
+            grid.playing_solution = False
         else:
-            self.frontEnd.generate_event(self.gameLogic.grid.solution[self.gameLogic.grid.solution_index])
-            self.gameLogic.grid.solution_index += 1
+            self.frontEnd.generate_event(grid.solution[grid.solution_index])
+            grid.solution_index += 1
 
     def start_event_loop(self):
         '''Start the event loop.  In the case of pygame, this will just call

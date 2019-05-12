@@ -19,6 +19,7 @@ these two modules -- the front-end and game logic never directly
 interface.
 '''
 
+import copy
 import flask
 from flask import request
 from pymongo import MongoClient
@@ -33,65 +34,31 @@ client = MongoClient('localhost', 27017)
 gameDB = client['gameDB']
 gameCollection = gameDB['gameCollection']
 
-# TODO Make this into a class so that the interface with
-# the front-end can be standardized.
-
-#gDirector = wanderer.GameDirector()
 
 @app.route('/wanderer/newlevel', methods=['POST'])
 def newlevel():
-    #payload = bson.json_util.loads(flask.request.get_json())
+    global wandererGame
     payload = request.form
-    print(payload)
-    #return 'mischief managed'
-    gDirector = wanderer.GameDirector()
-    gDirector.read_new_level_num(int(payload['level']))
-    game_state = gDirector.game_state_dict()
-    gameId = gameCollection.insert_one(game_state).inserted_id
+    wandererGame = WandererGame(int(payload['level']))
+    updates = wandererGame.get_updates()
+    state = wandererGame.get_state()
+    gameId = gameCollection.insert_one(state).inserted_id
     response = {
         'gameId': str(gameId),
-        'level': [],
+        'updates': updates,
     }
-    for rowList in game_state['grid_objs']:
-        for cell in rowList:
-            response['level'].append({
-                'row': cell.location[1],
-                'col': cell.location[0],
-                'add': cell.type,
-                })
-    return response
+    return repr(response)
 
-if False:
-    if 'level' in payload:
-        gDirector = wanderer.GameDirector()
-        gDirector.read_new_level_num(int(payload['level']))
-        game_state = gDirector.game_state_dict()
-        gameId = gameCollection.insert_one(game_state).inserted_id
-        response = {
-            'gameId': str(gameId),
-            'level': [],
-        }
-        for rowList in game_state['grid_objs']:
-            for cell in rowList:
-                response['level'].append({
-                    'row': cell.location[1],
-                    'col': cell.location[0],
-                    'add': cell.type,
-                    })
-        return response
-    else:
-        flask.abort('404') #resource not found
-
-@app.route('/wanderer/move/')
+@app.route('/wanderer/move/', methods=['POST'])
 def move():
-    #payload = bson.json_util.loads(flask.request.get_json())
-    payload = flask.Request.data
-    if not ('playerMove' in payload) and ('gameId' in payload):
+    global wandererGame
+    payload = flask.Request.form
+    if not (('playerMove' in payload) and ('gameId' in payload)):
         flask.abort('404')
     game_state = gameCollection.find_one({
         "_id": ObjectId(payload['gameId'])
         })
-    gDirector.restore_state(game_state)
+    wandererGame.restore_state(game_state)
     # game logic does the move...
     gDirector.event_handler(payload['playerMove'])
     game_state = gDirector.game_state_dict()
@@ -104,6 +71,78 @@ def move():
         'updates': updates,
     }
     return response
+
+
+class WandererGame(object):
+    def __init__(self,
+                 startlevel=1,
+                 startscreen=None,
+                 solution_file=None,
+                 size='m'):
+        self.gameLogic = GameDirector()
+        if not startscreen:
+            self.gameLogic.read_new_level_num(
+                startlevel)
+        else:
+            self.gameLogic.read_new_level(
+                filename=startscreen,
+                solution_file=solution_file)
+        self.updates = self.gameLogic.update_all()
+
+    def get_updates(self):
+        return_copy = copy.deepcopy(self.updates)
+        self.updates = []
+        return return_copy
+
+    def get_state(self):
+        return self.gameLogic.game_state_dict()
+
+    def restore_state(self, state):
+        self.gameLogic.restore_state(state)
+
+    def event_handler(self, event):
+        grid = self.gameLogic.grid
+        if event in ['S', 's', b'S', b's']: # Play full solution
+            if grid.solution:
+                if grid.playing_solution:
+                    grid.playing_solution = False
+                else:
+                    grid.playing_solution = True
+                    self.play_next_solution()
+            else:
+                logging.debug("There is no solution to play")
+        elif event in ['P', 'p', b'P', b'p']: # Play one step of solution
+            if grid.solution:
+                self.play_next_solution()
+            else:
+                logging.debug("There is no solution step to play")
+        else:
+            # send all other events to game logic.  For pygame, we don't 
+            # need to send the state with each event, but for the
+            # server of the web version, we will.
+            state, self.updates = self.gameLogic.event_handler(event)
+            self.frontEnd.display_updates(updates)
+            if grid.playing_solution:
+                self.play_next_solution()
+
+    def play_next_solution(self):
+        grid = self.gameLogic.grid
+        num_moves = grid.solution_count
+        if grid.solution_index >= num_moves:
+            grid.playing_solution = False
+        else:
+            self.frontEnd.generate_event(grid.solution[grid.solution_index])
+            grid.solution_index += 1
+
+    def start_event_loop(self):
+        '''Start the event loop.  In the case of pygame, this will just call
+        the pygame front-end event loop.'''
+        self.frontEnd.start_event_loop()
+
+
+#######################################################
+
+
 
 if __name__ == '__main__':
     app.run(port=8000, debug=True)

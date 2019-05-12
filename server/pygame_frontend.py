@@ -170,11 +170,11 @@ class Window_Pygame(object):
             self.update_screen()
 
     def convert_loc(self, loc):
-        '''convert a Location object corresponding to the game grid
+        '''convert a tuple location corresponding to the game grid
         to a pygame Rect object of the screen (x,y) coordinates of the
         top-left corner'''
-        return pygame.Rect(loc.x * self.cellWidth, # left
-            loc.y * self.cellHeight, # top
+        return pygame.Rect(loc[0] * self.cellWidth, # left
+            loc[1] * self.cellHeight, # top
             self.cellWidth, # width
             self.cellHeight, # height
         )
