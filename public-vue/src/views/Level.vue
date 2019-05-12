@@ -1,6 +1,6 @@
 <template>
   <div class="level">
-    <Game level="1"/>
+    <Game/>
   </div>
 </template>
 
