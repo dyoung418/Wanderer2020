@@ -13,19 +13,14 @@ const profileSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     },
+    username: String,
 
     level: Number,
     customLevels: Number,
     likes: Number,
     liked: [],
     medals: [],
-    completion: 
-    [Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean,
-    Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean,
-    Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean,
-    Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean,
-    Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean,
-    Boolean, Boolean],
+    completion: [],
 
     picture: Number,
 
@@ -48,14 +43,7 @@ router.post("/", auth.verifyToken, User.verify, async (req, res) => {
       likes: 0,
       liked: [],
       medals: [],
-      completion: [
-          false, false, false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false, false, false,
-          false, false
-      ],
+      completion: [],
       
       picture: 0,
     });
@@ -124,6 +112,6 @@ router.get("/:username", async (req, res) => {
   });
 
   module.exports = {
-    model: profile,
+    model: Profile,
     routes: router,
   }
