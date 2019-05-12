@@ -38,3 +38,16 @@ let res =
 
 
 */
+let LEVEL_JSON =
+{
+    width: 40,
+    height: 17,
+    author: "Steven Shipway",
+    map: "=======================\OOO*OOOO/#OO####*O       O:#         O/ \OOOOOO/# ::A**## O #### #:#       **/   \OOOO/   ####### #  O  *#:#              \OO/   ##    -# #* * ###:# OOO           O/    ##    -# ######:::#*****         :/  *###* O  -#    #*                 @     *<*###*< -#*#! ###                  \   *###*    -###              !     ::  \     ##    -# #          \ /=O=   ::::   \O     / O/#*           O O  =    ::   / \*   / */-###         #***# =        /   \    O/ -X < !!!     #\*/# =       /    O*O*O*O ->*   *   *<  # #  =      /     =**O*O= -    !!!   ! !# #! =! \    /    =:O*O:= -          ! *#T#*:::::\**/     =::::::*-########################################",
+    time: 1000,
+    title: "Unplug the Cistern #1",
+    solution_score: 501,
+    solution_movecount: 320,
+    soloution_moves: "JJJLJHHKKHJJJJJLJJLHKHKHHJJLHHHHHLLLLKKKKKKKKKHHHHHHHHHHKHHJHHLLJJHHHHKKHHHJKLLLJJJHJHHLLJJJLLHHHHJJLLLLLLLLKKKLLJJJLHKKKKKKLKLLJJHJLKLJHJJJJLLHHHHHJHJJHHJJJKLLHHJJLLJJJJJJJLLLLLLHHKHHHKLKJLLKHKLKLKKKKHLKHHHLLJJHHLJJHJHHHKKHKHKHHHKKHLLKKKKJJJJHHHHHHHKKHHJJJHHHHHHJHHKKKKKHHHHHHHJJJLLLKLLHHHHHKKHLHHHLJJJJJLLLJJJHJJJHJHHK",
+    official: 1,
+}
