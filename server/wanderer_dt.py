@@ -23,8 +23,12 @@ import pygame_frontend as frontend
 
 sys.py3kwarning = True  #Turn on Python 3 warnings
 
+from wand_gamelogic import LevelExitException
+from wand_gamelogic import HeroDiedException
+from wand_gamelogic import ExitGame
+
 class WandererGame(object):
-    def __init__(self, 
+    def __init__(self,
                  startlevel=1,
                  startscreen=None,
                  solution_file=None,
@@ -41,17 +45,19 @@ class WandererGame(object):
             self.gameLogic.grid.num_rows,
             self.gameLogic.grid.num_cols,
             size=size)
-        updates = self.gameLogic.update_all()
-        self.frontEnd.display_updates(updates)
 
         self.frontEnd.register_event('ANY', self.event_handler)
+
+    def start_game(self):
         while True:
             try:
+                updates = self.gameLogic.update_all()
+                self.frontEnd.display_updates(updates)
                 self.frontEnd.start_event_loop()
             except LevelExitException:
                 logging.info("Level {0} successfully exited! "\
-                    "Score is {1}".format(self.grid.current_level,
-                    self.grid.score))
+                    "Score is {1}".format(self.gameLogic.grid.current_level,
+                    self.gameLogic.grid.score))
                 if self.gameLogic.grid.recorded_moves:
                     logging.info("Moves recorded on level {1}: "\
                         "\n {0}".format(
@@ -61,6 +67,7 @@ class WandererGame(object):
             except HeroDiedException:
                 self.gameLogic.hero.alive = False
                 self.gameLogic.grid.update_status() #DAY Add player death reason
+                return
             except ExitGame:
                 if self.gameLogic.grid.recorded_moves:
                     logging.info("Moves recorded in level{1}: "\
@@ -70,8 +77,11 @@ class WandererGame(object):
                 self.frontEnd.quit()
                 return
 
-
     def event_handler(self, event):
+        '''Is registered as an event handler with the front
+        end.  This handles only "s" and "p" events (to play
+        the solution) and calls the game_logic event_handler
+        for all other events'''
         grid = self.gameLogic.grid
         if event in ['S', 's', b'S', b's']: # Play full solution
             if grid.solution:
@@ -112,7 +122,6 @@ class WandererGame(object):
 
 
 
-
 def main(startlevel=1, startscreen=None, debugflag=False):
     # Parse command-line arguments
     parser = argparse.ArgumentParser()
@@ -127,7 +136,7 @@ def main(startlevel=1, startscreen=None, debugflag=False):
     parser.add_argument("-d", "--debug", action='store_true',
                         help="Start in debug mode",
                         default=False)
-    parser.add_argument("-z", "--size", action='store', 
+    parser.add_argument("-z", "--size", action='store',
                         choices=['s', 'm', 'l'],
                         help="Specify size of window",
                         default='m')
@@ -168,16 +177,27 @@ def main(startlevel=1, startscreen=None, debugflag=False):
     else:
         logging.disable(logging.DEBUG)
 
-    try:
-        WandererGame(startlevel=startlevel,
-                     startscreen=startscreen,
-                     solution_file=solution_filename,
-                     size=size)
-    except:
-        logging.error("Error caught at top level", exc_info=sys.exc_info())
-    finally:
-        err_info = None  #allow garbage collection on the traceback info
-        #answer = input("\n\nPress return to exit")
+
+    wGame = WandererGame(startlevel=startlevel,
+        startscreen=startscreen,
+        solution_file=solution_filename,
+        size=size)
+    wGame.start_game()
+    err_info = None  #allow garbage collection on the traceback info
+    answer = input("\n\nPress return to exit")
+
+    # try:
+    #     wGame = WandererGame(startlevel=startlevel,
+    #                  startscreen=startscreen,
+    #                  solution_file=solution_filename,
+    #                  size=size)
+    # except:
+    #     logging.error("Error caught at top level", exc_info=sys.exc_info())
+    # finally:
+    #     err_info = None  #allow garbage collection on the traceback info
+    #     answer = input("\n\nPress return to exit")
+
+
 
 
 if __name__ == "__main__":

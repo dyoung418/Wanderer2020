@@ -10,6 +10,11 @@ import sys
 import pygame
 from pygame.locals import *
 from location import Location
+
+from wand_gamelogic import LevelExitException
+from wand_gamelogic import HeroDiedException
+from wand_gamelogic import ExitGame
+
 sys.py3kwarning = True  #Turn on Python 3 warnings
 #import future_builtins
 #import multiprocessing, Decimal, collections, numbers, fractions
@@ -32,8 +37,7 @@ KEY_UP = 273
 KEY_ESCAPE = 27
 KR_DELAY = 250 # controls key repeat behavior (when holding down key)
 KR_INTERVAL = 30 # controls key repeat behavior (when holding down key)
-##FPS = 90 # Frames per second
-FPS = 3000 # Frames per second
+FPS = 90 # Frames per second
 BUTTON_OK_CANCEL, BUTTON_YES_NO, BUTTON_OK = list(range(3))
 
 def getFrontEnd(rows, cols, size='m'):
@@ -106,6 +110,7 @@ class Window_Pygame(object):
         pygame.mouse.set_visible(0)
         # Set key repeat parameters -- delay and interval
         pygame.key.set_repeat(KR_DELAY, KR_INTERVAL)
+        self.clock = pygame.time.Clock()
         self.boom = pygame.sprite.Sprite()
         self.boom.image, self.boom.rect = self._load_image(
             os.path.join(self.imageDir, boom_imagefile))
@@ -185,7 +190,7 @@ class Window_Pygame(object):
             self.updated_rects = []
         else:
             pygame.display.update()
-        pygame.time.wait(1000//FPS)
+        self.clock.tick(FPS)
 
     def register_event(self, event_value, handler,
                        event_type=KEYBOARD_EVENT):
