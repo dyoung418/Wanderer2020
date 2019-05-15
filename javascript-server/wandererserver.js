@@ -21,10 +21,12 @@ const users = require("./users.js");
 app.use("/api/users", users.routes);
 
 const photos = require("./profile.js");
-app.use("/api/profile", profile.routes);
-
+app.use("/api/profile", photos.routes);
 
 const level = require("./level.js");
 app.use("/api/level", level.routes);
+
+const comment = require("./comment.js");
+app.use("/api/comment", comment.routes);
 
 app.listen(3005, () => console.log('Server listening on port 3001!'));

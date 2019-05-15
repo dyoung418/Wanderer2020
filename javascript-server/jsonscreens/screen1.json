@@ -1,0 +1,11 @@
+{"solution_score": 501,
+     "grid": ["EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "E=======================\\OOO*OOOO/#OO####E", "E*O       O:#         O/ \\OOOOOO/# ::A**#E", "E# O #### #:#       **/   \\OOOO/   ######E", "E# #  O  *#:#              \\OO/   ##    -E", "E# #* * ###:# OOO           O/    ##    -E", "E# ######:::#*****         :/  *###* O  -E", "E#    #*                 @     *<*###*< -E", "E#*#! ###                  \\   *###*    -E", "E###              !     ::  \\     ##    -E", "E# #          \\ /=O=   ::::   \\O     / O/E", "E#*           O O  =    ::   / \\*   / */-E", "E###         #***# =        /   \\    O/ -E", "EX < !!!     #\\*/# =       /    O*O*O*O -E", "E>*   *   *<  # #  =      /     =**O*O= -E", "E    !!!   ! !# #! =! \\    /    =:O*O:= -E", "E          ! *#T#*:::::\\**/     =::::::*-E", "E########################################E", "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"],
+      "time": 1000,
+       "level_num": 1,
+        "solution_count": 320,
+         "under_objects": [],
+          "cols": 42, 
+          "title": "Unplug the Cistern #1",
+           "rows": 19,
+            "solution": "JJJLJHHKKHJJJJJLJJLHKHKHHJJLHHHHHLLLLKKKKKKKKKHHHHHHHHHHKHHJHHLLJJHHHHKKHHHJKLLLJJJHJHHLLJJJLLHHHHJJLLLLLLLLKKKLLJJJLHKKKKKKLKLLJJHJLKLJHJJJJLLHHHHHJHJJHHJJJKLLHHJJLLJJJJJJJLLLLLLHHKHHHKLKJLLKHKLKLKKKKHLKHHHLLJJHHLJJHJHHHKKHKHKHHHKKHLLKKKKJJJJHHHHHHHKKHHJJJHHHHHHJHHKKKKKHHHHHHHJJJLLLKLLHHHHHKKHLHHHLJJJJJLLLJJJHJJJHJHHK", 
+            "author": "Steven Shipway"}
