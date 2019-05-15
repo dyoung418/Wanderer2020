@@ -59,8 +59,7 @@ def move():
         "_id": ObjectId(payload['gameId'])
         })
     wandererGame.restore_state(game_state)
-    # game logic does the move...
-    gDirector.event_handler(payload['playerMove'])
+    wandererGame.event_handler(payload['playerMove'])
     game_state = gDirector.game_state_dict()
     gameCollection.find_one({
         "_id": ObjectId(payload['gameId'])
@@ -117,7 +116,7 @@ class WandererGame(object):
             else:
                 logging.debug("There is no solution step to play")
         else:
-            # send all other events to game logic.  For pygame, we don't 
+            # TODO: DAY send all other events to game logic.  For pygame, we don't 
             # need to send the state with each event, but for the
             # server of the web version, we will.
             state, self.updates = self.gameLogic.event_handler(event)
@@ -135,9 +134,8 @@ class WandererGame(object):
             grid.solution_index += 1
 
     def start_event_loop(self):
-        '''Start the event loop.  In the case of pygame, this will just call
-        the pygame front-end event loop.'''
-        self.frontEnd.start_event_loop()
+        '''Start the event loop'''
+        pass
 
 
 #######################################################

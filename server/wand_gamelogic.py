@@ -18,7 +18,6 @@ except ImportError:
     import json as json
 from location import Location
 
-
 sys.py3kwarning = True  #Turn on Python 3 warnings
 sys.setrecursionlimit(2000)
 
@@ -49,6 +48,15 @@ BABY_MONSTER_CAPTURE_SCORE = 20
 PLAYER_MOVES = frozenset(['LEFT', 'H', 'h', 'RIGHT', 'L', 'l',
                           'UP', 'K', 'k', 'DOWN', 'J', 'j',
                           'SPACE', ' ', '-'])
+
+class LevelExitException(Exception):
+    pass
+
+class HeroDiedException(Exception):
+    pass
+    
+class ExitGame(Exception):
+    pass
 
 class GameDirector(object):
     '''This is the top-level class of the wanderer game-logic
@@ -142,7 +150,7 @@ class GameDirector(object):
         self.grid.current_level += 1
         logging.info("Loading level {0}".format(self.grid.current_level))
         return self.read_new_level('screen{0}.txt'.format(self.grid.current_level),
-                            self.grid.current_level, self.grid)
+                            self.grid.current_level)
 
     def restart(self): # GameDirector
         self.grid.current_level -= 1
@@ -240,7 +248,8 @@ class GameDirector(object):
             for col in range(self.grid.num_cols):
                 obj = self.grid.get_cell(Location((col, row)))\
                     .get_topmost_gameobj()
-                self.grid.update_list.append((obj.obj_type, (col, row)))
+                obj.draw()
+                #self.grid.update_list.append((obj.obj_type, (col, row)))
         return self.grid.update_list
 
 class Grid(object):
@@ -374,17 +383,18 @@ class Grid(object):
         else:
             return self._grid[loc.y][loc.x]
 
-    def delete(self):
+    def delete(self):   # Grid
         ''' Delete all cell objects in me and ready myself for re-init'''
         for row in self._grid:
             for cell in row:
                 cell.delete()
         self.__init__()
 
-    def insert_gameobj(self, game_obj, location):
+    def insert_gameobj(self, game_obj, location):   # Grid
+        '''Inserts the game obj at appropriate cell but doesnt not tee it up to be drawn'''
         self._grid[location.row][location.col].insert_gameobj(game_obj)
 
-    def update_status(self, optional_message=None):
+    def update_status(self, optional_message=None):  # Grid
         # TODO: change this to a command for getting status elements
         #       instead of calling front-end to change the status
         #       string
@@ -627,11 +637,16 @@ class Cell(object):
 
     def insert_gameobj(self, gameobj):    # Cell
         ''' Gameobj came into my cell.  Put it as topmost object'''
+        #TODO there is not symmetry between insert_gameobj (which does not 
+        #     tee up a draw either here in Cell or in Grid's version)
+        #     and remove_gameobj (which does tee up a draw for the underlying next obj)
         self._gameobjs.append(gameobj)
 
     def remove_gameobj(self, gameobj):    # Cell
+        '''Removes the gameobj from the cell's list of gameobjs there
+        AND calls draw on the underlying gamobj so it is tee'd up to be drawn in its place'''
         try:
-            self._gameobjs.remove(gameobj)
+            self._gameobjs.remove(gameobj) # _gameobj is a python list, using its 'remove' method
         except ValueError as err_detail:
             logging.error("Tried to remove a gameobj that did "\
                     "not exist.  Gameobj={0}, Error={1}".format(gameobj, str(err_detail)))
@@ -645,17 +660,20 @@ class Cell(object):
             blank.draw()
         else:
             self._gameobjs[-1].draw()
+
     def get_topmost_gameobj(self):    # Cell
         return self._gameobjs[-1]
+
     def get_gameobjs(self):    # Cell
         '''iterable which returns all gameobjs starting with topmost'''
         for i in range(len(self._gameobjs)-1, -1, -1):
             # don't include "being_pushed" objects since this is a temp
             #   state that is just a delay of being in a diff cell
-            if not self._gameobjs[i].being_pushed: 
+            if not self._gameobjs[i].being_pushed:
                 yield self._gameobjs[i]
-    def refresh(self):    # Cell
-        self._gameobjs[-1].draw()
+    #def refresh(self):    # Cell
+    #    self._gameobjs[-1].draw()
+
 
 class GridBuilder(object):
     '''Factory class for reading level file and building Grid object collection'''
@@ -730,7 +748,7 @@ class GridBuilder(object):
             t = under_dict['type']
             l = under_dict['location']
             wall_vector = under_dict.get('wall_vector', None)
-            game_obj = self._create_obj(t, l)
+            game_obj = self._create_obj(t, grid, l)
             if t == 'S':
                 baby_monsters.append(game_obj)
                 if wall_vector:
@@ -966,7 +984,7 @@ class GameObj(object):
         self._pushvectors = None # must be initialized by subclasses
         self.causewake = True   #i.e. do I cause a wake, as in the wake of a boat
         self._cell = self._grid.get_cell(self._location)
-        
+
         #     these are non-state because they only changes within a move, not between
         self.standstill = True  #e.g. A rock starting at standstill doesn't fall into hero
         # being_pushed: a flag to not falsely trigger falls from origin place when
@@ -1191,8 +1209,7 @@ class Dynamic_GameObj(GameObj):
         # TODO: Change this to enter an item into the queue of updates
         #       to be made
         #self._frontend.update_obj_location(self)
-        # Redraw myself (possibly animate the move). redraw_screen=True means
-        #   this spot drawn, then FPS is waited
+        # Redraw myself 
         self.draw()
         if self.being_pushed:
             self.being_pushed = False
@@ -1939,12 +1956,4 @@ class Mediator(object):     #DAY - make this a SINGLETON?
                 return True
             else:
                 raise NotImplementedError
-
-
-class LevelExitException(Exception):
-    pass
-class HeroDiedException(Exception):
-    pass
-class ExitGame(Exception):
-    pass
 
