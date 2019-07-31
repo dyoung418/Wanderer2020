@@ -184,7 +184,7 @@ def main(startlevel=1, startscreen=None, debugflag=False):
         size=size)
     wGame.start_game()
     err_info = None  #allow garbage collection on the traceback info
-    answer = input("\n\nPress return to exit")
+    #answer = input("\n\nPress return to exit")
 
     # try:
     #     wGame = WandererGame(startlevel=startlevel,

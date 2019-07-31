@@ -76,7 +76,7 @@ python flask_test.py
 pip install pygame
 ```
 
-* Then you run the game by typing `python wanderer.py` in the `server/` directory
+* Then you run the game by typing `python wanderer_dt.py` in the `server/` directory
 
 ---
 ### Web Front-End <a id="web"></a>
